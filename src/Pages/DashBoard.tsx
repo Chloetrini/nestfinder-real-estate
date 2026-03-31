@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import  { useContext } from 'react'
 import Sidebar from '../Components/AdminPage/SideBar[1]'
 import Dashboard from '../Components/AdminPage/DashBoard'
 import ManageContent from '../Components/AdminPage/ManageContent[1]'
