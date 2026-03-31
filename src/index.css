@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@media (min-width: 1022px) and (max-width: 1294px) {
+	.middle {
+		display: grid;
+		grid-template-columns: 500px 500px;
+
+	}
+
+	.select {
+		width: 150px;
+	}
+	.selectdiv {
+		gap: 10px;
+	}
+}
+
+
