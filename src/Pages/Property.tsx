@@ -54,7 +54,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 	// console.log(applyFilter?.location);
 
 	const [currentPage, setCurrentPage] = useState(1);
-	const [postPerPage, setPostPerPage] = useState(12);
+	const [postPerPage, _setPostPerPage] = useState(12);
 	const filteredResults = useMemo(() => {
 		if (!results) return [];
 		if (!applyFilter) return results;

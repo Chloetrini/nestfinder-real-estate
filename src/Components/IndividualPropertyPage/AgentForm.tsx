@@ -6,15 +6,15 @@ const [name, setName] = useState<string>("")
 const [email, setEmail] = useState<string>("")
 const [message, setMessage] = useState<string>("")
 
-const [error, setError] = useState<string>("")
+    const [error] = useState<string>("")
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{e.preventDefault()
+// const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{e.preventDefault()
 
-    if (name.trim() && !email.trim() && !message.trim()) {
-        setError("Please provide name , email and reason for message")
-        return;
-    }
-}
+//     if (name.trim() && !email.trim() && !message.trim()) {
+//         setError("Please provide name , email and reason for message")
+//         return;
+//     }
+// }
 
 
 

@@ -1,9 +1,9 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
+// import L from "leaflet";
 import 'leaflet/dist/leaflet.css'; 
 
 
-const containerstyle ={width:"100%", height: "400px"}
+// const containerstyle ={width:"100%", height: "400px"}
 
 
 const MapView= () => {

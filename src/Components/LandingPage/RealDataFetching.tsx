@@ -27,7 +27,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
 
 	const [results, setResults] = useState<RealEstate[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [error, setError] = useState<string | null>(null);
+	const [_error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const getResults = async () => {

@@ -8,9 +8,9 @@ interface showModal {
   isLoggedIn: boolean
 }
 
-type smart = {
-  onClick?: () => void
-}
+// type smart = {
+//   onClick?: () => void
+// }
 
 const HeaderContentSec: FC<showModal> = ({setShowModal, isLoggedIn}) => { 
   const navigate = useNavigate()
