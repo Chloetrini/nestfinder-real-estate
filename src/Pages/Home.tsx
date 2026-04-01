@@ -1,12 +1,12 @@
 import { useState, type FC } from 'react';
 
-import RealDataFetching from '../Components/LandingPage/RealDataFetching';
-import Display from '../Components/LandingPage/Display';
-import Testimonials from '../Components/LandingPage/Testimonials';
-import Testimonials2 from '../Components/LandingPage/Testimonials2';
-import SignInModal from '../Components/Modals/SignInModal';
-import HeaderContentSec from '../Components/LandingPage/HeaderContentSec';
-import WhyChooseUs from '../Components/LandingPage/WhyChooseUs';
+import RealDataFetching from '../Components/Home/RealDataFetching';
+import Display from '../Components/Home/Display';
+import Testimonials from '../Components/Home/Testimonials';
+import Testimonials2 from '../Components/Home/Testimonials2';
+import SignInModal from '../Components/Universal/SignInModal';
+import HeaderContentSec from '../Components/Home/HeaderContentSec';
+import WhyChooseUs from '../Components/Home/WhyChooseUs';
 
 interface HomePageProps {
 	isLoggedIn: boolean;

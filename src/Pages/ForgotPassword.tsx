@@ -71,14 +71,20 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row h-sceen items-center justify-center rounded-t-none rounded-r-none"> 
-    <div>
-      <form onSubmit={handleSubmit} className=" w-[320px] md:w-120 flex flex-col shadow-2xl mx-auto my-0 md:my-12 px-4 md:px-16 pb-56 md:pb-70 pt-4 md:pt-7">
-        <img className="hidden md:block w-30" src={nestpro} alt="arrow" />
-        <h4 className="text-[17px] md:text-[20px] font-semibold">Forgot Password</h4>
+    <div className="flex flex-col-reverse md:flex-row h-sceen  w-screen  justify-center rounded-t-none rounded-r-none"> 
+    <div className="w-full">
+      <form onSubmit={handleSubmit} className=" w-[320px] md:w-[507px] flex flex-col mx-auto my-0 md:my-12 px-4 pt-8 pb-56 md:pb-70 pt-4 md:pt-7">
+      <div className="flex flex-col gap-3">
+          <div className="flex gap-4 items-center">
+            <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
+            <img  src="/src/assets/NestFinder Pro.svg" alt="" />
+          </div>
+        <h4 className="text-[17px] md:text-[32px] font-semibold">Forgot Password</h4>
         <p className="mb-4 md:mb-6 text-[11px] md:text-[13px]">welcome back, Please enter your details</p>
         <label className={`text-[13px] font-medium ${error.email ? "text-red-500" : "text-black"}`}
                       htmlFor="email">Email</label>
+      </div>
+       
         <input
           type="text"
           placeholder={error.email ? "Enter your email" : "Enter your email"}
@@ -111,8 +117,8 @@ const ForgotPassword = () => {
       </form>
       </div>
 
-      <div>
-        <img className="hidden md:block max-w-120 mx-auto my-9" src={desktop} alt="desktop-img" />
+      <div className="w-full">
+        <img className="hidden md:block " src={desktop} alt="desktop-img" />
          <img className="block md:hidden max-w-[320px] mx-auto my-0" src={mobile} alt="desktop-img" />
      </div> 
     </div>

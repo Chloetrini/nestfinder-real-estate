@@ -2,10 +2,10 @@ import { useMemo, useState ,type FC} from 'react';
 import { CircleLoader } from 'react-spinners';
 
 import { useFetch } from '../Hooks/useFetch';
-import Button from '../Components/FiltereringPge/Button';
-import Pagination from '../Components/FiltereringPge/Pagination';
-import PropertyHeader from '../Components/FiltereringPge/PropertyHeader';
-import Sort from '../Components/FiltereringPge/Sort';
+import Button from '../Components/Universal/Button';
+import Pagination from '../Components/Universal/Pagination';
+import PropertyHeader from '../Components/PropertyListing/PropertyHeader';
+import Sort from '../Components/PropertyListing/Sort';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -16,7 +16,7 @@ interface Property {
 	location: string;
 	size: string;
 	bedrooms: number;
-	bathrooms: string;
+	bathrooms: number;
 	price: string;
 	discount: any;
 	sale: string;
@@ -38,7 +38,7 @@ interface PropertyProps {
 const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 	const navigate = useNavigate();
 	const { results, isLoading } = useFetch<Property[]>(
-		'/src/Components/FiltereringPge/property.json',
+		'/src/Components/Universal/property.json',
 	);
 	const [applyFilter, setApplyFilter] = useState<Filter | null>();
 	const [filter, setFilter] = useState<Filter>({
@@ -143,7 +143,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 
 	return (
 		<div>
-			<div>
+			<div className='font-Manrope '>
 				
 				<PropertyHeader />
 			</div>
@@ -313,7 +313,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 														alt=''
 													/>
 													<p>
-														{result.bedrooms} <span></span>
+														{result.bedrooms} <span>Beds</span>
 													</p>
 													{}
 												</div>
@@ -323,11 +323,11 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 														src='/src/assets/Bathtub.svg'
 														alt=''
 													/>
-													<p>{result.bathrooms} </p>
+													<p>{result.bathrooms} Baths </p>
 												</div>
 											</div>
 											<div className='flex items-center gap-[53px]'>
-												<Button onClick={() => isLoggedIn? navigate("/Properties") : setShowModal(true)} />
+												<Button onClick={() => isLoggedIn? navigate(`/property/${result.id}`) : setShowModal(true)} />
 												<p className='text-[25px]'>{result.price}</p>
 											</div>
 										</div>

@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
         {/*  RECENT PROPERTIES TABLE  */}
         <div className="mt-12 bg-white overflow-hidden">
           <div className="px-8 py-6 flex justify-between items-center">
-            <h3 className="font-medium w-[189px] h-[29px] font-['Lato'] text-[24px] text-[#000000]">Recent Properties</h3>
+            <h3 className="font-medium w-[300px] h-[29px] font-['Lato'] text-[24px] text-[#000000]">Recent Properties</h3>
             <button 
               onClick={() => setActivePage("All Properties")}
               className="text-[#4F887B] text-[14px] font-bold hover:underline">

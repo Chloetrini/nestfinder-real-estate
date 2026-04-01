@@ -121,19 +121,26 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
   };
 
   return (
-      <div className="flex flex-col-reverse md:flex-row h-screen items-center justify-center rounded-t-none"> 
-                  <div>
+      <div className="flex flex-col-reverse w-screen md:flex-row h-screen items-center justify-center rounded-t-none"> 
+                  <div className=" w-full ">
                     <form 
                      onSubmit={handleSubmit}
-                    className="w-[320px] md:w-120 flex flex-col shadow-2xl mx-auto my-0 md:my-8 px-4 md:px-16 pb-25 md:pb-30.5 pt-4 md:pt-6"
+                    className="w-[507px] flex flex-col  mx-auto my-0 md:my-8 px-4  pb-25 md:pb-30.5 pt-4 md:pt-6"
                     >
-                      <img className="hidden md:block w-30" src={nestpro} alt="arrow" />
-                      <h4 className="text-[15px] md:text-[16px] font-semibold mb-2.5">Create an account</h4>
-                       <span className="hidden md:flex md:flex-row items-start gap-1 font-light text-[13px] mb-6">Already have an account?
+                      <div className="flex flex-col gap-3">
+                         <div className="flex gap-4 items-center">
+                            <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
+                           <img  src="/src/assets/NestFinder Pro.svg" alt="" />
+                      </div>
+                      
+                      <h4 className="text-[15px] md:text-[32px] font-semibold mb-2.5 tracking-wide">Create An account</h4>
+                       <span className="hidden md:flex md:flex-row items-start gap-1 font-light text-[13px] mb-6 tracking-wide">Already have an account?
                         <Link to="/login">
                          Log In
                         </Link>
                        </span>
+                      </div>
+                      
 
                          {/* email */}
                       <label className={`text-[13px] font-mediumn pb-1.5 md:pb-0 ${error.password ? "text-red-500" : "text-black"}`}
@@ -229,8 +236,8 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                     </div>
               
                    
-      <div>
-        <img className="hidden md:block max-w-120 mx-auto my-9" src={desktop} alt="desktop-img" />
+      <div className="w-full">
+        <img className="hidden md:block " src={desktop} alt="desktop-img" />
          <img className="block md:hidden max-w-[320px] mx-auto my-0 rounded-b-lg md:rounded-b-none" src={mobile}  alt="mobile-img" />
      </div>
      </div>

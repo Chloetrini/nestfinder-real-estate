@@ -3,7 +3,7 @@ import { useEffect, useState, type FC } from 'react';
 import { RingLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../FiltereringPge/Button';
+import Button from '../Universal/Button';
 
 type RealEstate = {
 	id: number;
@@ -11,8 +11,8 @@ type RealEstate = {
 	propertyName: string;
 	location: string;
 	size: string;
-	bedrooms: string;
-	bathrooms: string;
+	bedrooms: number;
+	bathrooms: number;
 	price: number;
 	discount: number;
 };
@@ -34,7 +34,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
 			try {
 				setIsLoading(true);
 				const response = await fetch(
-					'/src/Components/LandingPage/realEstate.json',
+					'/src/Components/Universal/property.json',
 				);
 				if (!response.ok) {
 					setError(`${response.status}`);
@@ -71,7 +71,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
   </div>
 <div className="grid grid-cols-1   lg:grid-cols-3 gap-y-[41px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-[397px] md:w-[770px] lg:w-[1201px] ml-8 md:ml-0 md:mr-4 lg:mr-0 lg:ml-0 items-center justify-center">
         {   
-          results.map((result,id)=>{
+          results?.slice(0, 6).map((result,id)=>{
             return <div  key={id} className="w-[365px] md:w-[387px] h-[549px] shadow-2xl text-start md:mx-auto  rounded-bl-[20px] rounded-br-[20px] relative">
                 <img className="h-[322px] w-[365px] md:w-[387px] rounded-tl-[10px] rounded-tr-[10px]"  src={result.image} alt="" />
                 <div className="h-[227px] p-5 flex flex-col gap-[19px] bg-[#FFFFFF] rounded-bl-[20px] rounded-br-[20px]">
@@ -87,15 +87,15 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
                         </div>
                         <div className="flex items-center gap-1">
                             <img  className="h-4.5 w-4.5" src="/src/assets/Bed.svg" alt="" />
-                            <p>{result.bedrooms} <span></span></p>
+                            <p>{result.bedrooms} <span>Beds</span></p>
                         </div>
                         <div className="flex items-center gap-1">
                             <img  className="h-4.5 w-4.5" src="/src/assets/Bathtub.svg" alt="" />
-                            <p>{result.bathrooms}</p>
+                            <p>{result.bathrooms} Baths</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-[53px] ">
-                     <Button onClick={() => isLoggedIn? navigate("/Properties") : setShowModal(true)}/>
+                     <Button onClick={() => isLoggedIn? navigate(`/property/${result.id}`) : setShowModal(true)}/>
                         <p className="text-[25px]">{result.price}</p>
                     </div>
                            

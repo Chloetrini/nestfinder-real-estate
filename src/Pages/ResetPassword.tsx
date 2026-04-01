@@ -4,7 +4,7 @@ import desktop from "../../src/assets/desktop.svg"
 import mobile from "../../src/assets/mobile.svg"
 import nestpro from "../../src/assets/logo.svg"
 import { Link } from "react-router-dom";
-import ResetSuccess from "../Components/ResetSuccess";
+import ResetSuccess from "./ResetSuccess";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -101,15 +101,21 @@ if (!user.confirmpassword.trim()) {
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row h-sreen items-center justify-center rounded-t-none">
-        <div>
+    <div className="flex flex-col-reverse md:flex-row  w-screen h-sreen  justify-center rounded-t-none">
+        <div className="w-full ">
       <form 
         onSubmit={handleSubmit}
-      className="w-80 md:w-120 flex flex-col shadow-2xl mx-auto my-0 md:my-8 px-4 md:px-16 pb-44 md:pb-42.5 pt-4 md:pt-6"
+      className="w-[507px] flex flex-col mx-auto px-4 pt-15 pb-44 md:pb-42.5 pt-4 "
       >
-        <img className="hidden md:block w-30" src={nestpro} alt="arrow" />
-        <h4 className="text-[17px] md:text-[20px] font-semibold">Reset Password</h4>
+        <div className="flex flex-col gap-3">
+           <div className="flex gap-4 items-center">
+            <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
+            <img  src="/src/assets/NestFinder Pro.svg" alt="" />
+          </div>
+        <h4 className="text-[17px] md:text-[32px] font-semibold">Reset Password</h4>
         <p className="mb-4 md:mb-6 text-[11px] md:text-[13px] w-60">Please enter a new password to take you back to your account</p>
+        </div>
+         
 
                {/* password */}
         <label className={`text-[13px] font-medium pb-1.5 md:pb-0 ${error.password ? "text-red-500" : "text-black"}`}
@@ -173,8 +179,8 @@ if (!user.confirmpassword.trim()) {
       </div>
 
         {/* images- both desktop and mobile */}
-      <div>
-        <img className="hidden md:block max-w-120 mx-auto my-9" src={desktop} alt="desktop-img" />
+      <div className="w-full">
+        <img className="hidden md:block " src={desktop} alt="desktop-img" />
          <img className="block md:hidden max-w-[320px] mx-auto my-0 rounded-b-lg md:rounded-b-none" src={mobile}  alt="desktop-img" />
      </div>
 

@@ -1,11 +1,11 @@
 import  { useContext } from 'react'
-import Sidebar from '../Components/AdminPage/SideBar[1]'
+import Sidebar from '../Components/AdminPage/SideBar'
 import Dashboard from '../Components/AdminPage/DashBoard'
 import ManageContent from '../Components/AdminPage/ManageContent[1]'
 import { ManageContext } from '../Components/AdminPage/ManageProperty'
 import { AddPropertyContent } from '../Components/AdminPage/AddPropertyContent[1]'
 
-const DashBoard = () => {
+const AdminPage = () => {
 const manageContext = useContext(ManageContext)
  if (!manageContext) {
   return <p>Loading....</p>
@@ -15,6 +15,7 @@ const manageContext = useContext(ManageContext)
   return (
     <div className='flex'>
        <Sidebar/>
+       {activepage === "Dashboard" && <Dashboard/>} {(activepage === "Add Property" || activepage === "Update Property") && <AddPropertyContent />}
          <div>             {(activepage === "All Properties" || 
           activepage === "For Sale" || 
           activepage === "For Rent" || 
@@ -22,7 +23,7 @@ const manageContext = useContext(ManageContext)
           activepage === "Draft") && <ManageContent/>}
 
 
-           {activepage === "Dashboard" && <Dashboard/>} {(activepage === "Add Property" || activepage === "Update Property") && <AddPropertyContent />}
+           
 
           </div>
 
@@ -30,4 +31,4 @@ const manageContext = useContext(ManageContext)
   )
 }
 
-export default DashBoard
+export default AdminPage

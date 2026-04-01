@@ -6,7 +6,7 @@ const PropertyHeader = () => {
         
        
         <div className='w-full max-w-[400px] md:max-w-[563px] pt-10 lg:pt-20'>
-          <h1 className='text-white font-Manrope text-[32px] lg:text-[72px] font-[700] leading-tight'>
+          <h1 className='text-white font-Manrope text-[32px] lg:text-[72px] font-700 leading-tight tracking-wide'>
             Property Listings
           </h1>
           <p className='text-white font-normal lg:text-[18px] text-[14px] leading-[22px] mt-2'>

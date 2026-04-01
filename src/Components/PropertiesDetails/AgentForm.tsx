@@ -21,7 +21,7 @@ const [message, setMessage] = useState<string>("")
   return (
 
     
-    <div className='w-[387px] h-[543px] border-1 border-[#918F8F] rounded-[10px] p-[20px]'>
+    <div className='font-Manrope  w-[387px] h-[543px] border-1 border-[#918F8F] rounded-[10px] p-[20px]'>
       <form className='flex flex-col bg-white gap-[10px]'>
         <h1>Contact Agent</h1>
         <label htmlFor="name" className='text-[#676565] font-bold'>Name</label>

@@ -42,7 +42,7 @@ const Sidebar = () => {
         alignItems: "center"
       }}>
     
-           <img  src={Logo} alt="Arrow Logo" />
+           <img  src={Logo} onClick={()=>navigate("/")} alt="Arrow Logo" />
           <div style={{
              fontFamily: 'Manrope',
              fontWeight: 700,

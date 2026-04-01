@@ -1,70 +1,72 @@
-// import React, { useState } from 'react'
-import { useFetch } from "../Hooks/useFetch";
-import { PropagateLoader } from 'react-spinners';
-import Button from '../Components/FiltereringPge/Button';
-import Images from '../Components/IndividualPropertyPage/Images';
-import HousePacks from '../Components/IndividualPropertyPage/HousePacks';
-import PropertiesDetails from '../Components/IndividualPropertyPage/PropertiesDetails';
-import MapView from '../Components/IndividualPropertyPage/MapView';
-import CardComponent from '../Components/IndividualPropertyPage/CardComponent';
-import AgentForm from '../Components/IndividualPropertyPage/AgentForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useFetch } from '../Hooks/useFetch'; 
+import Images from '../Components/PropertiesDetails/Images';
+import HousePacks from '../Components/PropertiesDetails/HousePacks';
+import PropertiesDetail from '../Components/PropertiesDetails/PropertiesDetail';
+import MapView from '../Components/PropertiesDetails/MapView';
+import CardComponent from '../Components/PropertiesDetails/CardComponent';
+import AgentForm from '../Components/PropertiesDetails/AgentForm';
+import { CircleLoader } from 'react-spinners';
+import Button from '../Components/Universal/Button';
 
-interface Property{
-    id:number
-    propertyName: string
-    image: string
-    location:string
-    size:string
-    bedrooms: number
-    bathrooms: string
-    price: string
-    discount:string
-    sale: string
-    PropertyType:string
+interface Property {
+	id: number;
+	propertyName: string;
+	image: string;
+	location: string;
+	size: string;
+	bedrooms: number;
+	bathrooms: number;
+	price: string;
+	discount: any;
+	sale: string;
+	PropertyType: string;
 }
+const PropertyDetails = () => {
+    const navigate = useNavigate()
+  const { id } = useParams();
+  
+  
+  
+  const { results, isLoading } = useFetch<Property[]>('/src/Components/Universal/property.json');
 
+  const property = results?.find((p) => p.id === Number(id));
 
-const Properties = () => {
-    const navigate = useNavigate();
-    const {results, isLoading} = useFetch<Property[]>("/src/Components/LandingPage/realEstate.json")
+  if (isLoading) {
+		return (
+			<div className='flex justify-center font-bold h-screen items-center '>
+				<CircleLoader size={40} color={'green'} />
+			</div>
+		);
+	}
+  if (!property) return <div className='flex justify-center font-bold h-screen items-center text-4xl'>Property not found</div>;
 
-if (isLoading) {
-        return (
-            <div className="flex justify-center font-bold h-screen items-center ">
-                <PropagateLoader 
-                 size={30}
-                 
-                />
-            </div>
-        )
-    }
   return (
-    <div className='flex flex-col items-center justify-center'>
-       <Images/>
-       <HousePacks/>
-        <div className='lg:flex flex-row  justify-center items-center hidden'>
-        <div className='flex flex-col '>
-          <PropertiesDetails/>
-          <MapView/>
-        </div>
-    
-          <div>
-          <CardComponent/>
-          <AgentForm/>
-        </div>
-    </div>
-    <div className='flex flex-col justify-center gap-3 items-center lg:hidden '>
-       
-          <PropertiesDetails/>
-           <AgentForm/>
-          <CardComponent/>
-          <MapView/>
-         
-       
-    </div>
+    <div className="md:w-[1200px] mx-auto container p-5 space-y-14">
+      
+      <Images mainImage={property.image} />
+      
+      <HousePacks
+        name={property.propertyName} 
+        location={property.location} 
+        price={property.price} 
+        size={property.size} 
+      />
 
-       <div className=' mt-16 mb-11 px-5 items-center justify-center' >
+      <div className="flex flex-col lg:flex-row gap-10">
+        <div className="flex-1">
+         
+          <PropertiesDetail property={property} />
+          <MapView locationName={property.propertyName} />
+        </div>
+        <div className="flex flex-col gap-5">
+          <CardComponent />
+          <AgentForm />
+        </div>
+      </div>
+
+
+         <div className=' mt-16 mb-11 px-5 items-center justify-center' >
         {/* =============== */}
         <div className='lg:text-[41px] text-[25px] mb-7 text-center md:text-start'> 
             Explore More Properties
@@ -74,7 +76,7 @@ if (isLoading) {
         {/* ======================== */}
         <div className='flex lg:flex-row flex-col gap-[20px]  items-center justify-center lg:items-start lg:justify-start px-5'>
         {
-          results?.slice(0, 3).map((result)=>{
+          results?.filter((prop) => Number(prop.id) !== Number(id)).slice(0, 3).map((result)=>{
             return <div key={result.id}>
 <div className="w-[387px] h-[549px] shadow-2xl text-start  rounded-bl-[20px] rounded-br-[20px] relative">
                 <img className="h-[322px]"  src={result.image} alt="" />
@@ -100,7 +102,7 @@ if (isLoading) {
                         </div>
                     </div>
                     <div className="flex items-center gap-[53px]">
-                     <Button onClick={()=>navigate("/property")}/>
+                     <Button onClick={()=>navigate(`/property/${result.id}`)}/>
                         <p className="text-[25px]">{result.price}</p>
                     </div>
                            
@@ -114,10 +116,8 @@ if (isLoading) {
         </div>
 
     </div>
-    </div>
-    
       
-  )
-}
-
-export default Properties
+    </div>
+  );
+};
+export default PropertyDetails 

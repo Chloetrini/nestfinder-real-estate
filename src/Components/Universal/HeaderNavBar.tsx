@@ -8,12 +8,19 @@ interface HeaderNavProps {
   user: User;
   setUser: (user: User) => void
   setShowModal: (show: boolean) => void;
+  isAdmin: boolean;
 }
 
-const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, setUser, setShowModal }) => {
+const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, setUser, setShowModal , isAdmin}) => {
   const [isMenu, setIsMenu] = useState(false);
   const navigate = useNavigate();
 
+
+  const handleNameClick = () => {
+    if (isAdmin) {
+      navigate('/adminPage');
+    }
+  }
   const handleLoggedIn = () => {
     navigate('/login');
     setIsMenu(false);
@@ -40,7 +47,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    isLoggedIn ? navigate('/properties') : setShowModal(true);
+    isLoggedIn ? navigate('/') : setShowModal(true);
     setIsMenu(false);
   };
 
@@ -65,7 +72,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
         <nav className="hidden md:flex flex-1 justify-center items-center  gap-2 lg:gap-[32px] font-Manrope font-[400] text-[18px] text-[#1A3C34]">
           <Link to="/" onClick={handleHomeClick} className="hover:text-[#F4A261] ">Home</Link>
           <Link to="/" onClick={handleHomeClick} className="hover:text-[#F4A261] ">About</Link>
-          <Link to="/properties" onClick={handleContactClick} className="hover:text-[#F4A261] ">Contact</Link>
+          <Link to="/" onClick={handleContactClick} className="hover:text-[#F4A261] ">Contact</Link>
           <Link to="/property" onClick={handlePropertyClick} className="hover:text-[#F4A261] ">Property</Link>
         </nav>
 
@@ -73,7 +80,9 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
         <div className="hidden md:flex items-center justify-end gap-[12px] md:min-w-[200px]">
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
-              <p className="text-[#1A3C34]">Hi, {user.name}</p>
+              <p 
+              onClick={handleNameClick}
+              className={`text-[#1A3C34] ${isAdmin ? "cursor-pointer hover:underline font-bold" : ""}`}>Hi, {user.name}</p>
               <button 
                 onClick={handleLoggedOut}
                 className="border-[1px] border-[#1A3C34] rounded-[10px] py-[10px] px-[20px] text-[#1A3C34]"
