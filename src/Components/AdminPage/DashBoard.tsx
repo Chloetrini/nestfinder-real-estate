@@ -1,6 +1,10 @@
 import React, { useContext } from "react";
 import { PropertyContext } from "./AddProperty";
 import { ManageContext } from "./ManageProperty";
+import up from "/src/assets/up.png"
+import down  from "/src/assets/down.png"
+
+
 
 const Dashboard: React.FC = () => {
 
@@ -50,10 +54,10 @@ const Dashboard: React.FC = () => {
 
         {/*Section 2*/}
         <div className="grid grid-cols-4 gap-6">
-          <StatCard title="Total Properties" value={totalProperties} image="/src/assets/up.png" percent="+12%" />
-          <StatCard title="Total Users" value={totalUsers} image="/src/assets/up.png" percent="+10%" />
-          <StatCard title="Active Listings" value={activeListings} image="/src/assets/up.png" percent="+5%" />
-          <StatCard title="Pending Properties" value={pendingProperties} image="/src/assets/down.png" percent="+5%" />
+          <StatCard title="Total Properties" value={totalProperties} image={up} percent="+12%" />
+          <StatCard title="Total Users" value={totalUsers} image={up} percent="+10%" />
+          <StatCard title="Active Listings" value={activeListings} image={up}percent="+5%" />
+          <StatCard title="Pending Properties" value={pendingProperties} image={down} percent="+5%" />
         </div>
 
         {/*  RECENT PROPERTIES TABLE  */}

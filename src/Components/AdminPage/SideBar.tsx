@@ -2,6 +2,8 @@
 import Logo from "/src/assets/logo.png"
 import user from "/src/assets/add.png"
 import home from "/src/assets/dashboard.png"
+import users from "/src/assets/users.png"
+
 import circle from "/src/assets/add.png"
 import { ManageContext } from "./ManageProperty"
 import { useContext } from "react"
@@ -176,7 +178,7 @@ const Sidebar = () => {
     </div>
 
      <div className="flex items-center gap-3 absolute bottom-6 left-5">
-        <img src="/src/assets/users.png" alt="" />
+        <img src={users} alt="" />
         <button onClick={()=>navigate("/login")} className="text-[#FF0000]">logout</button>
      </div>
    </div>
