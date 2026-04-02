@@ -29,7 +29,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
 
   const handleLoggedOut = () => {
     setIsLoggedIn(false);
-    navigate('/');
+    navigate('/login');
     setUser({ name: "", email: "" });
     setIsMenu(false);
   };

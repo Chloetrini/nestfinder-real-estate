@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { PropertyContext } from "./AddProperty" 
 import { ManageContext } from "./ManageProperty"
-import search from "/src/assets/search.png"
+import search from "/src/assets/searchm.png"
 export const ManageContent: React.FC = () => {
   // Check if the property data and the sidebar data are plugged in. If either one is missing or empty, stop everything and just show the 'Loading'
   //  message so the app doesn't crash. what this just means is that if i forget to put my providers in my app in main.tsx i want it to show 

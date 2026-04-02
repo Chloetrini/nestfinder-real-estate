@@ -14,7 +14,7 @@
   },
   {
     "id": 2,
-    "image": "/properties/victoria-bay.png",
+    "image": "/properties/victoria bay.png",
     "propertyName": "Victoria Bay Luxury Villa",
     "location": "Victoria Island, Lagos, Nigeria",
     "size": "712 Sqm",
@@ -53,7 +53,7 @@
   },
   {
     "id": 5,
-    "image": "/properties/ocean-pearl.png",
+    "image": "/properties/ocean pearl.png",
     "propertyName": "Ocean Pearl Residence",
     "location": "Banana Island, Lagos, Nigeria",
     "size": "748 Sqm",
@@ -66,7 +66,7 @@
   },
   {
     "id": 6,
-    "image": "/properties/golden-palm.png",
+    "image": "/properties/golden palm.png",
     "propertyName": "Golden Palm Villa",
     "location": "Ajah, Lagos, Nigeria",
     "size": "6448 Sqm",
@@ -79,7 +79,7 @@
   },
   {
     "id": 7,
-    "image": "/properties/golden-villa.png",
+    "image": "/properties/golden villa.png",
     "propertyName": "Golden Palm Villa",
     "location": "Ajah, Lagos, Nigeria",
     "size": "1148 Sqm",
@@ -144,7 +144,7 @@
   },
   {
     "id": 12,
-    "image": "/properties/the-royal.png",
+    "image": "/properties/the royal.png",
     "propertyName": "The Royal Garden Villa",
     "location": "Maitama, Abuja, Nigeria",
     "size": "648 Sqm",
@@ -157,7 +157,7 @@
   },
   {
     "id": 13,
-    "image": "/properties/pearl-court.png",
+    "image": "/properties/pearl court.png",
     "propertyName": "Pearl Court Residences",
     "location": "Oniru, Lagos, Nigeria",
     "size": "648 Sqm",

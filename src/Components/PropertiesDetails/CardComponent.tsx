@@ -1,5 +1,5 @@
 import agent from "/src/assets/agent.png"
-
+import call from "/src/assets/call.png"
 import AgentForm from "./AgentForm"
 
 const CardComponent = () => {
@@ -21,7 +21,7 @@ const CardComponent = () => {
         </div>
       
         <div className="flex w-[344px] h-[49px] bg-[#1A3C34] items-center justify-center rounded-[10px] text-white">
-          <img className="w-5 h-5 mx-2" src="/src/assets/call.png" alt="" />
+          <img className="w-5 h-5 mx-2" src={call} alt="" />
           <a href="#"> Call Agent</a>
         </div>
         

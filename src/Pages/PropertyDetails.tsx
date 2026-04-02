@@ -98,12 +98,12 @@ const PropertyDetails = () => {
                         </div>
                         <div className="flex items-center gap-1">
                             <img  className="h-4.5 w-4.5" src={bed} alt="" />
-                            <p>{result.bedrooms} <span></span></p>
+                            <p>{result.bedrooms} <span>Beds</span></p>
                             {}
                         </div>
                         <div className="flex items-center gap-1">
                             <img  className="h-4.5 w-4.5" src={bath} alt="" />
-                            <p>{result.bathrooms}  </p>
+                            <p>{result.bathrooms}baths </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-[53px]">

@@ -1,3 +1,6 @@
+import desktop from "/src/assets/housedesktop.png"
+import mobile  from "/src/assets/housemobile.png"
+
 const PropertyHeader = () => {
   return (
    
@@ -17,7 +20,7 @@ const PropertyHeader = () => {
        
         <div className='absolute hidden md:block md:-right-10 lg:right-0 top-53 -translate-y-1/2 lg:w-[607px] md:w-[450px]'>
           <img 
-            src="/src/assets/housedesktop.png" 
+            src={desktop} 
             alt="Property" 
             className="w-full h-auto object-contain"
           />
@@ -26,7 +29,7 @@ const PropertyHeader = () => {
   
         <div className='absolute right-[-20px] bottom-0 md:hidden block w-[200px]'>
           <img 
-            src="/src/assets/housemobile.png" 
+            src={mobile}
             alt="Property Mobile" 
             className="w-full h-auto object-contain"
           />
