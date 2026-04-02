@@ -12,7 +12,7 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
     const navigate = useNavigate();
   return (
     <div className="bg-[#0A0A0A]  w-full">
-        <div className="md:w-[1200px] w-[398px] py-[30px] px-[16px] flex flex-col gap-[62px] md:py-[60px]  md:flex md:flex-row md:justify-center md:gap-[88px] mx-auto container">
+        <div className="md:w-[1200px] w-full py-[30px] px-[16px] flex flex-col gap-[62px] md:py-[60px]  md:flex md:flex-row md:justify-center md:gap-[88px] mx-auto container">
             <div className="flex flex-col gap-[43px]">
             <div>
                 <div className="flex gap-[13.43px] items-center">
@@ -26,9 +26,9 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
 
             <div>
                 <form  className="flex flex-col lg:flex-row gap-[15px]">
-                    <input className="border border-[#696464] border-1px rounded-[10px] w-[352px] h-[49px] text-white p-[10px]" type="text" placeholder="Enter your email address" />
+                    <input className="border border-[#696464] border-1px rounded-[10px] w-full md:w-[352px] h-[49px] text-white p-[10px]" type="text" placeholder="Enter your email address" />
                     <button onClick={(e)=>{e.preventDefault()
-                        isLoggedIn ? navigate('/') :setShowModal(true)}} className="bg-[#1A3C34] text-white rounded-[10px] px-[24px] py-[12px] w-[352px] lg:w-[132px]">Subscribe</button>
+                        isLoggedIn ? navigate('/') :setShowModal(true)}} className="bg-[#1A3C34] text-white rounded-[10px] px-[24px] py-[12px] w-full lg:w-[132px]">Subscribe</button>
                 </form>
             </div>
         </div>

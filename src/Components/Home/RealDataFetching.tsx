@@ -71,7 +71,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
 		<div className="bg-[#E4F0ED] px-8 flex flex-col justify-center items-center">
   <div className="flex flex-col justify-center items-center gap-[18px] py-[73px]">
     <h1 className="font-Manrope font-[700] text-[20px] md:text-[42px] text-center text-[#131817] ">Discover Our Featured Properties</h1>
-    <p className="font-Inter font-[400] text-[14px] md:text-[18px] leading-[30px] text-center text-[#535353] w-[23rem] md:w-[40rem]">Dive into our exquisite collection of our featured properties at Nest Finder Pro, every corner whispers comfort and every detail is crafted with perfection   </p>
+    <p className="font-Inter  w-full font-[400] text-[14px] md:text-[18px] leading-[30px] text-center text-[#535353] w-[23rem] md:w-[40rem]">Dive into our exquisite collection of our featured properties at Nest Finder Pro, every corner whispers comfort and every detail is crafted with perfection   </p>
   </div>
 <div className="grid grid-cols-1   lg:grid-cols-3 gap-y-[41px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-[397px] md:w-[770px] lg:w-[1201px] ml-8 md:ml-0 md:mr-4 lg:mr-0 lg:ml-0 items-center justify-center">
         {   
@@ -80,7 +80,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
                 <img className="h-[322px] w-[365px] md:w-[387px] rounded-tl-[10px] rounded-tr-[10px]"  src={result.image} alt="" />
                 <div className="h-[227px] p-5 flex flex-col gap-[19px] bg-[#FFFFFF] rounded-bl-[20px] rounded-br-[20px]">
                     <h3 className="text-[#0A1916] font-bold text-[20px] ">{result.propertyName}</h3>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-1 items-center">
                          <img className="h-4.5 w-4.5" src={location} alt="" />
                         <p>{result.location}</p>
                     </div>
@@ -100,7 +100,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
                     </div>
                     <div className="flex items-center gap-[53px] ">
                      <Button onClick={() => isLoggedIn? navigate(`/property/${result.id}`) : setShowModal(true)}/>
-                        <p className="text-[25px]">{result.price}</p>
+                        <p className="md:text-[25px] text-[20px]">{result.price}</p>
                     </div>
                            
                 </div>

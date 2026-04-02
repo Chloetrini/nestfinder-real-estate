@@ -59,10 +59,10 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
 
   return (
     <div className="md:bg-white bg-[#1A3C34] w-full lg:mb-3 relative z-50">
-      <div className="mx-auto container md:w-[1200px] w-[398px] px-4 md:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px]">
+      <div className="mx-auto container md:w-[1200px] w-full px-4 md:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px]">
         
    
-        <div className="flex flex-row items-center gap-[8px] md:min-w-[150px]">
+        <div className="flex flex-row items-center gap-[8px] ">
           <img className="hidden md:block" src={logo} alt="Logo" />
           <img className="block md:hidden w-[25px]" src={logo} alt="Logo Mobile" />
           <p className="font-Manrope font-bold text-[18px] md:text-[14px] text-[#FFFFFF] md:text-[#1A3C34]">
