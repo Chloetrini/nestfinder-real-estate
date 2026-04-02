@@ -1,4 +1,4 @@
-
+import agent from "/src/assets/agent.png"
 
 import AgentForm from "./AgentForm"
 
@@ -12,7 +12,7 @@ const CardComponent = () => {
 
         <h2 className="text-2xl">Agent Detail</h2>
         <div className="flex">
-            <img  className="w-15 h-15 rounded-full" src="/src/assets/agent.png" alt="" />
+            <img  className="w-15 h-15 rounded-full" src={agent} alt="" />
             
             <div className="flex flex-col items-center justify-center ml-4">
               <h1>Victoria Sebastian</h1>

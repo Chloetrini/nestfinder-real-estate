@@ -2,10 +2,13 @@
 import desktop from "../../src/assets/desktop.png"
 import mobile from "../../src/assets/mobile.png"
 import nestpro from "../../src/assets/logo.png"
+import logo from "/src/assets/NestFinder Pro.png"
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState , type FC} from "react";
 import { type User } from "../types";
 import { type SignUpp } from "../types/signup";
+
+
 type Form = {
   email: string;
   password: string;
@@ -96,7 +99,7 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
                 <div className="flex flex-col gap-3">
                     <div className="flex gap-4 items-center space-y-4 ">
                     <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                   <img className="hidden md:block mb-3" src="/src/assets/NestFinder Pro.png" alt="" />
+                   <img className="hidden md:block mb-3" src={logo} alt="" />
                 </div>
                 <h4 className="text-[17px] md:text-[20px] font-semibold">Log in</h4>
                 <p className="mb-4 md:mb-6 text-[11px] md:text-[13px]">welcome back, Please enter your details</p>

@@ -1,4 +1,5 @@
-
+import prev from "/src/assets/prev.png"
+import nextt from "/src/assets/next.png"
 
 interface Pagination{
    totalPosts: number
@@ -39,7 +40,7 @@ const Pagination = ({totalPosts, postPerPage, setCurrentPage, currentPage}:Pagin
         <button 
         onClick={handlePrevious}
         
-        className={`w-[105px] h-[42px] rounded-[8px] py-[10px] pr-[12px] pl-[8px] flex gap-1 text-white  ${previous ?"bg-[#AEAEAE]" :"bg-[#1A3C34]"}`} ><img src="/src/assets/prev.png" alt="" />Previous</button>
+        className={`w-[105px] h-[42px] rounded-[8px] py-[10px] pr-[12px] pl-[8px] flex gap-1 text-white  ${previous ?"bg-[#AEAEAE]" :"bg-[#1A3C34]"}`} ><img src={prev} alt="" />Previous</button>
       </div>
 
        <div className="space-x-[12px]">
@@ -61,7 +62,7 @@ const Pagination = ({totalPosts, postPerPage, setCurrentPage, currentPage}:Pagin
        <div>
         <button 
         onClick={handleNext}
-        className={`w-[105px] h-[42px] rounded-[8px] py-[10px] pr-[12px] pl-[8px] flex  flex-row-reverse text-white gap-1 ${next ?"bg-[#AEAEAE]" :"bg-[#1A3C34]"}`} ><img src="/src/assets/next.png" alt="" />Next</button>
+        className={`w-[105px] h-[42px] rounded-[8px] py-[10px] pr-[12px] pl-[8px] flex  flex-row-reverse text-white gap-1 ${next ?"bg-[#AEAEAE]" :"bg-[#1A3C34]"}`} ><img src={nextt} alt="" />Next</button>
       </div>
        
     </div>

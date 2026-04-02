@@ -7,7 +7,14 @@ import Pagination from '../Components/Universal/Pagination';
 import PropertyHeader from '../Components/PropertyListing/PropertyHeader';
 import Sort from '../Components/PropertyListing/Sort';
 import { useNavigate } from 'react-router-dom';
-
+import size from "/src/assets/sqaure.png"
+import location from "/src/assets/location.png"
+import bed from "/src/assets/bed.png"
+import bath from "/src/assets/bath.png"
+import home from "/src/assets/houseline.png"
+import listing from "/src/assets/listing.png"
+import price from "/src/assets/price.png"
+import clear from "/src/assets/clear.png"
 
 interface Property {
 	id: number;
@@ -38,7 +45,7 @@ interface PropertyProps {
 const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 	const navigate = useNavigate();
 	const { results, isLoading } = useFetch<Property[]>(
-		'/src/Components/Universal/property.json',
+		'/public/data/properties.json',
 	);
 	const [applyFilter, setApplyFilter] = useState<Filter | null>();
 	const [filter, setFilter] = useState<Filter>({
@@ -153,7 +160,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 					<div className='flex flex-col lg:flex-row shadow-2xl  lg:h-[123px] lg:py-[27px] lg:px-[16px] gap-[21px] lg:w-full mb-9 mt-9 items-center rounded-[10px] w-[399px] h-[463px] py-[12px] px-[24px]  text-[#656565] selectdiv'>
 						<div className='w-[366px] lg:w-[183px] h-[69px] select'>
 							<label htmlFor='location' className='flex items-center'>
-								<img src='/src/assets/location.png' alt='' />
+								<img src={location} alt='' />
 								Location
 							</label>
 							<select
@@ -176,7 +183,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 								<label
 									htmlFor='propertyType'
 									className='flex items-center  gap-1 '>
-									<img src='/src/assets/houseline.png' alt='' />
+									<img src={home} alt='' />
 									Property Type
 								</label>
 								<select
@@ -193,7 +200,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 							</div>
 							<div className='w-[366px] lg:w-[183px] h-[69px] select'>
 								<label htmlFor='bedrooms' className='flex items-center  gap-1'>
-									<img src='/src/assets/bed.png' alt='' />
+									<img src={bed} alt='' />
 									No of Bedrooms
 								</label>
 								<select
@@ -213,7 +220,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 
 						<div className='w-[366px] lg:w-[183px] h-[69px] select'>
 							<label htmlFor='listing' className='flex items-center  gap-1'>
-								<img src='/src/assets/listing.png' alt='' />
+								<img src={listing} alt='' />
 								Status list
 							</label>
 							<select
@@ -229,7 +236,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 						</div>
 						<div className='w-[366px] lg:w-[183px] h-[69px] items-center'>
 							<label htmlFor='price' className='flex items-center  gap-1'>
-								<img src='/src/assets/price.png' alt='' />
+								<img src={price} alt='' />
 								Price
 							</label>
 							<div className='flex gap-[6px]'>
@@ -292,7 +299,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 											<div className='flex items-center'>
 												<img
 													className='h-4.5 w-4.5'
-													src='/src/assets/location.png'
+													src={location}
 													alt=''
 												/>
 												<p>{result.location}</p>
@@ -301,7 +308,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 												<div className='flex items-center gap-1'>
 													<img
 														className='h-4.5 w-4.5'
-														src='/src/assets/sqaure.png'
+														src={size}
 														alt=''
 													/>
 													<p>{result.size}</p>
@@ -309,7 +316,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 												<div className='flex items-center gap-1'>
 													<img
 														className='h-4.5 w-4.5'
-														src='/src/assets/bed.png'
+														src={bed}
 														alt=''
 													/>
 													<p>
@@ -320,7 +327,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 												<div className='flex items-center gap-1'>
 													<img
 														className='h-4.5 w-4.5'
-														src='/src/assets/bath.png'
+														src={bath}
 														alt=''
 													/>
 													<p>{result.bathrooms} Baths </p>
@@ -344,7 +351,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 							<div className='flex flex-col items-center justify-center gap-[82px]'>
 								<img
 									className='w-[714px] h-[578.69px]'
-									src='/src/assets/image 8.svg'
+									src={clear}
 									alt=''
 								/>
 								<div className='flex items-center flex-col'>

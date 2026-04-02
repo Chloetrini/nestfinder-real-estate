@@ -8,6 +8,11 @@ import CardComponent from '../Components/PropertiesDetails/CardComponent';
 import AgentForm from '../Components/PropertiesDetails/AgentForm';
 import { CircleLoader } from 'react-spinners';
 import Button from '../Components/Universal/Button';
+import size from "/src/assets/sqaure.png"
+import location from "/src/assets/location.png"
+import bed from "/src/assets/bed.png"
+import bath from "/src/assets/bath.png"
+
 
 interface Property {
 	id: number;
@@ -28,7 +33,7 @@ const PropertyDetails = () => {
   
   
   
-  const { results, isLoading } = useFetch<Property[]>('/src/Components/Universal/property.json');
+  const { results, isLoading } = useFetch<Property[]>('/public/data/properties.json');
 
   const property = results?.find((p) => p.id === Number(id));
 
@@ -83,21 +88,21 @@ const PropertyDetails = () => {
                 <div className="h-[227px] p-5 flex flex-col gap-[19px]">
                     <h3 className="text-[#0A1916] font-bold text-[20px] ">{result.propertyName}</h3>
                     <div className="flex items-center">
-                         <img className="h-4.5 w-4.5" src="/src/assets/location.png" alt="" />
+                         <img className="h-4.5 w-4.5" src={location} alt="" />
                         <p>{result.location}</p>
                     </div>
                     <div className="flex items-center gap-[10px]">
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/sqaure.png" alt="" />
+                            <img  className="h-4.5 w-4.5" src={size} alt="" />
                             <p>{result.size}</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/bed.png" alt="" />
+                            <img  className="h-4.5 w-4.5" src={bed} alt="" />
                             <p>{result.bedrooms} <span></span></p>
                             {}
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/bath.png" alt="" />
+                            <img  className="h-4.5 w-4.5" src={bath} alt="" />
                             <p>{result.bathrooms}  </p>
                         </div>
                     </div>

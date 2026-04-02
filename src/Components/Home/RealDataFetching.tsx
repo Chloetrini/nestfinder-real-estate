@@ -1,4 +1,8 @@
 // import React from 'react'
+import size from "/src/assets/sqaure.png"
+import location from "/src/assets/location.png"
+import bed from "/src/assets/bed.png"
+import bath from "/src/assets/bath.png"
 import { useEffect, useState, type FC } from 'react';
 import { RingLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +38,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
 			try {
 				setIsLoading(true);
 				const response = await fetch(
-					'/src/Components/Universal/property.json',
+					'/public/data/properties.json',
 				);
 				if (!response.ok) {
 					setError(`${response.status}`);
@@ -77,20 +81,20 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
                 <div className="h-[227px] p-5 flex flex-col gap-[19px] bg-[#FFFFFF] rounded-bl-[20px] rounded-br-[20px]">
                     <h3 className="text-[#0A1916] font-bold text-[20px] ">{result.propertyName}</h3>
                     <div className="flex items-center">
-                         <img className="h-4.5 w-4.5" src="/src/assets/location.png" alt="" />
+                         <img className="h-4.5 w-4.5" src={location} alt="" />
                         <p>{result.location}</p>
                     </div>
                     <div className="flex items-center gap-[10px]">
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/sqaure.png" alt="" />
+                            <img  className="h-4.5 w-4.5" src={size} alt="" />
                             <p>{result.size}</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/bed.png" alt="" />
+                            <img  className="h-4.5 w-4.5" src={bed} alt="" />
                             <p>{result.bedrooms} <span>Beds</span></p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/bath.png" alt="" />
+                            <img  className="h-4.5 w-4.5" src={bath} alt="" />
                             <p>{result.bathrooms} Baths</p>
                         </div>
                     </div>

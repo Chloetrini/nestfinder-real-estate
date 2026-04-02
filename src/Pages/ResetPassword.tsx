@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import desktop from "../../src/assets/desktop.png"
 import mobile from "../../src/assets/mobile.png"
 import nestpro from "../../src/assets/logo.png"
+import logo from "/src/assets/NestFinder Pro.png"
 import { Link } from "react-router-dom";
 import ResetSuccess from "./ResetSuccess";
 // import { useNavigate } from "react-router-dom";
@@ -110,7 +111,7 @@ if (!user.confirmpassword.trim()) {
         <div className="flex flex-col gap-3">
            <div className="flex gap-4 items-center">
             <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                           <img className="hidden md:block " src="/src/assets/NestFinder Pro.png" alt="" />
+                           <img className="hidden md:block " src={logo} alt="" />
 c          </div>
         <h4 className="text-[17px] md:text-[32px] font-semibold">Reset Password</h4>
         <p className="mb-4 md:mb-6 text-[11px] md:text-[13px] w-60">Please enter a new password to take you back to your account</p>

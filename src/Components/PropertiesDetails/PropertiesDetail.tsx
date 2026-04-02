@@ -1,3 +1,9 @@
+import bed from "/src/assets/bed.png"
+import bath from "/src/assets/bath.png"
+import barbell from "/src/assets/barbell.png"
+import pool from "/src/assets/pool.png"
+import car from "/src/assets/car.png"
+
 
 interface Property {
 	id: number;
@@ -28,18 +34,18 @@ const PropertiesDetail = ({ property }: { property: Property}) => {
       <div className="flex flex-col gap-4">
         <h2 className="font-bold text-[24px] underline">Property Features</h2>
         <div className="grid grid-cols-2 gap-x-10 gap-y-4">
-          <div className="flex items-center gap-2"><img src="/src/assets/bed.png" className="w-6"/> {property.bedrooms} Bedrooms</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/car.png" className="w-6"/> Secure Parking</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/bath.png" className="w-6"/> {property.bathrooms} Bathrooms</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/bath.png" className="w-6"/> 24 Hours lights</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/barbell.png" className="w-6"/> Gym</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/barbell.png" className="w-6"/> Guaranteed security</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/pool.png" className="w-6"/> Pool</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/pool.png" className="w-6"/> well lit light</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/car.png" className="w-6"/> Garage</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/car.png" className="w-6"/> walk in closet</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/car.png" className="w-6"/> Garage</div>
-          <div className="flex items-center gap-2"><img src="/src/assets/car.png" className="w-6"/> Fire Place</div>
+          <div className="flex items-center gap-2"><img src={bed} className="w-6"/> {property.bedrooms} Bedrooms</div>
+          <div className="flex items-center gap-2"><img src={car} className="w-6"/> Secure Parking</div>
+          <div className="flex items-center gap-2"><img src={bath} className="w-6"/> {property.bathrooms} Bathrooms</div>
+          <div className="flex items-center gap-2"><img src={bath} className="w-6"/> 24 Hours lights</div>
+          <div className="flex items-center gap-2"><img src={barbell} className="w-6"/> Gym</div>
+          <div className="flex items-center gap-2"><img src={barbell} className="w-6"/> Guaranteed security</div>
+          <div className="flex items-center gap-2"><img src={pool} className="w-6"/> Pool</div>
+          <div className="flex items-center gap-2"><img src={pool} className="w-6"/> well lit light</div>
+          <div className="flex items-center gap-2"><img src={car} className="w-6"/> Garage</div>
+          <div className="flex items-center gap-2"><img src={car} className="w-6"/> walk in closet</div>
+          <div className="flex items-center gap-2"><img src={car} className="w-6"/> Garage</div>
+          <div className="flex items-center gap-2"><img src={car} className="w-6"/> Fire Place</div>
           
         </div>
       </div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import desktop from "../../src/assets/desktop.png"
 import mobile from "../../src/assets/mobile.png"
 import nestpro from "../../src/assets/logo.png"
+import logo from "/src/assets/NestFinder Pro.png"
 import { useNavigate } from "react-router-dom";
 import { type SignUpp } from "../types/signup";
 import React, { useState , type FC } from "react";
@@ -130,7 +131,7 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                       <div className="flex flex-col gap-3">
                          <div className="flex gap-4 items-center">
                             <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                           <img className="hidden md:block " src="/src/assets/NestFinder Pro.png" alt="" />
+                           <img className="hidden md:block " src={logo} alt="" />
                       </div>
                       
                       <h4 className="text-[15px] md:text-[32px] font-semibold mb-2.5 tracking-wide">Create An account</h4>

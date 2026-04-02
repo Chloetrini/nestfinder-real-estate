@@ -2,7 +2,7 @@ import { useState, type FC } from 'react';
 import { type User } from '../../types';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from "/src/assets/logo.png"
-
+import hamburger from "/src/assets/hamburger.png"
 interface HeaderNavProps {
   isLoggedIn: boolean;
   setIsLoggedIn: (loggedIn: boolean) => void;
@@ -64,7 +64,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
    
         <div className="flex flex-row items-center gap-[8px] md:min-w-[150px]">
           <img className="hidden md:block" src={logo} alt="Logo" />
-          <img className="block md:hidden w-[25px]" src="/src/assets/foot.png" alt="Logo Mobile" />
+          <img className="block md:hidden w-[25px]" src={logo} alt="Logo Mobile" />
           <p className="font-Manrope font-bold text-[18px] md:text-[14px] text-[#FFFFFF] md:text-[#1A3C34]">
             NestFinder Pro
           </p>
@@ -106,7 +106,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
 
         
         <div className="block md:hidden cursor-pointer" onClick={() => setIsMenu(!isMenu)}>
-          <img src="/src/assets/hamburger.png" alt="Menu" className="w-[30px] h-[30px] brightness-0 invert" />
+          <img src={hamburger} alt="Menu" className="w-[30px] h-[30px] brightness-0 invert" />
         </div>
       </div>
 
