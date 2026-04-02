@@ -45,7 +45,7 @@ interface PropertyProps {
 const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 	const navigate = useNavigate();
 	const { results, isLoading } = useFetch<Property[]>(
-		'/public/data/properties.json',
+		'/data/properties.json',
 	);
 	const [applyFilter, setApplyFilter] = useState<Filter | null>();
 	const [filter, setFilter] = useState<Filter>({

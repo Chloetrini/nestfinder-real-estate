@@ -38,7 +38,7 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
 			try {
 				setIsLoading(true);
 				const response = await fetch(
-					'/public/data/properties.json',
+					'/data/properties.json',
 				);
 				if (!response.ok) {
 					setError(`${response.status}`);

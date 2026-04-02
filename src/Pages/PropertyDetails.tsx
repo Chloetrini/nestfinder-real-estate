@@ -33,7 +33,7 @@ const PropertyDetails = () => {
   
   
   
-  const { results, isLoading } = useFetch<Property[]>('/public/data/properties.json');
+  const { results, isLoading } = useFetch<Property[]>('/data/properties.json');
 
   const property = results?.find((p) => p.id === Number(id));
 
