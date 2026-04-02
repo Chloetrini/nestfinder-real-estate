@@ -1,8 +1,8 @@
 // import React from 'react'
 import { Link } from "react-router-dom";
-import desktop from "../../src/assets/desktop.svg"
-import mobile from "../../src/assets/mobile.svg"
-import nestpro from "../../src/assets/logo.svg"
+import desktop from "../../src/assets/desktop.png"
+import mobile from "../../src/assets/mobile.png"
+import nestpro from "../../src/assets/logo.png"
 import { useNavigate } from "react-router-dom";
 import { type SignUpp } from "../types/signup";
 import React, { useState , type FC } from "react";
@@ -125,12 +125,12 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                   <div className=" w-full ">
                     <form 
                      onSubmit={handleSubmit}
-                    className="w-[507px] flex flex-col  mx-auto my-0 md:my-8 px-4  pb-25 md:pb-30.5 pt-4 md:pt-6"
+                    className="md:w-[507px] w-full flex flex-col  mx-auto my-0 md:my-8 px-4  pb-25 md:pb-30.5 pt-4 md:pt-6"
                     >
                       <div className="flex flex-col gap-3">
                          <div className="flex gap-4 items-center">
                             <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                           <img  src="/src/assets/NestFinder Pro.svg" alt="" />
+                           <img className="hidden md:block " src="/src/assets/NestFinder Pro.png" alt="" />
                       </div>
                       
                       <h4 className="text-[15px] md:text-[32px] font-semibold mb-2.5 tracking-wide">Create An account</h4>
@@ -238,7 +238,7 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                    
       <div className="w-full">
         <img className="hidden md:block " src={desktop} alt="desktop-img" />
-         <img className="block md:hidden max-w-[320px] mx-auto my-0 rounded-b-lg md:rounded-b-none" src={mobile}  alt="mobile-img" />
+         <img className="block md:hidden rounded-b-lg md:rounded-b-none" src={mobile}  alt="mobile-img" />
      </div>
      </div>
   )

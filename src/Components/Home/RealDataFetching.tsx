@@ -77,20 +77,20 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
                 <div className="h-[227px] p-5 flex flex-col gap-[19px] bg-[#FFFFFF] rounded-bl-[20px] rounded-br-[20px]">
                     <h3 className="text-[#0A1916] font-bold text-[20px] ">{result.propertyName}</h3>
                     <div className="flex items-center">
-                         <img className="h-4.5 w-4.5" src="/src/assets/MapPin.svg" alt="" />
+                         <img className="h-4.5 w-4.5" src="/src/assets/location.png" alt="" />
                         <p>{result.location}</p>
                     </div>
                     <div className="flex items-center gap-[10px]">
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/mdi_set-square.svg" alt="" />
+                            <img  className="h-4.5 w-4.5" src="/src/assets/sqaure.png" alt="" />
                             <p>{result.size}</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/Bed.svg" alt="" />
+                            <img  className="h-4.5 w-4.5" src="/src/assets/bed.png" alt="" />
                             <p>{result.bedrooms} <span>Beds</span></p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src="/src/assets/Bathtub.svg" alt="" />
+                            <img  className="h-4.5 w-4.5" src="/src/assets/bath.png" alt="" />
                             <p>{result.bathrooms} Baths</p>
                         </div>
                     </div>

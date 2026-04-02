@@ -102,7 +102,7 @@ export const AddPropertyContent: React.FC = () => {
                        <button onClick={() => handleSubmit('publish')} className="font-700 text-[15px] font-['Lato']  text-[#FFFFFF] font-bold">{editingProperty ? "Update Property" : "Publish Property"}</button>
                  </div>
                     <div className="flex w-[140px] h-[48px] rounded-[8px] border-[1px] py-[6px] pl-[20px] bg-[#FFFFFF] border-[#75928B] gap-2 items-center">
-                            <img  className="w-[12.8px] h-[12.8px]" src="/src/assets/Icon.svg" alt="" />
+                            <img  className="w-[12.8px] h-[12.8px]" src="/src/assets/search.jpg" alt="" />
                         <button onClick={() => handleSubmit('draft')} className="font-700  font-['Lato']  font-bold text-[15px] text-[#031D17]">Save to Draft</button>
                     </div>
                 </div>
@@ -230,7 +230,7 @@ export const AddPropertyContent: React.FC = () => {
 
                      <div className="flex justify-end gap-[12px] mt-25 mb-3 h-[48px]">
                 <div className="flex w-[140px] h-[48px] rounded-[8px] border-[1px] py-[6px] pl-[20px] bg-[#FFFFFF] border-[#75928B] gap-2 items-center">
-                    <img className="w-[12.8px] h-[12.8px]" src="/src/assets/Icon.svg" alt="" />
+                    <img className="w-[12.8px] h-[12.8px]" src="/src/assets/save.png" alt="" />
                     <button onClick={() => handleSubmit('draft')} className="font-700  font-['Lato']  font-bold text-[15px] text-[#031D17]">Save Draft</button>
                 </div>
                 <div className=" w-[140px] h-[48px] rounded-[8px] border-[1px] py-[6px] pl-[12px] pt-[10px] border-[#75928B] bg-[#1A3C34] items-center">
@@ -254,10 +254,15 @@ export const AddPropertyContent: React.FC = () => {
                             <input type="file" multiple className="absolute opacity-0 w-full h-full cursor-pointer" onChange={handleImageUpload} />
                             <div className="flex flex-col w-[301px] h-[98px] gap-[15px] items-center justify-center">
                                     <div className="flex flex-row w-[44px] h-[47px] rounded-[5px] p-[10px] gap-[10px] bg-[#183730] ">
-                                        <img className="w-[24px] h-[27px]" src="/src/assets/Vector.svg" alt="" />
+                                        <img className="w-[24px] h-[27px]" src="/src/assets/upload.png" alt="" />
                                     </div>
+
                                     <p className="w-[301px] h-[36px] font-['Lato'] font-400 font-normal text-[15px] text-center text-[#000000]">Drag and drop images here or click PNG,JPG up to 10MB each</p> 
 
+                            </div>
+                            <div onChange={handleImageUpload} className='flex gap-1 items-center justify-center w-52 h-9 rounded-lg m-4 border border-[#787879] pt-3 pr-3 pb-4 pl-3'>
+                                <img src="/src/assets/browse.png" alt="image"/>
+                                <p>Browse</p>
                             </div>
                         </div>
 

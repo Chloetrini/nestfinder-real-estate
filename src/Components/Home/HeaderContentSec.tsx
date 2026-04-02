@@ -18,7 +18,7 @@ const HeaderContentSec: FC<showModal> = ({setShowModal, isLoggedIn}) => {
 
 
   return (
-    <div className="bg-[url(/src/assets/Headerhouse.jpg)] bg-no-repeat bg-cover">
+    <div className="bg-[url(/src/assets/header.jpg)] bg-no-repeat bg-cover">
         <div className="bg-[#000000B2] h-[712px]">
         <div className="container mx-auto flex flex-col justify-center items-center gap-[45px] md:gap-[48px] py-[173px] ">
             <h1 className="font-Manrope font-[700] text-[28px] md:text-[70px] text-center text-[#FFFFFF] w-[20rem] md:w-[40rem] leading-tight">Smart way to find your next home</h1>

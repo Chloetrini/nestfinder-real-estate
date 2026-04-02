@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import desktop from "../../src/assets/desktop.svg"
-import mobile from "../../src/assets/mobile.svg"
-import nestpro from "../../src/assets/logo.svg"
+import desktop from "../../src/assets/desktop.png"
+import mobile from "../../src/assets/mobile.png"
+import nestpro from "../../src/assets/logo.png"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -73,11 +73,11 @@ const ForgotPassword = () => {
   return (
     <div className="flex flex-col-reverse md:flex-row h-sceen  w-screen  justify-center rounded-t-none rounded-r-none"> 
     <div className="w-full">
-      <form onSubmit={handleSubmit} className=" w-[320px] md:w-[507px] flex flex-col mx-auto my-0 md:my-12 px-4 pt-8 pb-56 md:pb-70 pt-4 md:pt-7">
+      <form onSubmit={handleSubmit} className=" w-[320px] md:w-[507px] w-full flex flex-col mx-auto my-0 md:my-12 px-4 pt-8 pb-56 md:pb-70 pt-4 md:pt-7">
       <div className="flex flex-col gap-3">
           <div className="flex gap-4 items-center">
             <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-            <img  src="/src/assets/NestFinder Pro.svg" alt="" />
+            <img className="hidden md:block " src="/src/assets/NestFinder Pro.png" alt="" />
           </div>
         <h4 className="text-[17px] md:text-[32px] font-semibold">Forgot Password</h4>
         <p className="mb-4 md:mb-6 text-[11px] md:text-[13px]">welcome back, Please enter your details</p>
@@ -119,7 +119,7 @@ const ForgotPassword = () => {
 
       <div className="w-full">
         <img className="hidden md:block " src={desktop} alt="desktop-img" />
-         <img className="block md:hidden max-w-[320px] mx-auto my-0" src={mobile} alt="desktop-img" />
+         <img className="block md:hidden " src={mobile} alt="desktop-img" />
      </div> 
     </div>
   ); 

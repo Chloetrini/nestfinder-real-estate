@@ -17,7 +17,7 @@ const PropertyHeader = () => {
        
         <div className='absolute hidden md:block md:-right-10 lg:right-0 top-53 -translate-y-1/2 lg:w-[607px] md:w-[450px]'>
           <img 
-            src="/src/assets/house-isolated-field (1) 1.svg" 
+            src="/src/assets/housedesktop.png" 
             alt="Property" 
             className="w-full h-auto object-contain"
           />
@@ -26,7 +26,7 @@ const PropertyHeader = () => {
   
         <div className='absolute right-[-20px] bottom-0 md:hidden block w-[200px]'>
           <img 
-            src="/src/assets/house-isolated-field mobile 1.svg" 
+            src="/src/assets/housemobile.png" 
             alt="Property Mobile" 
             className="w-full h-auto object-contain"
           />

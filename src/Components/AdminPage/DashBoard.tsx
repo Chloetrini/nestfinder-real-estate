@@ -50,10 +50,10 @@ const Dashboard: React.FC = () => {
 
         {/*Section 2*/}
         <div className="grid grid-cols-4 gap-6">
-          <StatCard title="Total Properties" value={totalProperties} image="/src/assets/first.svg" percent="+12%" />
-          <StatCard title="Total Users" value={totalUsers} image="/src/assets/first.svg" percent="+10%" />
-          <StatCard title="Active Listings" value={activeListings} image="/src/assets/first.svg" percent="+5%" />
-          <StatCard title="Pending Properties" value={pendingProperties} image="/src/assets/second.svg" percent="+5%" />
+          <StatCard title="Total Properties" value={totalProperties} image="/src/assets/up.png" percent="+12%" />
+          <StatCard title="Total Users" value={totalUsers} image="/src/assets/up.png" percent="+10%" />
+          <StatCard title="Active Listings" value={activeListings} image="/src/assets/up.png" percent="+5%" />
+          <StatCard title="Pending Properties" value={pendingProperties} image="/src/assets/down.png" percent="+5%" />
         </div>
 
         {/*  RECENT PROPERTIES TABLE  */}

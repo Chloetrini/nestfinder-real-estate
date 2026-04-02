@@ -1,7 +1,7 @@
 // import React from 'react'
-import desktop from "../../src/assets/desktop.svg"
-import mobile from "../../src/assets/mobile.svg"
-import nestpro from "../../src/assets/logo.svg"
+import desktop from "../../src/assets/desktop.png"
+import mobile from "../../src/assets/mobile.png"
+import nestpro from "../../src/assets/logo.png"
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState , type FC} from "react";
 import { type User } from "../types";
@@ -61,7 +61,7 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,isAdmin,setIsAd
     setIsAdmin(true);
     setIsLoggedIn(true);
     setUser({ name: "Admin", email: adminEmail });
-    navigate("/adminPage"); // Admin Route
+    navigate("/"); // Admin Route
     return; // Stop execution here
   }
 
@@ -94,12 +94,12 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,isAdmin,setIsAd
             <div className="w-full h-full">
               <form
               onSubmit={handleSubmit}
-              className="w-[507px] flex flex-col  mx-auto my-0 md:my-8 px-4 pb-32.5 md:pb-38.5 pt-4 md:pt-6 rounded-r-none rounded-l-none"
+              className="lg:w-[507px] w-full flex flex-col  mx-auto my-0 md:my-8 px-4 pb-32.5 md:pb-38.5 pt-4 md:pt-6 rounded-r-none rounded-l-none"
               >
                 <div className="flex flex-col gap-3">
                     <div className="flex gap-4 items-center space-y-4 ">
                     <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                   <img className="mb-3" src="/src/assets/NestFinder Pro.svg" alt="" />
+                   <img className="hidden md:block mb-3" src="/src/assets/NestFinder Pro.png" alt="" />
                 </div>
                 <h4 className="text-[17px] md:text-[20px] font-semibold">Log in</h4>
                 <p className="mb-4 md:mb-6 text-[11px] md:text-[13px]">welcome back, Please enter your details</p>
@@ -183,9 +183,9 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,isAdmin,setIsAd
               </form>
               </div>
         
-               <div className="w-full  ">
+               <div className="w-full h-full  ">
              <img className="hidden md:block  " src={desktop} alt="desktop-img" />
-             <img className="block md:hidden max-w-80 mx-auto my-0 rounded-b-lg md:rounded-b-none" src={mobile}  alt="mobile-img" />
+             <img className="block md:hidden " src={mobile}  alt="mobile-img" />
                </div>
             </div>
   )

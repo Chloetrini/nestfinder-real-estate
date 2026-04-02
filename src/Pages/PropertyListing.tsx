@@ -153,7 +153,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 					<div className='flex flex-col lg:flex-row shadow-2xl  lg:h-[123px] lg:py-[27px] lg:px-[16px] gap-[21px] lg:w-full mb-9 mt-9 items-center rounded-[10px] w-[399px] h-[463px] py-[12px] px-[24px]  text-[#656565] selectdiv'>
 						<div className='w-[366px] lg:w-[183px] h-[69px] select'>
 							<label htmlFor='location' className='flex items-center'>
-								<img src='/src/assets/MapPin.svg' alt='' />
+								<img src='/src/assets/location.png' alt='' />
 								Location
 							</label>
 							<select
@@ -176,7 +176,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 								<label
 									htmlFor='propertyType'
 									className='flex items-center  gap-1 '>
-									<img src='/src/assets/HouseLine.svg' alt='' />
+									<img src='/src/assets/houseline.png' alt='' />
 									Property Type
 								</label>
 								<select
@@ -193,7 +193,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 							</div>
 							<div className='w-[366px] lg:w-[183px] h-[69px] select'>
 								<label htmlFor='bedrooms' className='flex items-center  gap-1'>
-									<img src='/src/assets/Bed.svg' alt='' />
+									<img src='/src/assets/bed.png' alt='' />
 									No of Bedrooms
 								</label>
 								<select
@@ -213,7 +213,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 
 						<div className='w-[366px] lg:w-[183px] h-[69px] select'>
 							<label htmlFor='listing' className='flex items-center  gap-1'>
-								<img src='/src/assets/listing.svg' alt='' />
+								<img src='/src/assets/listing.png' alt='' />
 								Status list
 							</label>
 							<select
@@ -229,7 +229,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 						</div>
 						<div className='w-[366px] lg:w-[183px] h-[69px] items-center'>
 							<label htmlFor='price' className='flex items-center  gap-1'>
-								<img src='/src/assets/CurrencyNgn.svg' alt='' />
+								<img src='/src/assets/price.png' alt='' />
 								Price
 							</label>
 							<div className='flex gap-[6px]'>
@@ -292,7 +292,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 											<div className='flex items-center'>
 												<img
 													className='h-4.5 w-4.5'
-													src='/src/assets/MapPin.svg'
+													src='/src/assets/location.png'
 													alt=''
 												/>
 												<p>{result.location}</p>
@@ -301,7 +301,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 												<div className='flex items-center gap-1'>
 													<img
 														className='h-4.5 w-4.5'
-														src='/src/assets/mdi_set-square.svg'
+														src='/src/assets/sqaure.png'
 														alt=''
 													/>
 													<p>{result.size}</p>
@@ -309,7 +309,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 												<div className='flex items-center gap-1'>
 													<img
 														className='h-4.5 w-4.5'
-														src='/src/assets/Vector.svg'
+														src='/src/assets/bed.png'
 														alt=''
 													/>
 													<p>
@@ -320,7 +320,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 												<div className='flex items-center gap-1'>
 													<img
 														className='h-4.5 w-4.5'
-														src='/src/assets/Bathtub.svg'
+														src='/src/assets/bath.png'
 														alt=''
 													/>
 													<p>{result.bathrooms} Baths </p>

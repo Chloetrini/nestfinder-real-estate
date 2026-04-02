@@ -12,7 +12,7 @@ const Display:FC<DisplayProps> = ({isLoggedIn,setShowModal}) => {
     <div className="container mx-auto w-11/12 flex justify-center items-center pb-22">
      <div className="bg-[#00000066] w-full lg:h-[581px] h-[370px] rounded-[10px]">
 
-       <div className="bg-[url(/src/assets/housee.jpg)] bg-no-repeat bg-cover  w-full lg:h-[581px] h-[370px] rounded-[10px] relative">
+       <div className="bg-[url(/src/assets/housing.jpg)] bg-no-repeat bg-cover  w-full lg:h-[581px] h-[370px] rounded-[10px] relative">
 
        <div className="flex flex-col justify-center items-center gap-5 lg:gap-[31px]  lg:w-[622px]  w-[282px] lg:h-[392px] h-[220px] absolute bottom-15 left-7 lg:bottom-20 lg:left-10 -translate-y-1.2 backdrop-blur-md bg-white/30 rounded-2xl shadow-xl  ">
             <h1 className="font-Manrope font-[700] text-center text-[20px] lg:text-[42px] text-[rgb(255,255,255)] tracking-[3%] w-[90%] lg:w-[25rem]">Ready To Find Your Perfect Home</h1>

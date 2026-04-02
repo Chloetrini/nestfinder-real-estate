@@ -1,7 +1,7 @@
-import Vector from "/src/assets/logoo.svg"
-import location from "/src/assets/MapPin.svg"
-import Phone from "/src/assets/Phone.svg"
-import message from "/src/assets/email.svg"
+import Vector from "/src/assets/foot.png"
+import location from "/src/assets/location.png"
+import Phone from "/src/assets/call.png"
+import message from "/src/assets/info.png"
 import { type FC } from "react"
 import { useNavigate } from "react-router-dom"
 interface FooterProps {

@@ -62,8 +62,8 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
         
    
         <div className="flex flex-row items-center gap-[8px] md:min-w-[150px]">
-          <img className="hidden md:block" src="/src/assets/logo.svg" alt="Logo" />
-          <img className="block md:hidden w-[25px]" src="/src/assets/logoo.svg" alt="Logo Mobile" />
+          <img className="hidden md:block" src="/src/assets/logo.png" alt="Logo" />
+          <img className="block md:hidden w-[25px]" src="/src/assets/foot.png" alt="Logo Mobile" />
           <p className="font-Manrope font-bold text-[18px] md:text-[14px] text-[#FFFFFF] md:text-[#1A3C34]">
             NestFinder Pro
           </p>
@@ -105,7 +105,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
 
         
         <div className="block md:hidden cursor-pointer" onClick={() => setIsMenu(!isMenu)}>
-          <img src="/src/assets/hamburger.svg" alt="Menu" className="w-[30px] h-[30px] brightness-0 invert" />
+          <img src="/src/assets/hamburger.png" alt="Menu" className="w-[30px] h-[30px] brightness-0 invert" />
         </div>
       </div>
 

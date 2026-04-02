@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "image": "/src/assets/Properties/maplewood.svg",
+    "image": "/src/assets/Properties/maplewood.png",
     "propertyName": "MAPLEWOOD FAMILY ESTATE",
     "location": "Lekki Phase 1, Lagos, Nigeria",
     "size" : "648 Sqm",
@@ -14,7 +14,7 @@
   },
   {
     "id": 2,
-    "image": "/src/assets/Properties/victoria bag.svg",
+    "image": "/src/assets/Properties/victoria bay.png",
     "propertyName": "Victoria Bay Luxury Villa",
     "location": "Victoria Island, Lagos, Nigeria",
     "size" : "712 Sqm",
@@ -28,7 +28,7 @@
     
   {
     "id": 3,
-    "image": "/src/assets/Properties/emrald.svg",
+    "image": "/src/assets/Properties/emerald.png",
     "propertyName": "Emerald Garden Apartments",
     "location": "Wuse 2, Abuja, Nigeria",
     "size" : "1148 Sqm ",
@@ -42,7 +42,7 @@
   },
   {
     "id": 4,
-    "image": "/src/assets/Properties/sunset.svg",
+    "image": "/src/assets/Properties/sunset.png",
     "propertyName": "Sunset Ridge Residence",
     "location": "Lekki Phase 1, Lagos, Nigeria",
     "size" : "648 Sqm",
@@ -56,7 +56,7 @@
   },
   {
     "id": 5,
-    "image": "/src/assets/Properties/ocean.svg",
+    "image": "/src/assets/Properties/ocean pearl.png",
     "propertyName": "Ocean Pearl Residence",
     "location": "Banana Island, Lagos, Nigeria",
     "size": "748 Sqm",
@@ -70,7 +70,7 @@
   },
   {
     "id": 6,
-    "image": "/src/assets/Properties/golden.svg",
+    "image": "/src/assets/Properties/golden palm.png",
     "propertyName": "Golden Palm Villa",
     "location": "Ajah, Lagos, Nigeria",
     "size": "6448 Sqm",
@@ -84,7 +84,7 @@
   },
   {
     "id": 7,
-    "image": "/src/assets/Properties/golden palm.svg",
+    "image": "/src/assets/Properties/golden villa.png",
     "propertyName": "Golden Palm Villa",
     "location": "Ajah, Lagos, Nigeria",
     "size": "1148 Sqm",
@@ -98,7 +98,7 @@
   },
   {
     "id": 8,
-    "image": "/src/assets/Properties/harmony.svg",
+    "image": "/src/assets/Properties/harmony.png",
     "propertyName": "Harmony Heights Apartments",
     "location": "Gwarinpa, Abuja, Nigeria",
     "size": "658 Sqm",
@@ -112,7 +112,7 @@
   },
   {
     "id": 9,
-    "image": "/src/assets/Properties/houston.svg",
+    "image": "/src/assets/Properties/houston.png",
     "propertyName": "HOUSTON PARK AND GARDEN",
     "location": "Atan Ota, Ogun Nigeria",
     "size": "642 Sqm",
@@ -126,7 +126,7 @@
   },
   {
     "id": 10,
-    "image": "/src/assets/Properties/lakeview.svg",
+    "image": "/src/assets/Properties/lakeview.png",
     "propertyName": "Lakeview Premium Duplex",
     "location": "Jabi, Abuja, Nigeria",
     "size": "6148 Sqm",
@@ -139,7 +139,7 @@
   },
   {
     "id": 11,
-    "image": "/src/assets/Properties/cedar.svg",
+    "image": "/src/assets/Properties/cedar.png",
     "propertyName": "Cedar Park Family Home",
     "location": "Ikeja GRA, Lagos, Nigeria",
     "size": "648 Sqm",
@@ -152,7 +152,7 @@
   },
   {
     "id": 12,
-    "image": "/src/assets/Properties/the royal.svg",
+    "image": "/src/assets/Properties/the royal.png",
     "propertyName": "The Royal Garden Villa",
     "location": "Maitama, Abuja, Nigeria",
     "size": "648 Sqm",
@@ -165,7 +165,7 @@
   },
   {
     "id": 13,
-    "image": "/src/assets/Properties/pearl.svg",
+    "image": "/src/assets/Properties/pearl court.png",
     "propertyName": "Pearl Court Residences",
     "location": "Oniru, Lagos, Nigeria",
     "size": "648 Sqm",
@@ -178,7 +178,7 @@
   },
   {
     "id": 14,
-    "image": "/src/assets/Properties/hilltop.svg",
+    "image": "/src/assets/Properties/hilltop.png",
     "propertyName": "Hilltop Luxury Estate",
     "location": "Asokoro, Abuja, Nigeria",
     "size": "648 Sqm",
@@ -191,7 +191,7 @@
   },
   {
     "id": 15,
-    "image": "/src/assets/Properties/oakwood.svg",
+    "image": "/src/assets/Properties/oakwood.png",
     "propertyName": "Oakwood Executive Residence",
     "location": "Utako, Abuja Nigeria",
     "size": "648 Sqm",

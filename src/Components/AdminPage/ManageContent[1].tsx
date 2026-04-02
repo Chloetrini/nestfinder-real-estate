@@ -82,7 +82,7 @@ export const ManageContent: React.FC = () => {
               className="relative w-full h-[20px] text-[14px] font-400 font-['Lato'] pl-4 pr-10 outline-none"
             />
             <div>
-                <img className="absolute top-2 right-0" src="/src/assets/search-01.svg" alt="" />
+                <img className="absolute top-2 right-0" src="/src/assets/searchm.png" alt="" />
             </div>
           </div>
         </div>

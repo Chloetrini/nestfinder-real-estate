@@ -12,7 +12,7 @@ const CardComponent = () => {
 
         <h2 className="text-2xl">Agent Detail</h2>
         <div className="flex">
-            <img  className="w-15 h-15 rounded-full" src="/src/assets/agent.jpg" alt="" />
+            <img  className="w-15 h-15 rounded-full" src="/src/assets/agent.png" alt="" />
             
             <div className="flex flex-col items-center justify-center ml-4">
               <h1>Victoria Sebastian</h1>
@@ -21,7 +21,7 @@ const CardComponent = () => {
         </div>
       
         <div className="flex w-[344px] h-[49px] bg-[#1A3C34] items-center justify-center rounded-[10px] text-white">
-          <img className="w-5 h-5 mx-2" src="/src/assets/call.svg" alt="" />
+          <img className="w-5 h-5 mx-2" src="/src/assets/call.png" alt="" />
           <a href="#"> Call Agent</a>
         </div>
         

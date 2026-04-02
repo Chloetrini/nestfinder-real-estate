@@ -1,6 +1,6 @@
 // import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import img from "../../src/assets/success.svg"
+import img from "../../src/assets/success.png"
 
 
 

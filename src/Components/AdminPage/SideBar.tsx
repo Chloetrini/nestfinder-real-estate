@@ -1,8 +1,8 @@
 // import React from 'react'
-import Logo from "/src/assets/logo.svg"
-import user from "/src/assets/property.svg"
-import home from "/src/assets/home.svg"
-import circle from "/src/assets/property.svg"
+import Logo from "/src/assets/logo.png"
+import user from "/src/assets/add.png"
+import home from "/src/assets/dashboard.png"
+import circle from "/src/assets/add.png"
 import { ManageContext } from "./ManageProperty"
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
@@ -176,7 +176,7 @@ const Sidebar = () => {
     </div>
 
      <div className="flex items-center gap-3 absolute bottom-6 left-5">
-        <img src="/src/assets/users.svg" alt="" />
+        <img src="/src/assets/users.png" alt="" />
         <button onClick={()=>navigate("/login")} className="text-[#FF0000]">logout</button>
      </div>
    </div>
