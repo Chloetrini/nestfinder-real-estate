@@ -1,12 +1,12 @@
 [
   {
     "id": 1,
-    "image": "/src/assets/maplewood.png",
+    "image": "/properties/maplewood.png",
     "propertyName": "MAPLEWOOD FAMILY ESTATE",
     "location": "Lekki Phase 1, Lagos, Nigeria",
-    "size" : "648 Sqm",
+    "size": "648 Sqm",
     "bedrooms": 4,
-     "bathrooms" : 3,
+    "bathrooms": 3,
     "price": "₦8,000,000",
     "discount": "20% off",
     "sale": "For Rent",
@@ -14,49 +14,46 @@
   },
   {
     "id": 2,
-    "image": "/src/assets/victoria bay.png",
+    "image": "/properties/victoria-bay.png",
     "propertyName": "Victoria Bay Luxury Villa",
     "location": "Victoria Island, Lagos, Nigeria",
-    "size" : "712 Sqm",
+    "size": "712 Sqm",
     "bedrooms": 2,
-     "bathrooms" : 3,
+    "bathrooms": 3,
     "price": "₦8,000,000",
     "discount": "20% off",
-     "sale": "For Sale",
-      "PropertyType": "Residential"
+    "sale": "For Sale",
+    "PropertyType": "Residential"
   },
-    
   {
     "id": 3,
-    "image": "/src/assets/emerald.png",
+    "image": "/properties/emerald.png",
     "propertyName": "Emerald Garden Apartments",
     "location": "Wuse 2, Abuja, Nigeria",
-    "size" : "1148 Sqm ",
+    "size": "1148 Sqm ",
     "bedrooms": 2,
-     "bathrooms" : 2 ,
+    "bathrooms": 2,
     "price": "₦8,000,000",
     "discount": "20% off",
     "sale": "For Rent",
     "PropertyType": "Apartment"
-
   },
   {
     "id": 4,
-    "image": "/src/assets/sunset.png",
+    "image": "/properties/sunset.png",
     "propertyName": "Sunset Ridge Residence",
     "location": "Lekki Phase 1, Lagos, Nigeria",
-    "size" : "648 Sqm",
+    "size": "648 Sqm",
     "bedrooms": 4,
-     "bathrooms" : 3,
+    "bathrooms": 3,
     "price": "₦8,000,000",
     "discount": "20% off",
-     "sale": "For Rent",
-     "PropertyType": "Apartment"
-
+    "sale": "For Rent",
+    "PropertyType": "Apartment"
   },
   {
     "id": 5,
-    "image": "/src/assets/ocean pearl.png",
+    "image": "/properties/ocean-pearl.png",
     "propertyName": "Ocean Pearl Residence",
     "location": "Banana Island, Lagos, Nigeria",
     "size": "748 Sqm",
@@ -64,13 +61,12 @@
     "bathrooms": 1,
     "price": "₦5,000,000",
     "discount": "20% off",
-     "sale": "For Sale",
-     "PropertyType":"Residential"
-    
+    "sale": "For Sale",
+    "PropertyType": "Residential"
   },
   {
     "id": 6,
-    "image": "/src/assets/golden palm.png",
+    "image": "/properties/golden-palm.png",
     "propertyName": "Golden Palm Villa",
     "location": "Ajah, Lagos, Nigeria",
     "size": "6448 Sqm",
@@ -79,12 +75,11 @@
     "price": "₦8,000,000",
     "discount": "20% off",
     "sale": "For Sale",
-    "PropertyType":"House"
-   
+    "PropertyType": "House"
   },
   {
     "id": 7,
-    "image": "/src/assets/golden villa.png",
+    "image": "/properties/golden-villa.png",
     "propertyName": "Golden Palm Villa",
     "location": "Ajah, Lagos, Nigeria",
     "size": "1148 Sqm",
@@ -94,11 +89,10 @@
     "discount": "50% off",
     "sale": "For Rent",
     "PropertyType": "Apartment"
-  
   },
   {
     "id": 8,
-    "image": "/src/assets/harmony.png",
+    "image": "/properties/harmony.png",
     "propertyName": "Harmony Heights Apartments",
     "location": "Gwarinpa, Abuja, Nigeria",
     "size": "658 Sqm",
@@ -106,13 +100,12 @@
     "bathrooms": 3,
     "price": "₦1,000,000",
     "discount": "30% off",
-     "sale": "For Sale",
-     "PropertyType":"House"
-  
+    "sale": "For Sale",
+    "PropertyType": "House"
   },
   {
     "id": 9,
-    "image": "/src/assets/houston.png",
+    "image": "/properties/houston.png",
     "propertyName": "HOUSTON PARK AND GARDEN",
     "location": "Atan Ota, Ogun Nigeria",
     "size": "642 Sqm",
@@ -120,26 +113,25 @@
     "bathrooms": 2,
     "price": "₦8,000,000",
     "discount": "20% off",
-     "sale": "For Sale",
-     "PropertyType": "Residential"
-   
+    "sale": "For Sale",
+    "PropertyType": "Residential"
   },
   {
     "id": 10,
-    "image": "/src/assets/lakeview.png",
+    "image": "/properties/lakeview.png",
     "propertyName": "Lakeview Premium Duplex",
     "location": "Jabi, Abuja, Nigeria",
     "size": "6148 Sqm",
     "bedrooms": 3,
-    "bathrooms":2,
+    "bathrooms": 2,
     "price": "₦8,000,000",
     "discount": "30% off",
-     "sale": "For Rent",
-     "PropertyType":"House"
+    "sale": "For Rent",
+    "PropertyType": "House"
   },
   {
     "id": 11,
-    "image": "/src/assets/cedar.png",
+    "image": "/properties/cedar.png",
     "propertyName": "Cedar Park Family Home",
     "location": "Ikeja GRA, Lagos, Nigeria",
     "size": "648 Sqm",
@@ -147,12 +139,12 @@
     "bathrooms": 3,
     "price": "₦8,000,000",
     "discount": "",
-     "sale": "For Sale",
-     "PropertyType":"Residential"
+    "sale": "For Sale",
+    "PropertyType": "Residential"
   },
   {
     "id": 12,
-    "image": "/src/assets/the royal.png",
+    "image": "/properties/the-royal.png",
     "propertyName": "The Royal Garden Villa",
     "location": "Maitama, Abuja, Nigeria",
     "size": "648 Sqm",
@@ -165,7 +157,7 @@
   },
   {
     "id": 13,
-    "image": "/src/assets/pearl court.png",
+    "image": "/properties/pearl-court.png",
     "propertyName": "Pearl Court Residences",
     "location": "Oniru, Lagos, Nigeria",
     "size": "648 Sqm",
@@ -173,12 +165,12 @@
     "bathrooms": 1,
     "price": "₦5,000,000",
     "discount": "20% off",
-    "sale":"For Sale",
+    "sale": "For Sale",
     "PropertyType": "Residential"
   },
   {
     "id": 14,
-    "image": "/src/assets/hilltop.png",
+    "image": "/properties/hilltop.png",
     "propertyName": "Hilltop Luxury Estate",
     "location": "Asokoro, Abuja, Nigeria",
     "size": "648 Sqm",
@@ -186,12 +178,12 @@
     "bathrooms": 2,
     "price": "₦8,000,000",
     "discount": "",
-     "sale": "For Rent",
-     "PropertyType":"Apartment"
+    "sale": "For Rent",
+    "PropertyType": "Apartment"
   },
   {
     "id": 15,
-    "image": "/src/assets/oakwood.png",
+    "image": "/properties/oakwood.png",
     "propertyName": "Oakwood Executive Residence",
     "location": "Utako, Abuja Nigeria",
     "size": "648 Sqm",
@@ -199,7 +191,7 @@
     "bathrooms": 3,
     "price": "₦8,000,000",
     "discount": "50% off",
-     "sale": "For Rent",
-      "PropertyType":"Apartment"
+    "sale": "For Rent",
+    "PropertyType": "Apartment"
   }
 ]

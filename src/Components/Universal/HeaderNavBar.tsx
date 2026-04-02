@@ -1,6 +1,7 @@
 import { useState, type FC } from 'react';
 import { type User } from '../../types';
 import { useNavigate, Link } from 'react-router-dom';
+import logo from "/src/assets/logo.png"
 
 interface HeaderNavProps {
   isLoggedIn: boolean;
@@ -62,7 +63,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
         
    
         <div className="flex flex-row items-center gap-[8px] md:min-w-[150px]">
-          <img className="hidden md:block" src="/src/assets/logo.png" alt="Logo" />
+          <img className="hidden md:block" src={logo} alt="Logo" />
           <img className="block md:hidden w-[25px]" src="/src/assets/foot.png" alt="Logo Mobile" />
           <p className="font-Manrope font-bold text-[18px] md:text-[14px] text-[#FFFFFF] md:text-[#1A3C34]">
             NestFinder Pro

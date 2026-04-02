@@ -1,5 +1,5 @@
-import Vector from "/src/assets/foot.png"
-import location from "/src/assets/location.png"
+import Vector from "/src/assets/log.png"
+import location from "/src/assets/map.png"
 import Phone from "/src/assets/call.png"
 import message from "/src/assets/info.png"
 import { type FC } from "react"
@@ -16,7 +16,7 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
             <div className="flex flex-col gap-[43px]">
             <div>
                 <div className="flex gap-[13.43px] items-center">
-                    <img className="w-[30.22px] h-[60.43px]" src={Vector} alt="logo" />
+                    <img className="w-[30px] h-[30px]" src={Vector} alt="logo" />
                     <h1 className="text-white font-bold text-[23.5px]">NestFinder Pro</h1>
                 </div>
                 <div>
@@ -55,15 +55,15 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
 
             <div className="w-[238px] flex flex-col gap-[30px]">
                 <h5 className="font-bold font-Inter tex">CONTACT</h5>
-                <span className="flex gap-[9px]">
+                <span className="flex gap-[9px] items-center">
                     <img className="w-[24px] h-[24px] " src={location} alt="" />
                     <p className="w-[9rem]">123 Prestige Drive, Lagos</p>
                 </span>
-                <span className="flex gap-[9px]">
+                <span className="flex gap-[9px] items-center">
                     <img className="w-[24px] h-[24px]" src={Phone} alt="" />
                     <p>+234 800 000 0000</p>
                 </span>
-                <span className="flex gap-[9px]">
+                <span className="flex gap-[9px] items-center">
                     <img className="w-[24px] h-[24px]" src={message} alt="" />
                     <p>info@realauto.com</p>
                 </span>
