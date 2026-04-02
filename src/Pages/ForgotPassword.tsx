@@ -119,8 +119,9 @@ const ForgotPassword = () => {
       </div>
 
       <div className="w-full">
-        <img className="hidden md:block " src={desktop} alt="desktop-img" />
-         <img className="block md:hidden " src={mobile} alt="desktop-img" />
+        <img className="hidden md:block  " src={desktop} alt="desktop-img" />
+         <img className="block md:hidden w-full
+          " src={mobile} alt="desktop-img" />
      </div> 
     </div>
   ); 

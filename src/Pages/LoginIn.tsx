@@ -98,8 +98,8 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
               >
                 <div className="flex flex-col gap-3">
                     <div className="flex gap-4 items-center space-y-4 ">
-                    <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                   <img className="hidden md:block mb-3" src={logo} alt="" />
+                    <img className="hidden md:block w-6 " src={nestpro} onClick={()=>navigate("/")} alt="arrow" />
+                   <img className="hidden md:block mb-3" src={logo}  alt="" />
                 </div>
                 <h4 className="text-[17px] md:text-[20px] font-semibold">Log in</h4>
                 <p className="mb-4 md:mb-6 text-[11px] md:text-[13px]">welcome back, Please enter your details</p>
@@ -185,7 +185,7 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
         
                <div className="w-full h-full  ">
              <img className="hidden md:block  " src={desktop} alt="desktop-img" />
-             <img className="block md:hidden " src={mobile}  alt="mobile-img" />
+             <img className="block md:hidden  w-full h-full" src={mobile}  alt="mobile-img" />
                </div>
             </div>
   )

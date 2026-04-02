@@ -20,7 +20,7 @@ export const useFetch = <T,>(api: string)=>{
                 
             }
         }
-        setTimeout(()=> getUsers(), 3000)
+        setTimeout(()=> getUsers(), 1000)
         },[api])
 
         

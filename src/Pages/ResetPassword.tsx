@@ -182,7 +182,7 @@ c          </div>
         {/* images- both desktop and mobile */}
       <div className="w-full">
         <img className="hidden md:block " src={desktop} alt="desktop-img" />
-         <img className="block md:hidden  rounded-b-lg md:rounded-b-none" src={mobile}  alt="desktop-img" />
+         <img className="block md:hidden  w-full rounded-b-lg md:rounded-b-none" src={mobile}  alt="desktop-img" />
      </div>
 
    {showSuccess && <ResetSuccess />}

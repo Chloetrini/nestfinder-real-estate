@@ -130,8 +130,8 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                     >
                       <div className="flex flex-col gap-3">
                          <div className="flex gap-4 items-center">
-                            <img className="hidden md:block w-6 " src={nestpro} alt="arrow" />
-                           <img className="hidden md:block " src={logo} alt="" />
+                            <img className="hidden md:block w-6 " src={nestpro} onClick={()=>navigate("/")} alt="arrow" />
+                           <img className="hidden md:block " src={logo}  alt="" />
                       </div>
                       
                       <h4 className="text-[15px] md:text-[32px] font-semibold mb-2.5 tracking-wide">Create An account</h4>
@@ -239,7 +239,7 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                    
       <div className="w-full">
         <img className="hidden md:block " src={desktop} alt="desktop-img" />
-         <img className="block md:hidden rounded-b-lg md:rounded-b-none" src={mobile}  alt="mobile-img" />
+         <img className="block md:hidden w-full rounded-b-lg md:rounded-b-none" src={mobile}  alt="mobile-img" />
      </div>
      </div>
   )
