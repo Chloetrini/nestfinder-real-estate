@@ -65,7 +65,7 @@ function App() {
           <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />}/>
           <Route path="/home" element={<Navigate to="/" />} />
           
-          <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn} setUser={setUser} isSignedUp={isSignedUp} isAdmin={isAdmin} setIsAdmin={setIsAdmin}/>}/>
+          <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn} setUser={setUser} isSignedUp={isSignedUp}  setIsAdmin={setIsAdmin}/>}/>
           <Route path="/signup" element={<SignUp setIsSignedUp={setIsSignedUp}/>}/>
           <Route path="/forgotpassword" element={<ForgotPassword/>}/>
           <Route path="/resetpassword" element={<ResetPassword/>}/>

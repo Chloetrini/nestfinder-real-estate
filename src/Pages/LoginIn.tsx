@@ -19,11 +19,10 @@ interface LogInProps {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   setUser: (user: User) => void;
   isSignedUp: SignUpp
-  isAdmin:boolean
   setIsAdmin:(isAdmin: boolean) => void;
 }
 
-const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,isAdmin,setIsAdmin}) => {
+const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) => {
   const navigate = useNavigate()
   const [form, setForm] = useState<Form>({
     email: "",
@@ -52,31 +51,29 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,isAdmin,setIsAd
 
   const { email, password } = form;
   
-  // 1. Define Admin Credentials
+
   const adminEmail = "admin123@gmail.com";
   const adminPassword = "admin123";
 
-  // 2. Check for Admin Login first
   if (email === adminEmail && password === adminPassword) {
     setIsAdmin(true);
     setIsLoggedIn(true);
     setUser({ name: "Admin", email: adminEmail });
-    navigate("/"); // Admin Route
-    return; // Stop execution here
+    navigate("/"); 
+    return; 
   }
 
-  // 3. Check for Registered User Login
-  // We compare against the isSignedUp prop passed from your Parent/Signup state
+  
   if (email.trim() === isSignedUp.email.trim() && password === isSignedUp.password) {
     setIsAdmin(false);
     setIsLoggedIn(true);
     
-    // Create a display name from email
+    
     const firstName = email.split('@')[0];
     const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
     
     setUser({ name: formattedName, email: email });
-    navigate("/"); // Normal User Route
+    navigate("/"); 
     return;
   }
 
