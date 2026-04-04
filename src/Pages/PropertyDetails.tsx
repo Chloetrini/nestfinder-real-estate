@@ -18,15 +18,22 @@ interface Property {
 	id: number;
 	propertyName: string;
 	image: string;
-	location: string;
-	size: string;
+	location: {fullAddress:string,coordinates: {lat:number, lng:number}}
+	details:{size: number;
 	bedrooms: number;
-	bathrooms: number;
-	price: string;
+	bathrooms: number;}
+	price: number;
 	discount: any;
-	sale: string;
-	PropertyType: string;
-}
+  agentName:string;
+  agentPhone: string;
+   amenities: {
+      Gym: boolean,
+      Pool: boolean,
+      Security: boolean,
+      Electricity: boolean,
+      Garden: boolean
+    }
+  }
 const PropertyDetails = () => {
     const navigate = useNavigate()
   const { id } = useParams();
@@ -55,20 +62,28 @@ const PropertyDetails = () => {
         name={property.propertyName} 
         location={property.location} 
         price={property.price} 
-        size={property.size} 
+        details={property.details} 
       />
 
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className="flex-col lg:flex-row gap-10 hidden md:flex">
         <div className="flex-1">
          
           <PropertiesDetail property={property} />
-          <MapView locationName={property.propertyName} />
+          <MapView location={property.location} image={property.image} propertyName={property.propertyName}/>
         </div>
         <div className="flex flex-col gap-5">
-          <CardComponent />
+          <CardComponent agentPhone={property.agentPhone}  agentName={property.agentName}/>
           <AgentForm />
         </div>
       </div>
+      <div className="flex-col lg:flex-row gap-10 flex md:hidden">
+          <PropertiesDetail property={property} />
+          <CardComponent agentPhone={property.agentPhone}  agentName={property.agentName}/>
+          <AgentForm />
+         <MapView location={property.location} image={property.image} propertyName={property.propertyName}/>
+      </div>
+
+
 
 
          <div className=' mt-16 mb-11 px-5 items-center justify-center' >
@@ -79,36 +94,36 @@ const PropertyDetails = () => {
         
         
         {/* ======================== */}
-        <div className='flex lg:flex-row flex-col gap-[20px]  items-center justify-center lg:items-start lg:justify-start px-5'>
+        <div className='flex lg:flex-row flex-col gap-[20px] w-full lg:max-w-[1201px] items-center justify-center lg:items-start lg:justify-start px-12'>
         {
           results?.filter((prop) => Number(prop.id) !== Number(id)).slice(0, 3).map((result)=>{
             return <div key={result.id}>
-<div className="w-[387px] h-[549px] shadow-2xl text-start  rounded-bl-[20px] rounded-br-[20px] relative">
+<div className="w-full max-w-[387px] min-h-[549px]  shadow-2xl text-start  rounded-bl-[20px] rounded-br-[20px] relative">
                 <img className="h-[322px]"  src={result.image} alt="" />
                 <div className="h-[227px] p-5 flex flex-col gap-[19px]">
                     <h3 className="text-[#0A1916] font-bold text-[20px] ">{result.propertyName}</h3>
-                    <div className="flex items-center">
-                         <img className="h-4.5 w-4.5" src={location} alt="" />
-                        <p>{result.location}</p>
+                    <div className="flex items-center gap-1">
+                         <img className="h-4 w-3" src={location} alt="" />
+                        <p>{result.location.fullAddress}</p>
                     </div>
                     <div className="flex items-center gap-[10px]">
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src={size} alt="" />
-                            <p>{result.size}</p>
+                            <img  className="h-4 w-4" src={size} alt="" />
+                            <p>{result.details.size} sqm</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src={bed} alt="" />
-                            <p>{result.bedrooms} <span>Beds</span></p>
+                            <img  className="h-4 w-4" src={bed} alt="" />
+                            <p>{result.details.bedrooms} <span>Beds</span></p>
                             {}
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src={bath} alt="" />
-                            <p>{result.bathrooms}baths </p>
+                            <img  className="h-4 w-4" src={bath} alt="" />
+                            <p>{result.details.bathrooms}baths </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-[53px]">
                      <Button onClick={()=>navigate(`/property/${result.id}`)}/>
-                        <p className="text-[25px]">{result.price}</p>
+                        <p className="text-[25px]"><span>₦</span>{result.price.toLocaleString()}</p>
                     </div>
                            
                 </div>

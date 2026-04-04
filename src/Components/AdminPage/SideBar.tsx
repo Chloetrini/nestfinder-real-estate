@@ -1,10 +1,9 @@
 // import React from 'react'
 import Logo from "/src/assets/logo.png"
-import user from "/src/assets/add.png"
+import user from "/src/assets/addd.png"
 import home from "/src/assets/dashboard.png"
 import users from "/src/assets/users.png"
-
-import circle from "/src/assets/add.png"
+import circle from "/src/assets/addd.png"
 import { ManageContext } from "./ManageProperty"
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
@@ -134,7 +133,7 @@ const Sidebar = () => {
                 backgroundColor: activepage === "Add Property"? "#1A3C34" : "#FFFFFF",
                 color: activepage === "Add Property" ? "#FFFFFF" : "#4F887B"
             }}>
-                <img className="w-[19.25px] h-[19.25px] pt-[1.38px] pl-[1.38px] bg-[#4F887B]" src={circle} alt="" />
+                <img className="w-[19.25px] h-[19.25px] pt-[1.38px] pl-[1.38px] " src={circle} alt="" />
                 <h1 style={{
                     fontWeight: 400,
                     fontFamily: "lato",

@@ -2,6 +2,8 @@ import { useState, type FC } from 'react';
 import { type User } from '../../types';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from "/src/assets/logo.png"
+import logoo from "/src/assets/foot.png"
+
 import hamburger from "/src/assets/hamburger.png"
 interface HeaderNavProps {
   isLoggedIn: boolean;
@@ -58,13 +60,13 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
   };
 
   return (
-    <div className="md:bg-white bg-[#1A3C34] w-full lg:mb-3 relative z-50">
-      <div className="mx-auto container md:w-[1200px] w-full md:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px]">
+    <div className="md:bg-white bg-[#1A3C34] w-full lg:mb-3 relative ">
+      <div className="mx-auto container lg:w-[1200px] w-full  px-6 lg:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px]">
         
    
         <div className="flex flex-row items-center gap-[8px] ">
           <img className="hidden md:block" src={logo} alt="Logo" />
-          <img className="block md:hidden w-[25px]" src={logo} alt="Logo Mobile" />
+          <img className="block md:hidden w-[25px]" src={logoo} alt="Logo Mobile" />
           <p className="font-Manrope font-bold text-[18px] md:text-[14px] text-[#FFFFFF] md:text-[#1A3C34]">
             NestFinder Pro
           </p>
@@ -112,7 +114,7 @@ const HeaderNavBar: FC<HeaderNavProps> = ({ isLoggedIn, setIsLoggedIn, user, set
 
   
       {isMenu && (
-        <div className="absolute top-full right-0 w-[50%] bg-[#1A3C34] text-white flex flex-col items-center gap-6 py-8 md:hidden shadow-xl border-t border-[#2a554a]">
+        <div className="absolute top-full right-0 w-full bg-[#1A3C34] text-white flex flex-col items-center gap-6 py-8 md:hidden shadow-xl border-t border-[#2a554a]">
           <nav className="flex flex-col items-center gap-6 font-Manrope text-[18px]">
             <Link to="/" onClick={handleHomeClick}>Home</Link>
             <Link to="/" onClick={handleHomeClick}>About</Link>

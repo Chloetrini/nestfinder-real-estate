@@ -22,9 +22,9 @@ export const ManageContent: React.FC = () => {
     if (activepage === "All Properties") pageMatch = true;
     else if (activepage === "Featured") pageMatch = property.isFeatured === true;
     else if (activepage === "Draft") pageMatch = property.isDraft === true;
-    else pageMatch = property.listingStatus === activepage;
+    else pageMatch = property.sale === activepage;
 
-    const matchSearch = property.propertyTitle.toLowerCase().includes(searchBar.toLowerCase()) || 
+    const matchSearch = (property.propertyName.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
         property.propertyType.toLowerCase().includes(searchBar.toLowerCase()) || 
         property.location.city.toLowerCase().includes(searchBar.toLowerCase()) || 
         property.location.state.toLowerCase().includes(searchBar.toLowerCase()) 
@@ -104,8 +104,20 @@ export const ManageContent: React.FC = () => {
             <tbody className="h-[86px] border-b-[1px] border-b-[#F3EBE7] justify-between">
               {filteredProperties.map((property) => (
                 <tr key={property.id} className="w-[203px] h-[40px]  gap-[12px]">
-                 
-                   <td className="px-4 py-4 w-[200px] h-[40px] font-bold text-[#0A1916] text-[15px]">{property.propertyTitle}</td>
+                 <td className="px-4 py-4 w-[300px]">
+  <div className="flex items-center gap-3">
+    {property.image && (
+      <img 
+        src={typeof property.image === 'string' ? property.image : property.image[0]} 
+        alt="" 
+        className="w-12 h-12 rounded-lg object-cover border border-[#E5E7EB]" 
+      />
+    )}
+    <span className="font-bold text-[#0A1916] text-[15px]">
+      {property.propertyName}
+    </span>
+  </div>
+</td>
                
                   <td className="px-6 py-4 text-[#403F3F] text-[14px]">{property.propertyType}</td>
                   <td className="px-6 py-4 text-[#403F3F] text-[14px] truncate">{property.location.fullAddress}</td>
@@ -113,9 +125,9 @@ export const ManageContent: React.FC = () => {
                   <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                          <span className={`w-2 h-2 rounded-full ${
-                   property.listingStatus === "For Sale" || "For Rent" ? "bg-[#10B981]"  : "bg-[#F59E0B]" }`}></span>
+                   property.sale === "For Sale" || "For Rent" ? "bg-[#10B981]"  : "bg-[#F59E0B]" }`}></span>
                        <span className="text-[#023337] font-medium text-[14px]">
-                   {property.listingStatus}
+                   {property.sale}
                  </span>
                   </div>
                 </td>

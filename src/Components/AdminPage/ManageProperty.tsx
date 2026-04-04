@@ -12,7 +12,7 @@ export type ManageContextType = {
 export const ManageContext = createContext<ManageContextType | null>(null);
 
 export const ManageProvider: React.FC<{children: React.ReactNode}>= ({children})=>{
-    const [activepage, setActivePage] = useState<ManageType>("All Properties")
+    const [activepage, setActivePage] = useState<ManageType>("Dashboard")
     const [searchBar, setSearchBar] = useState<string>("")
 
     

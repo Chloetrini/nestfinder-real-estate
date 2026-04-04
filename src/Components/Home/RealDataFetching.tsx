@@ -11,14 +11,15 @@ import Button from '../Universal/Button';
 
 type RealEstate = {
 	id: number;
-	image: string;
 	propertyName: string;
-	location: string;
-	size: string;
+	image: string;
+	location: {fullAddress:string}
+	details:{size: number;
 	bedrooms: number;
-	bathrooms: number;
+	bathrooms: number;}
 	price: number;
-	discount: number;
+	discount: any;
+	
 };
 
 interface RealDataFetchingProps {
@@ -73,34 +74,34 @@ const RealDataFetching: FC<RealDataFetchingProps> = ({isLoggedIn,setShowModal}) 
     <h1 className="font-Manrope font-[700] text-[20px] md:text-[42px] text-center text-[#131817] ">Discover Our Featured Properties</h1>
     <p className="font-Inter  w-full font-[400] text-[14px] md:text-[18px] leading-[30px] text-center text-[#535353] w-[23rem] md:w-[40rem]">Dive into our exquisite collection of our featured properties at Nest Finder Pro, every corner whispers comfort and every detail is crafted with perfection   </p>
   </div>
-<div className="grid grid-cols-1   lg:grid-cols-3 gap-y-[41px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-[397px] md:w-[770px] lg:w-[1201px] ml-8 md:ml-0 md:mr-4 lg:mr-0 lg:ml-0 items-center justify-center">
+<div className="grid grid-cols-1   lg:grid-cols-3 gap-y-[41px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-full lg:max-w-[1201px]  md:mr-4 lg:mr-0 lg:ml-0 items-center justify-center">
         {   
           results?.slice(0, 6).map((result,id)=>{
-            return <div  key={id} className="w-[365px] md:w-[387px] h-[549px] shadow-2xl text-start md:mx-auto  rounded-bl-[20px] rounded-br-[20px] relative">
-                <img className="h-[322px] w-[365px] md:w-[387px] rounded-tl-[10px] rounded-tr-[10px]"  src={result.image} alt="" />
+            return <div  key={id} className="w-full max-w-[387px] min-h-[549px] flex flex-col shadow-2xl text-start mx-auto  rounded-bl-[20px] rounded-br-[20px] relative">
+                <img className="h-[322px] w-full max-w-[365px] md:max-w-[387px] rounded-tl-[10px] rounded-tr-[10px]"  src={result.image} alt="" />
                 <div className="h-[227px] p-5 flex flex-col gap-[19px] bg-[#FFFFFF] rounded-bl-[20px] rounded-br-[20px]">
-                    <h3 className="text-[#0A1916] font-bold text-[20px] ">{result.propertyName}</h3>
-                    <div className="flex items-center gap-1 items-center">
-                         <img className="h-4.5 w-4.5" src={location} alt="" />
-                        <p>{result.location}</p>
+                    <h3 className="text-[#0A1916] font-bold md:text-[20px] text-[16px]">{result.propertyName}</h3>
+                    <div className="flex items-center gap-1 ">
+                         <img className="h-4 w-3" src={location} alt="" />
+                        <p className="md:text-[16px] text-[14px]">{result.location.fullAddress}</p>
                     </div>
-                    <div className="flex items-center gap-[10px]">
+                    <div className="flex items-center gap-[10px] md:text-[16px] text-[12px]  ">
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src={size} alt="" />
-                            <p>{result.size}</p>
+                            <img  className="h-4 w-4" src={size} alt="" />
+                            <p >{result.details.size} sqm</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src={bed} alt="" />
-                            <p>{result.bedrooms} <span>Beds</span></p>
+                            <img  className="h-4 w-4" src={bed} alt="" />
+                            <p >{result.details.bedrooms} <span>Beds</span></p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img  className="h-4.5 w-4.5" src={bath} alt="" />
-                            <p>{result.bathrooms} Baths</p>
+                            <img  className="h-4 w-4" src={bath} alt="" />
+                            <p >{result.details.bathrooms} Baths</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-[53px] ">
+                    <div className="flex items-center justify-between ">
                      <Button onClick={() => isLoggedIn? navigate(`/property/${result.id}`) : setShowModal(true)}/>
-                        <p className="md:text-[25px] text-[20px]">{result.price}</p>
+                        <p className="md:text-[25px] text-[17px]"><span>₦</span>{result.price.toLocaleString()}</p>
                     </div>
                            
                 </div>

@@ -12,7 +12,7 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
     const navigate = useNavigate();
   return (
     <div className="bg-[#0A0A0A]  w-full">
-        <div className="md:w-[1200px] w-full py-[30px] px-[16px] flex flex-col gap-[62px] md:py-[60px]  md:flex md:flex-row md:justify-center md:gap-[88px] mx-auto container">
+        <div className="md:max-w-[1200px] w-full py-[30px] px-[16px] flex flex-col gap-[62px] md:py-[60px]  md:flex md:flex-row md:justify-center md:gap-[88px] mx-auto container">
             <div className="flex flex-col gap-[43px]">
             <div>
                 <div className="flex gap-[13.43px] items-center">

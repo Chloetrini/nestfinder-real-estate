@@ -20,19 +20,19 @@ interface Property {
 	id: number;
 	propertyName: string;
 	image: string;
-	location: string;
-	size: string;
+	location: {fullAddress:string}
+	details:{size: number;
 	bedrooms: number;
-	bathrooms: number;
-	price: string;
+	bathrooms: number;}
+	price: number;
 	discount: any;
 	sale: string;
 	PropertyType: string;
 }
 interface Filter {
-	location: string;
+	location: {fullAddress:string}
 	propertyType: string;
-	bedrooms: string;
+	details:{bedrooms: string}
 	listing: string;
 	minPrice: string;
 	maxPrice: string;
@@ -49,9 +49,9 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 	);
 	const [applyFilter, setApplyFilter] = useState<Filter | null>();
 	const [filter, setFilter] = useState<Filter>({
-		location: '',
+		location: {fullAddress:""},
 		propertyType: '',
-		bedrooms: '',
+		details:{bedrooms: ""},
 		listing: '',
 		minPrice: '',
 		maxPrice: '',
@@ -68,22 +68,22 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 
 		return results
 			.filter((filtered) => {
-				const location = applyFilter.location
-					? filtered.location
+				const location = applyFilter.location.fullAddress
+					? filtered.location.fullAddress
 							.toLowerCase()
-							.includes(applyFilter.location.toLowerCase())
+							.includes(applyFilter.location.fullAddress.toLowerCase())
 					: true;
 				const property = applyFilter.propertyType
 					? filtered.PropertyType === applyFilter.propertyType
 					: true;
-				const bedrooms = applyFilter.bedrooms
-					? filtered.bedrooms === Number(applyFilter.bedrooms)
+				const bedrooms = applyFilter.details.bedrooms
+					? filtered.details.bedrooms === Number(applyFilter.details.bedrooms)
 					: true;
 
 				const sale = applyFilter.listing
 					? filtered.sale === applyFilter.listing
 					: true;
-				const price = Number(filtered.price.replace(/[^0-9]/g, ''));
+				const price = Number(filtered.price);
 				const minPrice = applyFilter.minPrice
 					? price >= Number(applyFilter.minPrice)
 					: true;
@@ -96,19 +96,19 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 			.sort((a, b) => {
 				if (sortBy === 'lowToHigh') {
 					return (
-						Number(a.price.replace(/[^0-9]/g, '')) -
-						Number(b.price.replace(/[^0-9]/g, ''))
+						Number(a.price) -
+						Number(b.price)
 					);
 				}
 				if (sortBy === 'highToLow') {
 					return (
-						Number(b.price.replace(/[^0-9]/g, '')) -
-						Number(a.price.replace(/[^0-9]/g, ''))
+						Number(b.price) -
+						Number(a.price)
 					);
 				}
 				if (sortBy === "Discounted") {
             
-            return Number(b.discount.replace(/[^0-9]/g, "")) - Number(a.discount.replace(/[^0-9]/g, "")) ;
+            return Number(b.discount) - Number(a.discount) ;
         }
 				return 0;
 			});
@@ -127,19 +127,33 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 	const currentProperty = filteredResults?.slice(firstPostIndex, lastPostIndex);
 
 	const handleChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-	) => {
-		const { name, value } = e.target;
-		// typescript needs help knowing that name is a key of user
-		const inputFieldName = name as keyof Filter;
-		setFilter({ ...filter, [inputFieldName]: value });
-		setApplyFilter(filter);
-	};
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+) => {
+    const { name, value } = e.target;
+
+    if (name === 'location') {
+        // Correctly update nested location object
+        setFilter({ 
+            ...filter, 
+            location: { fullAddress: value } 
+        });
+    } else if (name === 'bedrooms') {
+        // Correctly update nested details object
+        setFilter({ 
+            ...filter, 
+            details: { ...filter.details, bedrooms: value } 
+        });
+    } else {
+        // Standard update for flat fields (minPrice, maxPrice, etc)
+        const inputFieldName = name as keyof Filter;
+        setFilter({ ...filter, [inputFieldName]: value });
+    }
+};
 	const handleClear = () => {
 		setFilter({
-			location: '',
+			location: {fullAddress:""},
 			propertyType: '',
-			bedrooms: '',
+			details:{bedrooms: ""},
 			listing: '',
 			minPrice: '',
 			maxPrice: '',
@@ -155,20 +169,20 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 				<PropertyHeader />
 			</div>
 
-			<div className='flex flex-col items-center justify-center md:w-[1200px] w-screen mx-auto container'>
-				<div className=' flex flex-col relative z-10 items-center justify-center '>
-					<div className='flex flex-col lg:flex-row shadow-2xl  lg:h-[123px] lg:py-[27px] lg:px-[16px] gap-[21px] lg:w-full mb-9 mt-9 items-center rounded-[10px] w-[399px] h-[463px] py-[12px] px-[24px]  text-[#656565] selectdiv'>
+			<div className='flex flex-col items-center justify-center md:max-w-[1200px] w-full mx-auto container '>
+				<div className=' flex flex-col relative z-10 items-center justify-center  '>
+					<div className='flex flex-col lg:flex-row shadow-2xl  lg:h-[123px] lg:max-w-[1200px] lg:py-[27px] lg:px-[16px] gap-[21px] w-full mb-9 mt-9 items-center rounded-[10px] max-w-[399px] h-[463px] py-[12px] px-[19px]  text-[#656565] selectdiv '>
 						<div className='w-[366px] lg:w-[183px] h-[69px] select'>
-							<label htmlFor='location' className='flex items-center'>
+							<label htmlFor='location' className='flex items-center gap-1'>
 								<img src={location} alt='' />
 								Location
 							</label>
 							<select
 								name='location'
 								id='location'
-								value={filter.location}
+								value={filter.location.fullAddress}
 								onChange={handleChange}
-								className='w-[366px] lg:w-[183px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select '>
+								className='w-full lg:w-[183px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select '>
 								<option value=''>All Cities</option>
 								<option value='Ogun'>Ogun</option>
 								<option value='Plateau'>Plateau</option>
@@ -178,8 +192,8 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 								<option value='Osun'>Osun</option>
 							</select>
 						</div>
-						<div className='flex gap-[21px] w-[366px] items-center  justify-center selectdiv'>
-							<div className='w-[183px] h-[69px] select'>
+						<div className='flex gap-[13px] w-full items-center max-w-[366px] justify-center selectdiv'>
+							<div className='w-full h-[69px] select'>
 								<label
 									htmlFor='propertyType'
 									className='flex items-center  gap-1 '>
@@ -198,14 +212,14 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 									<option value='Apartment'>Apartment</option>
 								</select>
 							</div>
-							<div className='w-[366px] lg:w-[183px] h-[69px] select'>
+							<div className='w-full lg:w-[183px] h-[69px] select'>
 								<label htmlFor='bedrooms' className='flex items-center  gap-1'>
 									<img src={bed} alt='' />
 									No of Bedrooms
 								</label>
 								<select
 									name='bedrooms'
-									value={filter.bedrooms}
+									value={filter.details.bedrooms}
 									onChange={handleChange}
 									id=''
 									className='lg:w-[183px] w-[162px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
@@ -218,7 +232,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 							</div>
 						</div>
 
-						<div className='w-[366px] lg:w-[183px] h-[69px] select'>
+						<div className='w-full lg:w-[183px] h-[69px] select'>
 							<label htmlFor='listing' className='flex items-center  gap-1'>
 								<img src={listing} alt='' />
 								Status list
@@ -234,7 +248,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 								<option value='For Sale'>For Sale</option>
 							</select>
 						</div>
-						<div className='w-[366px] lg:w-[183px] h-[69px] items-center'>
+						<div className='w-full lg:w-[183px] h-[69px] items-center'>
 							<label htmlFor='price' className='flex items-center  gap-1'>
 								<img src={price} alt='' />
 								Price
@@ -243,7 +257,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 								<input
 									type='number'
 									placeholder='min'
-									className='w-[180px] lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px]'
+									className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px]'
 									id='minPrice'
 									name='minPrice'
 									min='1000000'
@@ -256,7 +270,7 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 								<input
 									type='number'
 									placeholder='max'
-									className='w-[180px] lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px]'
+									className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px]'
 									id='maxPrice'
 									name='maxPrice'
 									min='1000000'
@@ -269,11 +283,11 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 						</div>
 						<button
 							onClick={() => setApplyFilter(filter)}
-							className=' w-[366px] lg:w-[95px] h-[49px] bg-[#1A3C34] rounded-[10px] py-[12px] px-[24px] mt-2 text-white'>
+							className=' w-full lg:w-[95px] h-[49px] bg-[#1A3C34] rounded-[10px] py-[12px] px-[24px] mt-2 text-white'>
 							Apply
 						</button>
 					</div>
-					<div className='w-full'>
+					<div className='w-full px-6'>
 						<Sort
 							allPosts={results?.length}
 							filteredPosts={filteredResults?.length}
@@ -285,57 +299,57 @@ const PropertyPage:FC<PropertyProps> = ({isLoggedIn,setShowModal}) => {
 					</div>
 
 					{filteredResults.length > 0 ? (
-						<div className='grid grid-cols-1  lg:grid-cols-3 gap-y-[55px] gap-x-[20px]  w-full middle max-w-full'>
+						<div className='grid grid-cols-1  lg:grid-cols-3 gap-y-[55px] gap-x-[20px]  w-full middle px-6'>
 							{currentProperty.map((result, id) => {
 								return (
 									<div
 										key={id}
-										className='w-[387px] h-[549px] shadow-2xl text-start flex flex-col items-center justify-center rounded-bl-[20px] rounded-br-[20px] relative mx-auto container '>
+										className='w-full max-w-[387px] min-h-[549px] shadow-2xl text-start flex flex-col items-center justify-center rounded-bl-[20px] rounded-br-[20px] relative mx-auto container '>
 										<img className='h-[322px]' src={result.image} alt='' />
 										<div className='h-[227px] p-5 flex flex-col gap-[19px]'>
 											<h3 className='text-[#0A1916] font-bold text-[20px] '>
 												{result.propertyName}
 											</h3>
-											<div className='flex items-center'>
+											<div className='flex items-center gap-1'>
 												<img
-													className='h-4.5 w-4.5'
+													className='h-4 w-3'
 													src={location}
 													alt=''
 												/>
-												<p>{result.location}</p>
+												<p>{result.location.fullAddress}</p>
 											</div>
 											<div className='flex items-center gap-[10px]'>
 												<div className='flex items-center gap-1'>
 													<img
-														className='h-4.5 w-4.5'
+														className='h-4 w-4'
 														src={size}
 														alt=''
 													/>
-													<p>{result.size}</p>
+													<p>{result.details.size}</p>
 												</div>
 												<div className='flex items-center gap-1'>
 													<img
-														className='h-4.5 w-4.5'
+														className='h-4 w-4'
 														src={bed}
 														alt=''
 													/>
 													<p>
-														{result.bedrooms} <span>Beds</span>
+														{result.details.bedrooms} <span>Beds</span>
 													</p>
 													{}
 												</div>
 												<div className='flex items-center gap-1'>
 													<img
-														className='h-4.5 w-4.5'
+														className='h-4 w-4'
 														src={bath}
 														alt=''
 													/>
-													<p>{result.bathrooms} Baths </p>
+													<p>{result.details.bathrooms} Baths </p>
 												</div>
 											</div>
 											<div className='flex items-center gap-[53px]'>
 												<Button onClick={() => isLoggedIn? navigate(`/property/${result.id}`) : setShowModal(true)} />
-												<p className='text-[25px]'>{result.price}</p>
+												<p className='text-[25px]'><span>₦</span>{result.price.toLocaleString()}</p>
 											</div>
 										</div>
 										<div className={`absolute w-[112px] h-[49px] px-[24px] py-[12px] rounded-[10px]

@@ -35,7 +35,7 @@ const Pagination = ({totalPosts, postPerPage, setCurrentPage, currentPage}:Pagin
   return (
 
     
-    <div className="flex justify-between items-center mt-4 mb-7 h-[42px]  mx-auto container p">
+    <div className="flex justify-between items-center mt-4 mb-7 h-[42px]  mx-auto container px-8 md:px-0">
       <div>
         <button 
         onClick={handlePrevious}

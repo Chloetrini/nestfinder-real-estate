@@ -6,13 +6,15 @@ interface ButtonProps {
 
 const Button: FC<ButtonProps> = ({ onClick }) => {
 	return (
-		<div>
-			<button
-				onClick={onClick}
-				className='w-[163px] h-[49px] rounded-[10px] px-[24px] py-[12px] text-white bg-[#1A3C34]'>
-				View Property
-			</button>
-		</div>
+		<div className="w-full max-w-[163px]"> 
+            <button
+                onClick={onClick}
+                
+                className='w-full h-[49px] max-[330px]:h-[40px] max-[330px]:text-[14px] rounded-[10px] px-4 py-2 text-white bg-[#1A3C34] transition-all hover:bg-[#132c26] whitespace-nowrap'
+            >
+                View Property
+            </button>
+        </div>
 	);
 };
 

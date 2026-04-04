@@ -15,14 +15,14 @@ export const AddPropertyContent: React.FC = () => {
     const [images, setImages] = useState<string[]>([]);
     const [form, setForm] = useState<PropertyType>({
         id: Date.now(), 
-        propertyTitle: "",
+        propertyName: "",
         price: 0,
         propertyDescription: "",
         propertyType: "House",
-        listingStatus: "For Sale",
+        sale: "For Sale",
         location: { city: "", state: "", fullAddress: "" },
-        propertyDetails: { Bedrooms: 0, Bathroom: 0, size: "" },
-        images: [],
+        propertyDetails: { bedrooms: 0, bathroom: 0, size: 0 },
+        image: [],
         amenities: [],
         isFeatured: false,
         isDraft: false
@@ -33,7 +33,7 @@ export const AddPropertyContent: React.FC = () => {
     useEffect(() => {
         if (editingProperty) {
             setForm(editingProperty);
-            setImages(editingProperty.images || []);
+            setImages(editingProperty.image  as string[]|| [] );
         } else {
             setImages([]);
         }
@@ -73,7 +73,7 @@ export const AddPropertyContent: React.FC = () => {
     };
 
     const handleSubmit = (status: 'publish' | 'draft') => {
-        const finalData = { ...form, images: images, isDraft: status === 'draft' };
+        const finalData = { ...form, image: images, isDraft: status === 'draft' };
         if (editingProperty) {
             updateProperty(finalData);
             alert("Property Updated!");
@@ -125,7 +125,7 @@ export const AddPropertyContent: React.FC = () => {
                     
                        <div className="flex flex-col w-[563px] h-[79px] gap-[12px]">
                          <label className="w-[563px] h-[19px] font-['Lato'] font-700 text-[16px]  font-bold text-[#444545]">Property Title</label>
-                        <input className="w-[563px] h-[48px] rounded-[8px] border-[1px] pt-[10px] pr-[12px] pb-[10px] pl-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none" name="propertyTitle" value={form.propertyTitle} onChange={handleChange} />
+                        <input className="w-[563px] h-[48px] rounded-[8px] border-[1px] pt-[10px] pr-[12px] pb-[10px] pl-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none" name="propertyName" value={form.propertyName} onChange={handleChange} />
                        </div>
                         
                         <div className="flex flex-col pt-5 w-[563px] h-[186px] gap-[12px]">
@@ -155,7 +155,7 @@ export const AddPropertyContent: React.FC = () => {
 
                             <div className="flex flex-col gap-[12px] w-[271.5px] h-[78px]">
                                 <label className="font-bold  font-['Lato'] font-700 w-[271.5px] h-[18px] text-[15px]  text-[#444545]" htmlFor="">Listing Status</label> 
-                                <select name="listingStatus" value={form.listingStatus} onChange={handleChange} className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-[]271. outline-none bg-[#F9FAFB]">
+                                <select name="sale" value={form.sale} onChange={handleChange} className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-[]271. outline-none bg-[#F9FAFB]">
                                     <option value="">Select status</option>
                                     <option value="For Sale">For Sale</option>
                                     <option value="For Rent">For Rent</option>
@@ -208,7 +208,7 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex gap-[16px] py-3 w-[563px] h-[78px]">
                             <div className="flex flex-col w-[177px] h-[78px] gap-[12px]">
                                 <label className="w-[177px] h-[18px] font-bold font-700 text-[15px] font-['Lato'] text-[#444545] " htmlFor="">Bedroom</label>
-                                <select value={form.propertyDetails.Bedrooms} onChange={(e) => nestedHandleChange("propertyDetails", "Bedrooms", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                                <select value={form.propertyDetails.bedrooms} onChange={(e) => nestedHandleChange("propertyDetails", "bedrooms", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
                                 <option value="0">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -218,7 +218,7 @@ export const AddPropertyContent: React.FC = () => {
                             </div>
                            <div className="flex flex-col  h-[78px] gap-[12px]"> 
                             <label className="w-[177px] h-[18px] font-bold font-700 text-[15px] font-['Lato'] text-[#444545] " htmlFor="">Bathroom</label>
-                             <select value={form.propertyDetails.Bathroom} onChange={(e) => nestedHandleChange("propertyDetails", "Bathroom", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                             <select value={form.propertyDetails.bathroom} onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
                                 <option value="0">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>

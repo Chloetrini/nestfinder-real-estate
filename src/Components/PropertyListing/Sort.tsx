@@ -1,10 +1,10 @@
 interface Filter{
-  location: string
-  propertyType: string
-  bedrooms: string
-  listing: string
-  minPrice: string
-  maxPrice: string
+  location: {fullAddress:string}
+	propertyType: string;
+	details:{bedrooms: string}
+	listing: string;
+	minPrice: string;
+	maxPrice: string;
 
 }
 interface SortProp{

@@ -12,7 +12,7 @@ const Dashboard: React.FC = () => {
   const { setActivePage } = useContext(ManageContext)!;
 
   const totalProperties = properties.length;
-  const activeListings = properties.filter(property => property.listingStatus === "For Sale"|| "For Rent").length;
+  const activeListings = properties.filter(property => property.sale === "For Sale"|| "For Rent").length;
   const pendingProperties = properties.filter(propertyyy => propertyyy.isDraft || propertyyy).length;
 //   This is just static because i don't know what my total user is for noow 
   const totalUsers = 1240; 
@@ -87,7 +87,20 @@ const Dashboard: React.FC = () => {
                 {/* This takes my top 4 properties that i just addded, and reverse from the newest properties to the olders ones */}
                 {properties.slice(-4).reverse().map((proper) => (
                   <tr key={proper.id} className="">
-                    <td className="px-4 py-4 w-[200px] h-[40px] font-bold text-[#0A1916] text-[15px]">{proper.propertyTitle}</td>
+                    <td className="px-4 py-4 w-[300px]">
+  <div className="flex items-center gap-3">
+    {proper.image && (
+      <img 
+        src={typeof proper.image === 'string' ? proper.image : proper.image[0]} 
+        alt="" 
+        className="w-12 h-12 rounded-lg object-cover border border-[#E5E7EB]" 
+      />
+    )}
+    <span className="font-bold text-[#0A1916] text-[15px]">
+      {proper.propertyName}
+    </span>
+  </div>
+</td>
                     <td className="px-4 py-5 text-[#4F887B] text-[14px]">{proper.propertyType}</td>
                     <td className="px-4 py-5 text-[#4F887B] text-[14px] truncate max-w-[200px]">
                       {proper.location.fullAddress}
@@ -96,9 +109,9 @@ const Dashboard: React.FC = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                          <span className={`w-2 h-2 rounded-full ${
-                   proper.listingStatus === "For Sale"  ? "bg-[#10B981]"  : "bg-[#F59E0B]" }`}></span>
+                   proper.sale === "For Sale"  ? "bg-[#10B981]"  : "bg-[#F59E0B]" }`}></span>
                        <span className="text-[#023337] font-medium text-[14px]">
-                   {proper.listingStatus}
+                   {proper.sale}
                  </span>
                   </div>
                 </td>

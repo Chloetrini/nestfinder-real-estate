@@ -1,58 +1,135 @@
 // import React from 'react'
 import React, { useState } from "react";
-
+type User = {
+  name: string;
+  email: string;
+  message: string;
+};
+type ErrorType = {
+  name: string;
+  email: string;
+  message: string;
+};
 const AgentForm = () => {
-const [name, setName] = useState<string>("")
-const [email, setEmail] = useState<string>("")
-const [message, setMessage] = useState<string>("")
+const [user, setUser] = useState<User>({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [error, setError] = useState<ErrorType>({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    // typescript needs help knowing that name is a key of user
+    const inputFieldName = name as keyof User;
+    setUser({ ...user, [inputFieldName]: value });
 
-    const [error] = useState<string>("")
+    // remove the error when there is a value in the input field
+    setError({ ...error, [inputFieldName]: "" });
+  };
 
-// const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{e.preventDefault()
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-//     if (name.trim() && !email.trim() && !message.trim()) {
-//         setError("Please provide name , email and reason for message")
-//         return;
-//     }
-// }
+    // step 1, create a variable to catch the errors or determine if an error occured
+    let hasError = false;
+
+    // step 2, create a placeholder object for the error state
+    const newError: ErrorType = {
+      name: "",
+      email: "",
+      message: "",
+    };
+
+    if (!user.name.trim()) {
+      newError.name = "Name is required";
+      hasError = true;
+    }
+
+    if (!user.email.trim()) {
+      newError.email = "Email is required";
+      hasError = true;
+    } else if (!user.email.includes("@")) {
+      newError.email = "Email is invalid";
+      hasError = true;
+    }
+
+    if (!user.message.trim()) {
+      newError.message = "message is required";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setError(newError);
+      return;
+    }
+
+    console.log("Submiited", user);
+
+    // reset form
+    setUser({
+      name: "",
+      email: "",
+      message: "",
+    });
+
+    setError({
+         name: "",
+        email: "",
+        message: ""
+    })
+    return
+  };
+
 
 
 
   return (
 
     
-    <div className='font-Manrope  w-[387px] h-[543px] border-1 border-[#918F8F] rounded-[10px] p-[20px]'>
-      <form className='flex flex-col bg-white gap-[10px]'>
+    <div className='font-Manrope md:w-[387px] w-full h-[543px] border-1 border-[#918F8F] rounded-[10px] p-[20px] '>
+      <form onSubmit={handleSubmit} className='flex flex-col bg-white gap-[10px]'>
         <h1>Contact Agent</h1>
         <label htmlFor="name" className='text-[#676565] font-bold'>Name</label>
-        <input type="text" placeholder='Enter your name' className='border-1 border-[#918F8F] rounded-[10px] p-[10px]'
+        <input type="text"
+         placeholder='Enter your name'
+         className={`border-1 border-[#918F8F] rounded-[10px] p-[10px] ${error.name ? "border-red-500" : "border-gray-300" }`}
         id="name" 
-        value={name} 
-        onChange={(event: React.ChangeEvent<HTMLInputElement>)=>
-            setName(event.target.value)
-        }
+        name="name"
+        value={user.name} 
+        onChange={handleChange}
         />
-        
+        {error.name && <p className="text-red-500">{error.name}</p>}
 
         <label htmlFor="email" className='text-[#676565] font-bold'>Email</label>
-        <input type="email" placeholder='Enter your email' className='border-1 border-[#918F8F] rounded-[10px] p-[10px]' 
+        <input type="email"
+         placeholder='Enter your email'
+         className={`border-1 border-[#918F8F] rounded-[10px] p-[10px] ${error.email ? "border-red-500" : "border-gray-300" }`}
          id="email"
-          value={email}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setEmail(event.target.value)
+         name="email"
+          value={user.email}
+          onChange={handleChange
           }/>
-        
+        {error.email && <p className="text-red-500">{error.email}</p>}
         <label htmlFor="text" className='text-[#676565] font-bold'>Message</label>
-        <textarea name="message" id="message" placeholder='Enter your number ' className='border-1 border-[#918F8F] rounded-[10px] p-[10px] h-[132px]' 
-        value={message}
-        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => 
-            setMessage(event.target.value)
+        <textarea name="message"
+         id="message" 
+         
+         placeholder='Enter your number '
+          className={`border-1 border-[#918F8F] rounded-[10px] p-[10px] ${error.message ? "border-red-500" : "border-gray-300" }`}
+        value={user.message}
+        onChange={handleChange
         }>
         </textarea>
 
-        <p className="text-red-500">{error}</p>
+        {error.message && <p className="text-red-500">{error.message}</p>}
 
-        <button className='w-[358px] h-[49px] bg-[#1A3C34] rounded-[10px] mt-[12px] text-white' type="submit">Submit</button>
+        <button className='w-full h-[49px] bg-[#1A3C34] rounded-[10px] mt-[12px] text-white' type="submit">Submit</button>
 
       </form>
     </div>

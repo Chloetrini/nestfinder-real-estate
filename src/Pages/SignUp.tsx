@@ -95,9 +95,13 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
     console.log("Submitted", form);
 
         // navigate after validation
-    navigate("/login", { state: { email: form.email } });
-    navigate("/login", { state: { password: form.password } });
-    navigate("/login", { state: { confirmpassword: form.confirmpassword } });
+   navigate("/login", { 
+  state: { 
+    email: form.email, 
+    password: form.password, 
+    confirmpassword: form.confirmpassword 
+  } 
+});
  setIsSignedUp({
     email: form.email,
     password: form.password
@@ -134,9 +138,9 @@ const SignUp:FC<SignUpProps> = ({setIsSignedUp}) => {
                            <img className="hidden md:block " src={logo}  alt="" />
                       </div>
                       
-                      <h4 className="text-[15px] md:text-[32px] font-semibold mb-2.5 tracking-wide">Create An account</h4>
+                      <h4 onClick={() => { if (window.innerWidth < 768) { navigate("/");}}}  className="text-[15px] md:text-[32px] font-semibold mb-2.5 tracking-wide cursor-pointer md:cursor-default">Create An account</h4>
                        <span className="hidden md:flex md:flex-row items-start gap-1 font-light text-[13px] mb-6 tracking-wide">Already have an account?
-                        <Link to="/login">
+                        <Link to="/login" className="underline">
                          Log In
                         </Link>
                        </span>

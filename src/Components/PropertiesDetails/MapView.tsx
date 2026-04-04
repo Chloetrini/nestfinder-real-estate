@@ -1,18 +1,24 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 // import L from "leaflet";
 import 'leaflet/dist/leaflet.css'; 
-
+import locationn from "/src/assets/location.png"
 
 // const containerstyle ={width:"100%", height: "400px"}
 
 interface MapProps {
-  locationName: string;
+  propertyName: string
+  location: {fullAddress:string ,
+    coordinates: {lat:number, lng:number}
+  }
+  image:string
+  
 }
 
-const MapView = ({ locationName }: MapProps) => {
+const MapView = ({ location, image,propertyName }: MapProps) => {
   
-  const position: [number, number] = [6.6647, 3.0917];
-
+  const position: [number, number] = [location.coordinates.lat, location.coordinates.lng];
+ console.log(location.coordinates.lat);
+ 
   return (
     <div className="mt-10 font-Manrope ">
       <h5 className="text-[24px] font-bold mb-5 underline">Location</h5>
@@ -30,9 +36,14 @@ const MapView = ({ locationName }: MapProps) => {
 
         <Marker position={position}>
           <Popup>
-            <div className="flex flex-col p-2">
-              <span className="font-bold">{locationName}</span>
-              <p className="text-xs text-gray-500">Property Location</p>
+            <div className="flex bg-white w-full lg:w-[331px] h-[94px] gap-3 items-center ">
+              <img className="w-[79px] rounded-[5px]" src={image} alt="" />
+              <div className=" ">
+                <p className="text-[16px]">{propertyName}</p>
+                 <p className="font-bold flex gap-2 items-center"><img className="" src={locationn} alt="" />{location.fullAddress}</p>
+              
+              </div>
+              
             </div>
           </Popup>
         </Marker>
