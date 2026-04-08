@@ -15,6 +15,9 @@ export const ManageProvider: React.FC<{children: React.ReactNode}>= ({children})
     const [activepage, setActivePage] = useState<ManageType>("Dashboard")
     const [searchBar, setSearchBar] = useState<string>("")
 
+    console.log(activepage);
+    
+
     
     return(
         <ManageContext.Provider value={{activepage,setActivePage,searchBar,setSearchBar}}>

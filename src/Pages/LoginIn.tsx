@@ -41,11 +41,10 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, value, type, checked } = e.target;
-    // typescript needs help knowing that name is a key of user
+   
     const inputFieldName = name as keyof Form;
     setForm({ ...form, [inputFieldName]: type === "checkbox" ? checked : value });
 
-    // remove the error when there is a value in the input field
     setError({ ...error, [inputFieldName]: false });
   };
 
@@ -53,10 +52,19 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
   e.preventDefault();
 
   const { email, password } = form;
-  
+
+
+  if (!email.trim() || !password.trim()) {
+    setError({
+      email: !email.trim(),
+      password: !password.trim(),
+    });
+    return; 
+  }
 
   const adminEmail = "admin123@gmail.com";
   const adminPassword = "admin123";
+
 
   if (email === adminEmail && password === adminPassword) {
     setIsAdmin(true);
@@ -66,11 +74,10 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
     return; 
   }
 
-  
-  if (email.trim() === isSignedUp.email.trim() && password === isSignedUp.password) {
+ 
+  if (isSignedUp && email.trim() === isSignedUp.email.trim() && password === isSignedUp.password) {
     setIsAdmin(false);
     setIsLoggedIn(true);
-    
     
     const firstName = email.split('@')[0];
     const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
@@ -80,14 +87,13 @@ const LogIn:FC<LogInProps> = ({setIsLoggedIn, setUser,isSignedUp,setIsAdmin}) =>
     return;
   }
 
-  // 4. If neither matched, trigger error
+
   setError({
-    email: email !== isSignedUp.email,
-    password: password !== isSignedUp.password,
+    email: email !== isSignedUp?.email,
+    password: password !== isSignedUp?.password,
   });
   alert("Invalid credentials. Please sign up or check your details.");
-
-  };
+};
   
   return (
     <div className="flex flex-col-reverse w-screen md:flex-row h-screen items-center justify-center rounded-t-none"> 

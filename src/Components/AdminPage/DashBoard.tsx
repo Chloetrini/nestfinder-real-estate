@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { PropertyContext } from "./AddProperty";
 import { ManageContext } from "./ManageProperty";
 import up from "/src/assets/up.png"
 import down  from "/src/assets/down.png"
+import Pagination from "../Universal/Pagination";
 
 
 
 const Dashboard: React.FC = () => {
-
   const { properties, deleteProperty, setEditingProperty } = useContext(PropertyContext)!;
   const { setActivePage } = useContext(ManageContext)!;
+
 
   const totalProperties = properties.length;
   const activeListings = properties.filter(property => property.sale === "For Sale"|| "For Rent").length;
@@ -28,7 +29,19 @@ const Dashboard: React.FC = () => {
       </div>
     </div>
   </div>
-  )
+
+
+)
+const [currentPage, setCurrentPage] = useState(1);
+const [postPerPage, _setPostPerPage] = useState(4);
+
+const lastPostIndex = currentPage * postPerPage;
+const firstPostIndex = lastPostIndex - postPerPage;
+const currentPropertyPagin = [...properties].reverse().slice(firstPostIndex, lastPostIndex);
+// const currentPropertyPaginReverse = currentPropertyPagin.reverse()
+console.log(currentPropertyPagin);
+console.log(properties.reverse);
+
 
   return (
     <div className="flex flex-col bg-[#F3F4F6] w-288 h-200">
@@ -61,7 +74,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/*  RECENT PROPERTIES TABLE  */}
-        <div className="mt-12 bg-white overflow-hidden">
+        <div className="mt-12 bg-white overflow-hidden ">
           <div className="px-8 py-6 flex justify-between items-center">
             <h3 className="font-medium w-[300px] h-[29px] font-['Lato'] text-[24px] text-[#000000]">Recent Properties</h3>
             <button 
@@ -70,7 +83,7 @@ const Dashboard: React.FC = () => {
             </button>
           </div>
 
-          <div className="px-5">
+          <div className="px-5 h-90">
             <table className="w-full">
               <thead className="rounded-[6px]">
                 <tr className="bg-[#B1FFED]  items-center  text-[#023337] text-[15px] font-medium font-500">
@@ -85,7 +98,7 @@ const Dashboard: React.FC = () => {
 
               <tbody className="divide-y divide-gray-100">
                 {/* This takes my top 4 properties that i just addded, and reverse from the newest properties to the olders ones */}
-                {properties.slice(-4).reverse().map((proper) => (
+                {currentPropertyPagin.map((proper) => (
                   <tr key={proper.id} className="">
                     <td className="px-4 py-4 w-[300px]">
   <div className="flex items-center gap-3">
@@ -138,7 +151,19 @@ const Dashboard: React.FC = () => {
           )}
         </div>
       </div>
+      
+					<div className='w-full'>
+						<Pagination
+							totalPosts={properties.length}
+							postPerPage={postPerPage}
+							setCurrentPage={setCurrentPage}
+							currentPage={currentPage}
+						/>
+					</div>
    </div>
+
+
+
     </div>
   );
 };

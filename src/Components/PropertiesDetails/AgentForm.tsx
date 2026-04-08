@@ -92,7 +92,7 @@ const [user, setUser] = useState<User>({
   return (
 
     
-    <div className='font-Manrope md:w-[387px] w-full h-[543px] border-1 border-[#918F8F] rounded-[10px] p-[20px] '>
+    <div className='font-Manrope lg:w-[387px] w-full h-[543px] border-1 border-[#918F8F] rounded-[10px] p-[20px] '>
       <form onSubmit={handleSubmit} className='flex flex-col bg-white gap-[10px]'>
         <h1>Contact Agent</h1>
         <label htmlFor="name" className='text-[#676565] font-bold'>Name</label>

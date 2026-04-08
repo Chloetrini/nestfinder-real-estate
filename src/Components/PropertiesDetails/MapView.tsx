@@ -1,62 +1,69 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import 'leaflet/dist/leaflet.css'; 
-import locationn from "/src/assets/location.png"
+import { useState } from 'react';
+import { APIProvider, Map, AdvancedMarker, InfoWindow, useAdvancedMarkerRef, Pin } from '@vis.gl/react-google-maps';
+import locationn from "/src/assets/location.png";
 
-
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: markerIcon2x,
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow,
-});
 interface MapProps {
-  propertyName: string
-  location: {fullAddress:string ,
-    coordinates: {lat:number, lng:number}
-  }
-  image:string
-  
+  propertyName: string;
+  location: {
+    fullAddress: string;
+    coordinates: { lat: number, lng: number }
+  };
+  image: string;
 }
 
-const MapView = ({ location, image,propertyName }: MapProps) => {
-  
-  const position: [number, number] = [location.coordinates.lat, location.coordinates.lng];
- console.log(location.coordinates.lat);
- 
+const MapView = ({ location, image, propertyName }: MapProps) => {
+  const [open, setOpen] = useState(false);
+  const [markerRef, marker] = useAdvancedMarkerRef();
+
+
+  const API_KEY = 'AIzaSyBMmjIPWiWDHTU5okkQcrvp6n93hwKBLjw';
+  const position = { lat: location.coordinates.lat, lng: location.coordinates.lng };
+
   return (
-    <div className="mt-10 font-Manrope ">
+    <div className="mt-10 font-Manrope">
       <h5 className="text-[24px] font-bold mb-5 underline">Location</h5>
       
-      
-      <MapContainer
-        center={position}
-        zoom={13}
-        className="h-[444px] w-full rounded-2xl z-0" 
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
+      <div className="h-[444px] w-full rounded-2xl overflow-hidden border">
+        <APIProvider apiKey={API_KEY}>
+          {/* mapId: "45db0d99611c3461" is a public demo ID for Advanced Markers */}
+          <Map
+            defaultCenter={position}
+            defaultZoom={13}
+            mapId={'45db0d99611c3461'} 
+            disableDefaultUI={false}
+          >
+            {/* for the blue pin */}
+            <AdvancedMarker
+              ref={markerRef}
+              position={position}
+              onClick={() => setOpen(true)}>
+               <Pin background={'#4285F4'} glyphColor={'#000'} borderColor={'#000'} />
+            </AdvancedMarker>
 
-        <Marker position={position}>
-          <Popup>
-            <div className="flex bg-white w-full lg:w-[331px] h-[94px] gap-3 items-center ">
-              <img className="w-[79px] rounded-[5px]" src={image} alt="" />
-              <div className=" ">
-                <p className="text-[16px]">{propertyName}</p>
-                 <p className="font-bold flex gap-2 items-center"><img className="" src={locationn} alt="" />{location.fullAddress}</p>
-              
-              </div>
-              
-            </div>
-          </Popup>
-        </Marker>
-      </MapContainer>
+            {/* custom Pop-Up */}
+            {open && (
+              <InfoWindow
+                anchor={marker}
+                onCloseClick={() => setOpen(false)}
+                headerDisabled={true}
+              >
+                <div className="flex bg-white w-full lg:w-[331px] h-[74px] gap-3 items-center relative p-1">
+                  <button onClick={() => setOpen(false)}
+                   className="absolute top-1 right-1 text-gray-400 hover:text-black font-bold text-lg leading-none p-1"> &times;</button>
+                  <img className="w-[79px] h-full object-cover rounded-[5px]" src={image} alt={propertyName} />
+                  <div className="flex flex-col justify-center">
+                    <p className="text-[16px] text-gray-800 leading-tight">{propertyName}</p>
+                    <p className="font-bold flex gap-2 items-center text-gray-900 mt-1">
+                      <img src={locationn} className="w-4 h-4" alt="" />
+                      {location.fullAddress}
+                    </p>
+                  </div>
+                </div>
+              </InfoWindow>
+            )}
+          </Map>
+        </APIProvider>
+      </div>
     </div>
   );
 };

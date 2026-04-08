@@ -23,6 +23,7 @@ import PropertyDetails from './Pages/PropertyDetails';
 import Error404 from './Pages/Error404';
 import ProtectedRoute from './Components/Universal/ProtectedRoute';
 import AdminPage from './Pages/AdminPage';
+
 ;
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false); 
   const location = useLocation();
    const path = location.pathname !== "/login" && location.pathname !== "/signup"&& location.pathname !== "/forgotpassword"
-  && location.pathname !== "/resetpassword" && location.pathname !== "/adminPage" 
+  && location.pathname !== "/resetpassword" && !location.pathname.startsWith( "/adminPage" ) 
 
   
   return (
@@ -69,7 +70,7 @@ function App() {
           <Route path="/signup" element={<SignUp setIsSignedUp={setIsSignedUp}/>}/>
           <Route path="/forgotpassword" element={<ForgotPassword/>}/>
           <Route path="/resetpassword" element={<ResetPassword/>}/>
-          
+         
 
           <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
         <Route path="/property" element={<PropertyPage isLoggedIn={isLoggedIn} setShowModal={setShowModal}/>}/>
@@ -78,8 +79,9 @@ function App() {
           
 
           <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} isAdmin={isAdmin} adminOnly={true} />}>
-        <Route path="/adminPage" element={<AdminPage/>}/>
+        <Route path="/adminPage/*" element={<AdminPage/>}/>
       </Route>
+
           
           <Route path="*" element={<Error404/>}/>
         </Routes>

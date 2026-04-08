@@ -6,15 +6,28 @@ import users from "/src/assets/users.png"
 import circle from "/src/assets/addd.png"
 import { ManageContext } from "./ManageProperty"
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const Sidebar = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const manageContext = useContext(ManageContext)
     if (!manageContext) return ("No content")
 
     const {activepage, setActivePage} = manageContext
 
+    const isActive = (path: string) => {
+  
+        return location.pathname === path;
+    };
+const handleClick=()=>{
+  navigate("/adminPage")
+
+}
+const handleManageClick =()=>{
+    setActivePage("All Properties")
+    navigate("/adminPage/manage-property")
+}
   return (
    <div style={{
     width: "260px",
@@ -93,7 +106,7 @@ const Sidebar = () => {
             gap: "20px"
         }}>
 
-            <div onClick={()=> setActivePage("Dashboard")} style={{
+            <div onClick={handleClick } style={{
                 display: "flex",
                 width: "260px",
                 height: "42px",
@@ -104,8 +117,8 @@ const Sidebar = () => {
                 gap: "8px",
                 borderRadius: "6px",
                 cursor: "pointer",
-                backgroundColor: activepage === "Dashboard"? "#1A3C34" : "#FFFFFF",
-                color: activepage === "Dashboard" ? "#FFFFFF" : "#4F887B"
+                backgroundColor: isActive("/adminPage")? "#1A3C34" : "#FFFFFF",
+                color: isActive("/adminPage") ? "#FFFFFF" : "#4F887B"
             }}>
                 <img className="w-6 h-6" src={home} alt="" />
                 <h1 style={{
@@ -119,7 +132,7 @@ const Sidebar = () => {
                 }}>Dashboard</h1>
             </div>
 
-            <div onClick={()=> setActivePage("Add Property")} style={{
+            <div onClick={()=> navigate("/adminPage/add-property")} style={{
                 display: "flex",
                 width: "260px",
                 height: "42px",
@@ -130,10 +143,10 @@ const Sidebar = () => {
                 gap: "8px",
                 borderRadius: "6px",
                 cursor: "pointer",
-                backgroundColor: activepage === "Add Property"? "#1A3C34" : "#FFFFFF",
-                color: activepage === "Add Property" ? "#FFFFFF" : "#4F887B"
+                backgroundColor: isActive("/adminPage/add-property")? "#1A3C34" : "#FFFFFF",
+                color: isActive("/adminPage/add-property") ? "#FFFFFF" : "#4F887B"
             }}>
-                <img className="w-[19.25px] h-[19.25px] pt-[1.38px] pl-[1.38px] " src={circle} alt="" />
+                <img className="w-6 h-6 " src={circle} alt="" />
                 <h1 style={{
                     fontWeight: 400,
                     fontFamily: "lato",
@@ -145,7 +158,7 @@ const Sidebar = () => {
                 }}>Add Property</h1>
             </div>
 
-            <div onClick={()=> setActivePage("All Properties")} style={{
+            <div onClick={handleManageClick} style={{
                 display: "flex",
                 width: "260px",
                 height: "42px",
@@ -156,8 +169,8 @@ const Sidebar = () => {
                 gap: "8px",
                 borderRadius: "6px",
                 cursor: "pointer",
-                 backgroundColor: activepage === "All Properties"? "#1A3C34" : "#FFFFFF",
-                color: activepage === "All Properties" ? "#4F887B" : "#FFFFFF"
+                 backgroundColor: isActive("/adminPage/manage-property")? "#1A3C34" : "#FFFFFF",
+                color: isActive("/adminPage/manage-property")? "#4F887B" : "#FFFFFF"
             }}>
                 <img className="w-6 h-6" src={user} alt="" />
                 <h1
@@ -176,7 +189,7 @@ const Sidebar = () => {
         
     </div>
 
-     <div className="flex items-center gap-3 absolute bottom-6 left-5">
+     <div className="flex items-center absolute bottom-8 left-5">
         <img src={users} alt="" />
         <button onClick={()=>navigate("/login")} className="text-[#FF0000]">logout</button>
      </div>

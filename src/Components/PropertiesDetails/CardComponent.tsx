@@ -11,7 +11,7 @@ const CardComponent = ({agentName, agentPhone}:agentForm) => {
   <AgentForm/>
   
   return (
-    <div className="font-Manrope  flex flex-col justify-evenly bg-[#FFFFFF] w-full md:w-[387px] h-[281px] rounded-[10px] border-1 border-[#918F8F]
+    <div className="font-Manrope  flex flex-col justify-evenly bg-[#FFFFFF] w-full lg:w-[387px] h-[281px] rounded-[10px] border-1 border-[#918F8F]
     p-4 mb-10">
 
         <h2 className="text-2xl">Agent Detail</h2>

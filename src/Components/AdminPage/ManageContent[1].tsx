@@ -2,6 +2,8 @@ import React, { useContext } from "react"
 import { PropertyContext } from "./AddProperty" 
 import { ManageContext } from "./ManageProperty"
 import search from "/src/assets/searchm.png"
+import Pagination from "../Universal/Pagination"
+import { useState } from "react"
 export const ManageContent: React.FC = () => {
   // Check if the property data and the sidebar data are plugged in. If either one is missing or empty, stop everything and just show the 'Loading'
   //  message so the app doesn't crash. what this just means is that if i forget to put my providers in my app in main.tsx i want it to show 
@@ -16,7 +18,14 @@ export const ManageContent: React.FC = () => {
   const { properties, deleteProperty, setEditingProperty } = propertiesContext
   const { activepage, setActivePage, searchBar, setSearchBar } = manageContext
 
-  const filteredProperties = properties.filter((property) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, _setPostPerPage] = useState(6);
+  
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentPropertyPagin = properties.slice(firstPostIndex, lastPostIndex);
+
+  const filteredProperties = currentPropertyPagin.filter((property) => {
 
     let pageMatch = false;
     if (activepage === "All Properties") pageMatch = true;
@@ -158,6 +167,12 @@ export const ManageContent: React.FC = () => {
         </div>
                  </div>
       </div>
+      <Pagination
+							totalPosts={properties.length}
+							postPerPage={postPerPage}
+							setCurrentPage={setCurrentPage}
+							currentPage={currentPage}
+      />
       </div>
     </div>
   )
