@@ -14,7 +14,7 @@ const Sidebar = () => {
     const manageContext = useContext(ManageContext)
     if (!manageContext) return ("No content")
 
-    const {activepage, setActivePage} = manageContext
+    const {setActivePage} = manageContext
 
     const isActive = (path: string) => {
   
