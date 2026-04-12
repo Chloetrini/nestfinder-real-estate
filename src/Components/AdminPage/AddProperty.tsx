@@ -27,7 +27,7 @@ export type PropertyType = {
    }
    propertyDetails: {
      bedrooms: number;
-     bathroom: number;
+     bathrooms: number;
      size: number;
    }
      image: string[] ;

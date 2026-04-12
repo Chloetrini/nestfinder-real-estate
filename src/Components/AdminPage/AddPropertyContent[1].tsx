@@ -21,7 +21,7 @@ export const AddPropertyContent: React.FC = () => {
         propertyType: "House",
         sale: "For Sale",
         location: { city: "", state: "", fullAddress: "" },
-        propertyDetails: { bedrooms: 0, bathroom: 0, size: 0 },
+        propertyDetails: { bedrooms: 0, bathrooms: 0, size: 0 },
         image: [],
         amenities: [],
         isFeatured: false,
@@ -218,7 +218,7 @@ export const AddPropertyContent: React.FC = () => {
                             </div>
                            <div className="flex flex-col  h-[78px] gap-[12px]"> 
                             <label className="w-[177px] h-[18px] font-bold font-700 text-[15px] font-['Lato'] text-[#444545] " htmlFor="">Bathroom</label>
-                             <select value={form.propertyDetails.bathroom} onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                             <select value={form.propertyDetails.bathrooms} onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
                                 <option value="0">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
