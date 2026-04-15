@@ -16,6 +16,7 @@ const AdminPage = () => {
             <Route index element={<Dashboard />} /> {/* This is the default (/admin) */}
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="add-property" element={<AddPropertyContent />} />
+            <Route path="edit-property" element={<AddPropertyContent />} />
             <Route path="manage-property" element={<ManageContent />} />
            
          </Routes>

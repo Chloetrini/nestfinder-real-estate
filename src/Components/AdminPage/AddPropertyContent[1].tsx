@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useProperties } from "./AddProperty";
-import {type PropertyType } from "./AddProperty";
+import {type PropertyTypee } from "./AddProperty";
 import { ManageContext } from "./ManageProperty"; 
 import upload from "/src/assets/upload.png"
 import browse from "/src/assets/browse.png"
@@ -13,57 +13,69 @@ export const AddPropertyContent: React.FC = () => {
     const manageContext = useContext(ManageContext);
     
     const [images, setImages] = useState<string[]>([]);
-    const [form, setForm] = useState<PropertyType>({
+    const [form, setForm] = useState<PropertyTypee>({
         id: Date.now(), 
         propertyName: "",
         price: 0,
-        propertyDescription: "",
-        propertyType: "House",
+        propertyDescription: "", 
+        PropertyType: "",
         sale: "For Sale",
         location: { city: "", state: "", fullAddress: "" },
-        propertyDetails: { bedrooms: 0, bathrooms: 0, size: 0 },
+       details: { bedrooms: 0, bathrooms: 0, size: 0 },
         image: [],
-        amenities: [],
+       amenities: {
+        Security: false,
+        Garden: false,
+        Water: false,
+        Electricity: false,
+        Gym: false,
+        Pool: false
+    },
         isFeatured: false,
         isDraft: false
     });
+ 
 
-    //  ==========for updating and publishing===========
-
-    useEffect(() => {
-        if (editingProperty) {
-            setForm(editingProperty);
-            setImages(editingProperty.image  as string[]|| [] );
+   useEffect(() => {
+    if (editingProperty) {
+        setForm(editingProperty);
+        
+        
+        const rawImage = editingProperty.image;
+        if (Array.isArray(rawImage)) {
+            setImages(rawImage);
+        } else if (typeof rawImage === "string") {
+            setImages([rawImage]); 
         } else {
             setImages([]);
         }
-    }, [editingProperty]);
+    } else {
+        setImages([]);
+    }
+}, [editingProperty]);
 
-    // ============ Handling page=========
-// Copy everything I’ve already filled out so I don't lose it, find the specific box I'm typing in right now, and if it's the Price box, make sure the that typecript treats it like a number so I can use it later."
-
+  
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm((prev) => ({...prev, [name]: name === "price" ? Number(value) : value}));
     };
 
-    const nestedHandleChange = (section: 'location' | 'propertyDetails', field: string, value: any) => {
+    const nestedHandleChange = (section: 'location' | 'details', field: string, value: any) => {
         setForm(prev => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
     };
 
-    // whenenver I click a box and that item is already on my list, take it off. If I click it and it's not on my list yet, add it. Then, keep the rest of the form exactly as it was."
+   
     const handleAmenity = (amenity: string) => {
-        setForm((prev) => ({
-            ...prev,
-            amenities: prev.amenities.includes(amenity)
-                ? prev.amenities.filter((amenityy) => amenityy !== amenity)
-                : [...prev.amenities, amenity]
-        }));
-    };
+    setForm((prev) => ({
+        ...prev,
+        amenities: {
+            ...prev.amenities,
+            [amenity]: !prev.amenities[amenity] 
+        }
+    }));
+};
 
-    // "Take the files I just picked, turn them into a list the typescript understands, create a 'temporary link' for each one so I can see them on my screen right now, 
-    // and add them to any photos I already chose earlier."
-
+   
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const filesArray = Array.from(e.target.files);
@@ -144,7 +156,7 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex gap-[20px] pt-10">
                                      <div className="flex flex-col gap-[12px] w-[271.5px] h-[78px]">
                                 <label className="font-bold  font-['Lato'] font-700 w-[271.5px] h-[18px] text-[15px]  text-[#444545]">Property Type</label>
-                                <select name="propertyType" value={form.propertyType} onChange={handleChange} className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-[]271. outline-none bg-[#F9FAFB]">
+                                <select name="propertyType" value={form.PropertyType} onChange={handleChange} className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-[]271. outline-none bg-[#F9FAFB]">
                                     <option value="">Select Type</option>
                                     <option value="House">House</option>
                                     <option value="Villa">Villa</option>
@@ -208,7 +220,7 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex gap-[16px] py-3 w-[563px] h-[78px]">
                             <div className="flex flex-col w-[177px] h-[78px] gap-[12px]">
                                 <label className="w-[177px] h-[18px] font-bold font-700 text-[15px] font-['Lato'] text-[#444545] " htmlFor="">Bedroom</label>
-                                <select value={form.propertyDetails.bedrooms} onChange={(e) => nestedHandleChange("propertyDetails", "bedrooms", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                                <select value={form.details.bedrooms} onChange={(e) => nestedHandleChange("details", "bedrooms", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
                                 <option value="0">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -218,7 +230,7 @@ export const AddPropertyContent: React.FC = () => {
                             </div>
                            <div className="flex flex-col  h-[78px] gap-[12px]"> 
                             <label className="w-[177px] h-[18px] font-bold font-700 text-[15px] font-['Lato'] text-[#444545] " htmlFor="">Bathroom</label>
-                             <select value={form.propertyDetails.bathrooms} onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                             <select value={form.details.bathrooms} onChange={(e) => nestedHandleChange("details", "bathroom", Number(e.target.value))} className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
                                 <option value="0">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -228,7 +240,7 @@ export const AddPropertyContent: React.FC = () => {
                            </div>
                            <div className="flex flex-col w-[177px] h-[78px] gap-[12px]">
                             <label className="w-[177px] h-[18px] font-bold font-700 text-[15px] font-['Lato'] text-[#444545] " htmlFor="">Size</label>
-                             <input className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none" value={form.propertyDetails.size} onChange={(e) => nestedHandleChange("propertyDetails", "size", e.target.value)} placeholder="Select" />
+                             <input className="border-[1px] w-[177px] h-[48px] justify-between rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none" value={form.details.size} onChange={(e) => nestedHandleChange("details", "size", e.target.value)} placeholder="Select" />
                            </div>
                         </div>
                     </div>
@@ -272,13 +284,12 @@ export const AddPropertyContent: React.FC = () => {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            {images.map((url, idx) => (
-                                <div key={idx} className="relative group">
-                                    <img src={url} className="w-full h-32 object-cover rounded-lg border" alt="preview" />
-                                </div>
-                            ))}
+                             {Array.isArray(images) && images.map((url, idx) => (
+                           <div key={idx} className="relative group">
+                         <img src={url} className="w-full h-32 object-cover rounded-lg border" alt="preview" />
                         </div>
-              
+                         ))}
+                       </div>
 
                     {/* Amenities Section */}
 
@@ -286,18 +297,18 @@ export const AddPropertyContent: React.FC = () => {
                             <h2 className="w-[438px] h-[18px] font-['Lato'] font-bold font-700 text-[15px] text-[#023337]">Amenities</h2>
                         <div className="grid grid-cols-3 w-[438px] h-[48px] gap-[18px]">
                             {amenityList.map((item) => (
-                                <label key={item} className=" flex w-[134px] h-[48px] rounded-[8px] border-[1px] p-[10px] gap-[8px] bg-[#F9FAFB] border-[#E5E7EB]">
-                                    <div 
-                                        onClick={() => handleAmenity(item)}
-                                        className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${
-                                            form.amenities.includes(item) ? "bg-[#1A3C34] border-[#1A3C34]" : "border-[#BAB9B9] bg-white"
-                                        }`}
-                                    >
-                                        {form.amenities.includes(item) && <span className="text-white text-[12px]">✓</span>}
-                                    </div>
-                                    <span className={`text-[15px] ${form.amenities.includes(item) ? "text-[#023337] font-bold" : "text-[#023337"}`}>{item}</span>
-                                </label>
-                            ))}
+    <label key={item} className="...">
+        <div 
+            onClick={() => handleAmenity(item)}
+            className={`w-5 h-5 ... ${
+                form.amenities[item] ? "bg-[#1A3C34]" : "bg-white"
+            }`}
+        >
+            {form.amenities[item] && <span className="text-white">✓</span>}
+        </div>
+        <span>{item}</span>
+    </label>
+))}
                         </div>
                         </div>
                   

@@ -4,13 +4,15 @@ import { ManageContext } from "./ManageProperty"
 import search from "/src/assets/searchm.png"
 import Pagination from "../Universal/Pagination"
 import { useState } from "react"
+import { useNavigate } from 'react-router-dom'
 export const ManageContent: React.FC = () => {
   // Check if the property data and the sidebar data are plugged in. If either one is missing or empty, stop everything and just show the 'Loading'
   //  message so the app doesn't crash. what this just means is that if i forget to put my providers in my app in main.tsx i want it to show 
   // loading instead of breaking my code sine typescript will see it as null. the manage context is just jasying when i click on it i want it to show on my side bar(whick page am i on and the seeach bar)
+ const navigate = useNavigate()
   const propertiesContext = useContext(PropertyContext)
   const manageContext = useContext(ManageContext)
-  
+ 
   if (!propertiesContext || !manageContext) {
     return <p>Content loading...</p>
   }
@@ -28,15 +30,15 @@ export const ManageContent: React.FC = () => {
   const filteredProperties = currentPropertyPagin.filter((property) => {
 
     let pageMatch = false;
-    if (activepage === "All Properties") pageMatch = true;
+    if (activepage === "All Properties" || activepage === "Dashboard") pageMatch = true;
     else if (activepage === "Featured") pageMatch = property.isFeatured === true;
     else if (activepage === "Draft") pageMatch = property.isDraft === true;
     else pageMatch = property.sale === activepage;
 
-    const matchSearch = (property.propertyName.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
-        property.propertyType.toLowerCase().includes(searchBar.toLowerCase()) || 
-        property.location.city.toLowerCase().includes(searchBar.toLowerCase()) || 
-        property.location.state.toLowerCase().includes(searchBar.toLowerCase()) 
+    const matchSearch = (property.propertyName?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
+  (property.PropertyType?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
+  (property.location?.city?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
+  (property.location?.state?.toLowerCase() || "").includes(searchBar.toLowerCase());
 
     return pageMatch && matchSearch;
   });
@@ -128,7 +130,7 @@ export const ManageContent: React.FC = () => {
   </div>
 </td>
                
-                  <td className="px-6 py-4 text-[#403F3F] text-[14px]">{property.propertyType}</td>
+                  <td className="px-6 py-4 text-[#403F3F] text-[14px]">{property.PropertyType}</td>
                   <td className="px-6 py-4 text-[#403F3F] text-[14px] truncate">{property.location.fullAddress}</td>
                   <td className="px-6 py-4 font-bold text-[#023337]">₦{property.price.toLocaleString()}</td>
                   <td className="px-6 py-4">
@@ -143,7 +145,11 @@ export const ManageContent: React.FC = () => {
                   <td className="px-6 py-4 ">
                     <div className="flex justify-center items-center gap-3">
                       <button 
-                        onClick={() => {setEditingProperty(property); setActivePage("Update Property"); }}className="text-[#21C45D] font-normal text-[15px]">
+                        onClick={() => { setEditingProperty(property);
+                          navigate("/adminPage/edit-property");
+   
+    
+  }} className="text-[#21C45D] font-normal text-[15px]">
                         Edit
                       </button>
                       <span className="text-[#21C45D]">/</span>

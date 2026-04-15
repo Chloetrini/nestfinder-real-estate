@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { APIProvider, Map, AdvancedMarker, InfoWindow, useAdvancedMarkerRef, Pin } from '@vis.gl/react-google-maps';
 import locationn from "/src/assets/location.png";
 
+
 interface MapProps {
   propertyName: string;
   location: {
@@ -16,7 +17,7 @@ const MapView = ({ location, image, propertyName }: MapProps) => {
   const [markerRef, marker] = useAdvancedMarkerRef();
 
 
-  const API_KEY = 'AIzaSyBMmjIPWiWDHTU5okkQcrvp6n93hwKBLjw';
+  const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
   const position = { lat: location.coordinates.lat, lng: location.coordinates.lng };
 
   return (

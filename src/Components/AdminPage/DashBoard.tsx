@@ -4,13 +4,14 @@ import { ManageContext } from "./ManageProperty";
 import up from "/src/assets/up.png"
 import down  from "/src/assets/down.png"
 import Pagination from "../Universal/Pagination";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Dashboard: React.FC = () => {
   const { properties, deleteProperty, setEditingProperty } = useContext(PropertyContext)!;
   const { setActivePage } = useContext(ManageContext)!;
-
+const navigate = useNavigate()
 
   const totalProperties = properties.length;
   const activeListings = properties.filter(property => property.sale === "For Sale"|| "For Rent").length;
@@ -41,7 +42,7 @@ const currentPropertyPagin = [...properties].reverse().slice(firstPostIndex, las
 // const currentPropertyPaginReverse = currentPropertyPagin.reverse()
 console.log(currentPropertyPagin);
 console.log(properties.reverse);
-
+console.log("First Property Data:", properties[0]);
 
   return (
     <div className="flex flex-col bg-[#F3F4F6] w-288 h-200">
@@ -114,7 +115,7 @@ console.log(properties.reverse);
     </span>
   </div>
 </td>
-                    <td className="px-4 py-5 text-[#4F887B] text-[14px]">{proper.propertyType}</td>
+                    <td className="px-4 py-5 text-[#4F887B] text-[14px]">{proper.PropertyType}</td>
                     <td className="px-4 py-5 text-[#4F887B] text-[14px] truncate max-w-[200px]">
                       {proper.location.fullAddress}
                     </td>
@@ -131,7 +132,12 @@ console.log(properties.reverse);
                     <td className="px-8 py-5 text-center">
                       <div className="flex justify-center items-center gap-3">
                         <button 
-                          onClick={() => {setEditingProperty(proper); setActivePage("Update Property"); }}className="text-[#21C45D] font-bold text-[13px]">
+                        onClick={() => { setEditingProperty(proper);
+                          navigate("/adminPage/edit-property");
+   
+    
+  }}
+                          className="text-[#21C45D] font-bold text-[13px]">
                           Edit
                         </button>
                         <span className="text-[#21C45D]">/</span>

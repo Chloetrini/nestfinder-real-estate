@@ -13,42 +13,42 @@ export const useProperties = () => {
 };
 
 
-export type PropertyType = {
+export type PropertyTypee = {
     id: number;
     propertyName: string;
      price: number;
     propertyDescription: string;
-    propertyType: "Villa"| "Duplex"| "Apartment"|"Residential"|"House";
+    PropertyType: string;
     sale: "For Sale"|"For Rent";
    location: {
      city: string;
      state: string;
      fullAddress: string;
    }
-   propertyDetails: {
+   details: {
      bedrooms: number;
      bathrooms: number;
      size: number;
    }
      image: string[] ;
-    amenities: string[];
+   amenities: { [key: string]: boolean };
     isFeatured: boolean;
     isDraft: boolean
 }
 
 export type PropertyContextType = {
-    properties: PropertyType[];
-    publishProperty: (newProperty: PropertyType)=> void
+    properties: PropertyTypee[];
+    publishProperty: (newProperty: PropertyTypee)=> void
     deleteProperty: (id:number)=>void
-    editingProperty: PropertyType | null;
-    setEditingProperty: (property: PropertyType | null) => void;
-    updateProperty: (updatedProperty: PropertyType) => void;
+    editingProperty: PropertyTypee | null;
+    setEditingProperty: (property: PropertyTypee | null) => void;
+    updateProperty: (updatedProperty: PropertyTypee) => void;
 }
 
 export const PropertyContext = createContext<PropertyContextType | null>(null);
 
 export const PropertyProvider: React.FC<{children: React.ReactNode}> = ({children})=>{
-    const [properties, setProperties] = useState<PropertyType[]>([
+    const [properties, setProperties] = useState<PropertyTypee[]>([
         // {
         //     id: 1,
         //     propertyTitle: "Houston Park And Garden",
@@ -72,7 +72,7 @@ export const PropertyProvider: React.FC<{children: React.ReactNode}> = ({childre
         //     isDraft: false
         // }
     ]);
-const { results, isLoading } = useFetch<PropertyType[]>("/data/properties.json");
+const { results, isLoading } = useFetch<PropertyTypee[]>("/data/properties.json");
 
   // 3. When the hook finishes fetching (results is no longer null), 
   // we put those results into our 'properties' list.
@@ -84,7 +84,7 @@ const { results, isLoading } = useFetch<PropertyType[]>("/data/properties.json")
   }, [results]);
 
 
-      const publishProperty = (newProperty: PropertyType) => {
+      const publishProperty = (newProperty: PropertyTypee) => {
     setProperties([...properties, newProperty]);
   };
 
@@ -95,10 +95,10 @@ const { results, isLoading } = useFetch<PropertyType[]>("/data/properties.json")
     setProperties((prev) => prev.filter((property) => property.id !== id));
 };
 
-  const [editingProperty, setEditingProperty] = useState<PropertyType| null>(null)
+  const [editingProperty, setEditingProperty] = useState<PropertyTypee| null>(null)
 
   // ======= Go through my list, find the house with the matching ID, swap the old info for the new info, and then close it.========
-  const updateProperty = (updatedProp: PropertyType) => {
+  const updateProperty = (updatedProp: PropertyTypee) => {
     setProperties(prev => prev.map(propertys => propertys.id === updatedProp.id ? updatedProp : propertys));
     // this just means i'm clearing  the box after saving my property
     setEditingProperty(null); 
