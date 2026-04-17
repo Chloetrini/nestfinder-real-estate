@@ -1,34 +1,27 @@
-import React, { useContext } from "react"
-import { PropertyContext } from "./AddProperty" 
-import { ManageContext } from "./ManageProperty"
+import React, { useContext, useState } from "react"
+import { PropertyContext } from "../../context/AddPropertyContext" 
+import { ManageContext } from "../../context/ManagePropertyContext"
 import search from "/src/assets/searchm.png"
 import Pagination from "../Universal/Pagination"
-import { useState } from "react"
 import { useNavigate } from 'react-router-dom'
+
 export const ManageContent: React.FC = () => {
-  // Check if the property data and the sidebar data are plugged in. If either one is missing or empty, stop everything and just show the 'Loading'
-  //  message so the app doesn't crash. what this just means is that if i forget to put my providers in my app in main.tsx i want it to show 
-  // loading instead of breaking my code sine typescript will see it as null. the manage context is just jasying when i click on it i want it to show on my side bar(whick page am i on and the seeach bar)
- const navigate = useNavigate()
+  const navigate = useNavigate()
   const propertiesContext = useContext(PropertyContext)
   const manageContext = useContext(ManageContext)
  
   if (!propertiesContext || !manageContext) {
-    return <p>Content loading...</p>
+    return <p className="p-10">Content loading...</p>
   }
 
   const { properties, deleteProperty, setEditingProperty } = propertiesContext
   const { activepage, setActivePage, searchBar, setSearchBar } = manageContext
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, _setPostPerPage] = useState(6);
+  const [postPerPage] = useState(6);
   
-  const lastPostIndex = currentPage * postPerPage;
-  const firstPostIndex = lastPostIndex - postPerPage;
-  const currentPropertyPagin = properties.slice(firstPostIndex, lastPostIndex);
-
-  const filteredProperties = currentPropertyPagin.filter((property) => {
-
+  // Filtering Logic
+  const filteredProperties = properties.filter((property) => {
     let pageMatch = false;
     if (activepage === "All Properties" || activepage === "Dashboard") pageMatch = true;
     else if (activepage === "Featured") pageMatch = property.isFeatured === true;
@@ -36,152 +29,155 @@ export const ManageContent: React.FC = () => {
     else pageMatch = property.sale === activepage;
 
     const matchSearch = (property.propertyName?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
-  (property.PropertyType?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
-  (property.location?.city?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
-  (property.location?.state?.toLowerCase() || "").includes(searchBar.toLowerCase());
+      (property.PropertyType?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
+      (property.location?.city?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
+      (property.location?.state?.toLowerCase() || "").includes(searchBar.toLowerCase());
 
     return pageMatch && matchSearch;
   });
 
+  
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentPropertyPagin = filteredProperties.slice(firstPostIndex, lastPostIndex);
+
   return (
-    <div className="flex flex-col bg-[#F3F4F6] pb-10 h-277">
-      <div>
-        {/* The NavBar */}
-      <nav className=" h-19 w-287.5 bg-white px-10 flex items-center border-b border-[#BAB9B9] z-10">
-        <div className="flex h-[26px] justify-between">
-          <h1 className="w-[188px] h-[26px] font-['Lato'] font-bold text-[22px] text-[#023337]">Manage Properties</h1>
-        </div>
+    <div className="flex flex-col bg-[#F3F4F6] min-h-screen w-full pb-10">
+      <nav className="h-[76px] w-full bg-white px-4 md:px-10 flex items-center border-b border-[#BAB9B9] sticky top-0 z-20">
+        <h1 className="font-['Lato'] font-bold text-[20px] md:text-[22px] text-[#023337]">Manage Properties</h1>
       </nav>
 
-      <div className="px-10 py-8">
-        {/* SECTION 1 at the top */}
-        <div className="flex justify-between items-center mb-8 h-[55px]">
-          <div className="flex flex-col w-[279px] h-[55px] gap-[12px]">
-            <h2 className="font-bold font-700 w-[279px] h-[26px] text-[22px] text-[#023337] font-['Lato']">Manage Properties</h2>
-            <p className="text-[14px] text-[#000000] font-['Lato'] font-400 font-normal">Fill in the details below to list a new property</p>
+      <div className="px-4 md:px-10 py-8">
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div className="flex flex-col gap-2">
+            <h2 className="font-bold text-[22px] text-[#023337] font-['Lato']">Manage Properties</h2>
+            <p className="text-[14px] text-gray-600 font-['Lato']">Fill in the details below to list a new property</p>
           </div>
-          <div className="flex flex-row w-[148px] h-[48px] rounded-[8px] pl-[10px] bg-[#1A3C34]">
-            <button 
-            onClick={() => setActivePage("Add Property")}
-           className=" font-['Lato'] font-700 font-bold text-[15px] text-[#FFFFFF]">
+          <button 
+            onClick={() => {
+              setActivePage("Add Property");
+              navigate("/adminPage/add-property");
+            }}
+            className="w-full sm:w-auto bg-[#1A3C34] text-white px-6 py-3 rounded-[8px] font-bold text-[15px] hover:bg-[#023337] transition-all">
             Add New Property
           </button>
-          </div>
         </div>
 
-                 <div className="flex bg-[#FFFFFF] flex-col h-[880px] rounded-[8px] px-4">
-                  
-        {/* SEARCH BAR SECTION */}
-        <div className="flex flex-row  gap-[20px] py-4  rounded-xl mb-6 justify-between">
-          <div className="flex flex-row w-[480px] h-[40px] rounded-[8px] p-[4px] bg-[#D7FFF6]">
-            {(["All Properties", "For Sale", "For Rent", "Featured", "Draft"] as const).map((tab) => (
-              <button 
-                key={tab} 
-                onClick={() => setActivePage(tab)} 
-                className={`px-4 py-2 rounded-md text-[15px] font-medium transition-all ${ activepage === tab ? "bg-white text-[#414242] shadow-sm"  : "text-[#75928B]" }`}>
-                {tab}
-              </button>
-            ))}
-          </div>
-
-          <div className="relative w-[200px] h-[40px] rounded-[8px] py-[6px] pr-[8px] pl-[12px] gap-[6px] bg-[#EFF8F6]">
-            <input 
-              type="text" 
-              placeholder="Search properties" 
-              value={searchBar}
-              onChange={(e) => setSearchBar(e.target.value)}
-              className="relative w-full h-[20px] text-[14px] font-400 font-['Lato'] pl-4 pr-10 outline-none"
-            />
-            <div>
-                <img className="absolute top-2 right-0" src={search} alt="" />
-            </div>
-          </div>
-        </div>
-
-        {/* TABLE SECTION */}
-        <div className="flex flex-col overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-[#B1FFED] h-[56px] rounded-[6px]]">
-                <th className="text-[15px] font-medium text-[#023337] ">Property</th>
-                <th className=" text-[15px] font-medium text-[#023337] ">Type</th>
-                <th className=" text-[15px] font-medium text-[#023337] ">Location</th>
-                <th className=" text-[15px] font-medium text-[#023337] ">Price</th>
-                <th className=" text-[15px] font-medium text-[#023337] ">Status</th>
-                <th className=" text-[15px] font-medium text-[#023337] ">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody className="h-[86px] border-b-[1px] border-b-[#F3EBE7] justify-between">
-              {filteredProperties.map((property) => (
-                <tr key={property.id} className="w-[203px] h-[40px]  gap-[12px]">
-                 <td className="px-4 py-4 w-[300px]">
-  <div className="flex items-center gap-3">
-    {property.image && (
-      <img 
-        src={typeof property.image === 'string' ? property.image : property.image[0]} 
-        alt="" 
-        className="w-12 h-12 rounded-lg object-cover border border-[#E5E7EB]" 
-      />
-    )}
-    <span className="font-bold text-[#0A1916] text-[15px]">
-      {property.propertyName}
-    </span>
-  </div>
-</td>
-               
-                  <td className="px-6 py-4 text-[#403F3F] text-[14px]">{property.PropertyType}</td>
-                  <td className="px-6 py-4 text-[#403F3F] text-[14px] truncate">{property.location.fullAddress}</td>
-                  <td className="px-6 py-4 font-bold text-[#023337]">₦{property.price.toLocaleString()}</td>
-                  <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                         <span className={`w-2 h-2 rounded-full ${
-                   property.sale === "For Sale" || "For Rent" ? "bg-[#10B981]"  : "bg-[#F59E0B]" }`}></span>
-                       <span className="text-[#023337] font-medium text-[14px]">
-                   {property.sale}
-                 </span>
-                  </div>
-                </td>
-                  <td className="px-6 py-4 ">
-                    <div className="flex justify-center items-center gap-3">
-                      <button 
-                        onClick={() => { setEditingProperty(property);
-                          navigate("/adminPage/edit-property");
-   
     
-  }} className="text-[#21C45D] font-normal text-[15px]">
-                        Edit
-                      </button>
-                      <span className="text-[#21C45D]">/</span>
-                      <button 
-                        onClick={() => deleteProperty(property.id)}
-                        className="text-[#FF0000] font-normal text-[15px] hover:underline">
-                           Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="bg-white rounded-[8px] shadow-sm border border-gray-100 flex flex-col min-h-[600px]">
           
-          {filteredProperties.length === 0 && (
-            <div className="py-20 text-center text-[#75928B]">
-             <p> No properties found for your search.</p>
+          <div className="flex flex-col xl:flex-row gap-4 p-4 justify-between border-b border-gray-50">
+            <div className="flex overflow-x-auto no-scrollbar bg-[#D7FFF6] p-1 rounded-[8px] w-full xl:w-fit">
+              {(["All Properties", "For Sale", "For Rent", "Featured", "Draft"] as const).map((tab) => (
+                <button 
+                  key={tab} 
+                  onClick={() => { setActivePage(tab); setCurrentPage(1); }} 
+                  className={`px-4 py-2 rounded-md text-[13px] md:text-[14px] font-medium whitespace-nowrap transition-all ${activepage === tab ? "bg-white text-[#414242] shadow-sm" : "text-[#75928B]"}`}>
+                  {tab}
+                </button>
+              ))}
             </div>
-          )}
+            <div className="relative w-full xl:w-[300px]">
+              <input 
+                type="text" 
+                placeholder="Search properties" 
+                value={searchBar}
+                onChange={(e) => setSearchBar(e.target.value)}
+                className="w-full h-[44px] bg-[#EFF8F6] rounded-[8px] px-4 pr-10 outline-none text-[14px] font-['Lato'] border border-transparent focus:border-[#1A3C34]"
+              />
+              <img className="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 opacity-60" src={search} alt="search icon" />
+            </div>
+          </div>
+
+          {/* TABLE SECTION */}
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-[#B1FFED] h-[56px]">
+                  <th className="px-6 text-[15px] font-bold text-[#023337]">Property</th>
+                  <th className="px-6 text-[15px] font-bold text-[#023337]">Type</th>
+                  <th className="px-6 text-[15px] font-bold text-[#023337]">Location</th>
+                  <th className="px-6 text-[15px] font-bold text-[#023337]">Price</th>
+                  <th className="px-6 text-[15px] font-bold text-[#023337]">Status</th>
+                  <th className="px-6 text-[15px] font-bold text-[#023337] text-center">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-gray-100">
+                {currentPropertyPagin.map((property) => (
+                  <tr key={property.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 min-w-[250px]">
+                      <div className="flex items-center gap-3">
+                        {property.image && (
+                          <img 
+                            src={Array.isArray(property.image) ? property.image[0] : property.image} 
+                            alt="" 
+                            className="w-12 h-12 rounded-lg object-cover border border-gray-200" 
+                          />
+                        )}
+                        <span className="font-bold text-[#0A1916] text-[14px] md:text-[15px]">
+                          {property.propertyName}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-[#403F3F] text-[14px] whitespace-nowrap">{property.PropertyType}</td>
+                    <td className="px-6 py-4 text-[#403F3F] text-[14px]">
+                      <p className="truncate max-w-[180px]">{property.location.fullAddress}</p>
+                    </td>
+                    <td className="px-6 py-4 font-bold text-[#023337] whitespace-nowrap">₦{property.price.toLocaleString()}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                  
+                        <span className={`w-2 h-2 rounded-full ${property.sale === "For Sale" ? "bg-[#10B981]" : "bg-[#F59E0B]"}`}></span>
+                        <span className="text-[#023337] font-medium text-[14px] whitespace-nowrap">{property.sale}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex justify-center items-center gap-3">
+                        <button 
+                          onClick={() => { 
+                            setEditingProperty(property);
+                            navigate("/adminPage/edit-property");
+                          }} 
+                          className="text-[#21C45D] font-medium text-[14px] hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <span className="text-gray-300">/</span>
+                        <button 
+                          onClick={() => deleteProperty(property.id)}
+                          className="text-[#FF0000] font-medium text-[14px] hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            {filteredProperties.length === 0 && (
+              <div className="py-20 text-center text-[#75928B] w-full">
+                <p>No properties found for your search.</p>
+              </div>
+            )}
+          </div>
         </div>
-                 </div>
-      </div>
-      <Pagination
-							totalPosts={properties.length}
-							postPerPage={postPerPage}
-							setCurrentPage={setCurrentPage}
-							currentPage={currentPage}
-      />
+
+       
+        <div className="w-full flex justify-center mt-8">
+          <Pagination
+            totalPosts={filteredProperties.length}
+            postPerPage={postPerPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        </div>
       </div>
     </div>
   )
 }
 
-export default ManageContent
+export default ManageContent;

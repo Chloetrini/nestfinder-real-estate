@@ -12,6 +12,8 @@ import size from "/src/assets/sqaure.png"
 import location from "/src/assets/location.png"
 import bed from "/src/assets/bed.png"
 import bath from "/src/assets/bath.png"
+import HeaderNavBar from '../Components/Universal/HeaderNavBar';
+import Footer from '../Components/Universal/Footer';
 
 
 interface Property {
@@ -54,8 +56,10 @@ const PropertyDetails = () => {
   if (!property) return <div className='flex justify-center font-bold h-screen items-center text-4xl'>Property not found</div>;
 
   return (
-    <div className="md:w-[1200px] mx-auto container p-5 space-y-14">
-      
+    <div>
+       <HeaderNavBar/>
+        <div className=" w-full mx-auto container px-9 space-y-14 mt-8">
+     
       <Images mainImage={property.image} />
       
       <HousePacks
@@ -94,7 +98,7 @@ const PropertyDetails = () => {
         
         
         {/* ======================== */}
-        <div className='flex lg:flex-row flex-col gap-[20px] w-full lg:max-w-[1201px] items-center justify-center lg:items-start lg:justify-start px-12'>
+        <div className='flex lg:flex-row flex-col gap-[20px] w-full  items-center justify-center lg:items-start lg:justify-start '>
         {
           results?.filter((prop) => Number(prop.id) !== Number(id)).slice(0, 3).map((result)=>{
             return <div key={result.id}>
@@ -136,8 +140,11 @@ const PropertyDetails = () => {
         </div>
 
     </div>
-      
+           
     </div>
+        <Footer/>
+    </div>
+   
   );
 };
 export default PropertyDetails 

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { useFetch } from "../../Hooks/useFetch";
+import { useFetch } from "../Hooks/useFetch";
 import { CircleLoader } from "react-spinners";
 
 export const useProperties = () => {
@@ -49,29 +49,7 @@ export const PropertyContext = createContext<PropertyContextType | null>(null);
 
 export const PropertyProvider: React.FC<{children: React.ReactNode}> = ({children})=>{
     const [properties, setProperties] = useState<PropertyTypee[]>([
-        // {
-        //     id: 1,
-        //     propertyTitle: "Houston Park And Garden",
-        //     propertyDescription: "Emerald Heights Villa is a modern and spacious family home located in the peaceful neighborhood of Atan Ota, Ogun State. This beautifully designed property features well-ventilated living spaces, large bedrooms, and modern bathrooms, making it perfect for comfortable family living.",
-        //     price: 2000000,
-        //     propertyType: "House",
-        //     listingStatus: "For Sale",
-        //   location: {
-        //       city: "Atan Ota",
-        //       state: "Ogun",
-        //       fullAddress: "Atan Ota, Ogun, Nigeria",
-        //   },
-        //    propertyDetails: {
-        //      Bedrooms: 4,
-        //      Bathroom: 3,
-        //      size: "648sqm",
-        //    },
-        //     images: [""],
-        //     amenities: ["Security"],
-        //     isFeatured: false,
-        //     isDraft: false
-        // }
-    ]);
+        ]);
 const { results, isLoading } = useFetch<PropertyTypee[]>("/data/properties.json");
 
   // 3. When the hook finishes fetching (results is no longer null), 

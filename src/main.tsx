@@ -3,20 +3,20 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
-import { ManageProvider } from './Components/AdminPage/ManageProperty.tsx'
-import { PropertyProvider } from './Components/AdminPage/AddProperty.tsx'
+import { ManageProvider } from './context/ManagePropertyContext.tsx'
+import { PropertyProvider } from './context/AddPropertyContext.tsx'
+import { AuthProvider } from './context/AuthContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-    <PropertyProvider>
-      <ManageProvider>
-         <App />
-    </ManageProvider>
-    </PropertyProvider>
-    
-   
+      <AuthProvider>
+        <PropertyProvider>
+          <ManageProvider>
+            <App />
+          </ManageProvider>
+        </PropertyProvider>
+      </AuthProvider>
     </BrowserRouter>
-    
   </StrictMode>,
 )

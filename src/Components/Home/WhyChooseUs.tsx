@@ -8,7 +8,7 @@ import homeIcon from "/src/assets/modern.png"
 
 const WhyChooseUs = () => {
   return (
-    <div className=" items-center justify-center flex flex-col max-w-[1200px] w-full  px-6 mx-auto container ">
+    <div className=" items-center justify-center flex flex-col max-w-[1200px] w-full  px-4 mx-auto container ">
         <div className="flex flex-col justify-center items-center gap-[40px]  pb-30 ">
             <div className="flex flex-col justify-center items-center gap-[9px] py-[20px]">
                 <p className="font-Manrope font-[700] text-center text-[16px] text-[#353535]">WHY CHOOSE US</p>

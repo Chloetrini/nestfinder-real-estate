@@ -4,19 +4,19 @@ import Phone from "/src/assets/call.png"
 import message from "/src/assets/info.png"
 import { type FC } from "react"
 import { useNavigate } from "react-router-dom"
-interface FooterProps {
-	isLoggedIn: boolean;
-	setShowModal: (show: boolean) => void;
-}
-const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => { 
+import { useAuth } from "../../context/AuthContext"
+
+const Footer:FC = () => { 
+    const{isLoggedIn,setShowModal} = useAuth()
     const navigate = useNavigate();
   return (
-    <div className="bg-[#0A0A0A] py-[30px] px-[16px]  w-full flex flex-col gap-[62px] md:py-[60px]  md:flex md:flex-col lg:flex-row md:justify-center md:gap-[88px]">
+    <div className="bg-[#0A0A0A]" >
+       <div className=" py-[30px]    max-w-[1200px] w-full  px-4 mx-auto container flex flex-col gap-[62px] md:py-[60px]   md:flex md:flex-col lg:flex-row md:justify-center md:gap-[88px]">
 
         <div className="flex flex-col gap-[43px]">
             <div>
                 <div className="flex gap-[13.43px] items-center">
-                    <img className="w-[30.22px] h-[30.22px]" src={Vector} alt="logo" />
+                    <img className="w-[20px] h-[20px]" src={Vector} alt="logo" />
                     <h1 className="text-white font-manrope font-bold text-[23.5px]">NestFinder Pro</h1>
                 </div>
                 <div>
@@ -33,9 +33,9 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
             </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-start md:justify-center lg:items-start items-start gap-[60px] md:gap-[100px] lg:gap-[0px] text-white">
+        <div className="flex flex-col md:flex-row justify-start md:justify-center lg:items-start items-start gap-[60px] md:gap-[100px] lg:gap-[30px] text-white">
 
-            <div className="flex flex-row justify-between md:justify-center items-start  gap-[60px] md:gap-[80px] lg:gap-[0px]">
+            <div className="flex flex-row justify-between md:justify-center items-start gap-[60px] md:gap-[80px] lg:gap-[0]">
             <div className="flex flex-col gap-[30px] md:w-[183px] w-full">
                 <h5 className="font-Inter font-bold text-[24px] text-[#FFFFFF]">QUICK LINKS</h5>
                 <a className="font-inter font-medium text-[18px] text-[#FFFFFF]" href="">HOME</a>
@@ -71,6 +71,8 @@ const Footer:FC<FooterProps> = ({isLoggedIn,setShowModal}) => {
             
         </div>
 
+    </div>
+  
     </div>
   )
 

@@ -5,10 +5,10 @@ const PropertyHeader = () => {
   return (
    
     <main className='bg-[#0A1210] lg:py-15 w-full px-4 h-[250px] lg:h-[369px] relative z-0 overflow-hidden'>
-      <div className="flex flex-col mx-auto container md:w-11/12 h-full relative">
+      <div className="flex flex-col md:max-w-[1200px] w-full mx-auto container h-full relative">
         
        
-        <div className='w-full max-w-[400px] md:max-w-[563px] pt-10 lg:pt-20'>
+        <div className='w-full max-w-[400px] md:max-w-[700px] pt-10 lg:pt-20 px-[6px] md:px-0'>
           <h1 className='text-white font-Manrope text-[32px] lg:text-[72px] font-700 leading-tight tracking-wide'>
             Property Listings
           </h1>

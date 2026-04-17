@@ -1,21 +1,13 @@
 // import React from 'react'
 import type { FC } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
 
 
-interface showModal {
-  setShowModal: (showModal: boolean) => void
-  isLoggedIn: boolean
-}
-
-// type smart = {
-//   onClick?: () => void
-// }
-
-const HeaderContentSec: FC<showModal> = ({setShowModal, isLoggedIn}) => { 
+// TG i decided to change the props drilling to context api so we can have cleaner code, go to the folder called context to see the authcontext and anything you don't understand let me know
+const HeaderContentSec: FC = () => { 
+  const {setShowModal, isLoggedIn}=useAuth()
   const navigate = useNavigate()
-
-
 
   return (
     <div className="bg-[url(/src/assets/header.jpg)] bg-no-repeat bg-cover">

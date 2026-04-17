@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import {  type FC } from 'react';
 
 import RealDataFetching from '../Components/Home/RealDataFetching';
 import Display from '../Components/Home/Display';
@@ -7,29 +7,32 @@ import Testimonials2 from '../Components/Home/Testimonials2';
 import SignInModal from '../Components/Universal/SignInModal';
 import HeaderContentSec from '../Components/Home/HeaderContentSec';
 import WhyChooseUs from '../Components/Home/WhyChooseUs';
+import { useAuth } from '../context/AuthContext';
+import HeaderNavBar from '../Components/Universal/HeaderNavBar';
+import Footer from '../Components/Universal/Footer';
 
-interface HomePageProps {
-	isLoggedIn: boolean;
-}
 
 
-const HomePage: FC<HomePageProps> = ({isLoggedIn}) => {
+
+const HomePage: FC = () => {
 	
-	const [showModal, setShowModal] = useState<boolean>(false);
+	const {showModal} = useAuth()
 
 	return (
 		<>
 			<div >
-                <HeaderContentSec isLoggedIn={isLoggedIn} setShowModal={setShowModal}/>
+				 <HeaderNavBar />
+                <HeaderContentSec />
                 <Testimonials />
-				<RealDataFetching isLoggedIn={isLoggedIn} setShowModal={setShowModal} />
+				<RealDataFetching  />
 				<WhyChooseUs/>
 				<Testimonials2 />
 				
 				
-				<Display isLoggedIn={isLoggedIn} setShowModal={setShowModal}  />
+				<Display  />
+				<Footer/>
 			</div>
-			{showModal && <SignInModal setShowModal={setShowModal} />}
+			{showModal && <SignInModal  />}
 		</>
 	);
 };

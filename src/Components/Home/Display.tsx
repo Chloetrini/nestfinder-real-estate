@@ -1,16 +1,14 @@
-// import React from 'react'
 
 import { useNavigate } from "react-router-dom";
 import { type FC } from "react";
-interface DisplayProps {
-	isLoggedIn: boolean;
-	setShowModal: (show: boolean) => void;
-}
+import { useAuth } from "../../context/AuthContext";
 
-const Display:FC<DisplayProps> = ({isLoggedIn,setShowModal}) => {
+
+const Display:FC = () => {
+   const {isLoggedIn,setShowModal} = useAuth()
     const navigate = useNavigate();
   return (
-    <div className="container mx-auto w-11/12 flex justify-center items-center pb-22">
+    <div className=" max-w-[1200px] w-full  px-4 mx-auto container flex justify-center items-center pb-22">
      <div className="bg-[#00000066] w-full max-w-[1240px] lg:h-[581px] h-[370px] rounded-[10px]">
 
        <div className="bg-[url(/src/assets/housing.jpg)] bg-no-repeat bg-cover  w-full lg:h-[581px] h-[370px] rounded-[10px] relative">

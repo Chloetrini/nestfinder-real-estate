@@ -1,13 +1,21 @@
 import { type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
-interface SignInModalProps {
-    setShowModal: (show: boolean) => void;
-}
 
-const SignInModal: FC<SignInModalProps> = ({ setShowModal }) => {
+
+const SignInModal: FC = () => {
+    const { setShowModal } = useAuth()
     const navigate = useNavigate()
-    
+    const handleLogIn = () => {
+        setShowModal(false); 
+         navigate('/login')     
+    }
+    const handleSignUp = () => {
+        setShowModal(false); 
+         navigate('/signup')     
+    }
+
     return (
         <div className='fixed top-0 left-0 w-screen h-screen backdrop-blur-md bg-black/40 flex items-center justify-center z-[9999] p-4'>
             
@@ -33,7 +41,7 @@ const SignInModal: FC<SignInModalProps> = ({ setShowModal }) => {
                     <div className="flex flex-col gap-3 pt-4">
                         <button 
                             className="w-full bg-[#1A3C34] hover:bg-[#264d43]  rounded-lg py-3.5 text-white font-semibold text-[15px] shadow-sm" 
-                            onClick={() => navigate('/signup')}
+                            onClick={handleSignUp}
                         >
                             Create an Account
                         </button>
@@ -46,7 +54,7 @@ const SignInModal: FC<SignInModalProps> = ({ setShowModal }) => {
 
                         <button
                             className="w-full border-2 border-gray-200 text-gray-700 hover:border-[#1A3C34] hover:text-[#1A3C34] rounded-lg py-3 font-medium text-[15px]"
-                            onClick={() => navigate('/login')}
+                            onClick={handleLogIn}
                         >
                             Log in to your account
                         </button>
