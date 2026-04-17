@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from "react-router-dom"
 
 import PropertyPage from './Pages/PropertyListing'
 import HomePage from './Pages/Home'
-import HeaderNavBar from "./Components/Universal/HeaderNavBar"
 
 import './App.css'
 import LogIn from './Pages/LoginIn';
