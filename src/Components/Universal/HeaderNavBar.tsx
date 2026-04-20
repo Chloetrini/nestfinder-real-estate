@@ -50,7 +50,7 @@ const HeaderNavBar: FC = () => {
   };
 
   return (
-    <div className="md:bg-white bg-[#1A3C34] w-full lg:mb-3 relative">
+    <div className="md:bg-white bg-[#1A3C34] w-full lg:mb-3 ] relative ">
       <div className="mx-auto container lg:w-[1200px] w-full px-6 lg:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px]">
 
         <div className="flex flex-row items-center gap-[8px]">

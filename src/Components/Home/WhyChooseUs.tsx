@@ -29,13 +29,14 @@ const WhyChooseUs = () => {
                         <p className="font-Inter font-[400] text-[14px] text-center leading-[25px] text-[#535353] w-full">Easily find your perfect home with NetFinder Pro smart filters, search by price, range and location</p>
                     </div>
                 </div>
-                <div className="flex flex-col-reverse max-w-[387px] w-full h-[496px] rounded-[10px] border-[2px] border-[#E6E3E3] rounded-[10px] mx-auto">
-                    <div  className="lg:w-[387px] w-full flex flex-col justify-start items-start gap-[8px] py-[20px] md:py-[28px] px-[14px]">
-                        <span className="flex flex-row justify-center items-center gap-[8px]"><img src={homeIcon} alt="Home" /><h3 className="font-Manrope font-[500] lg:text-[18px] text-[15px text-[#0D1412]">Modern Living & Redefined</h3></span>
+                <div className="max-w-[387px] w-full h-[496px] rounded-[10px] border-[2px] border-[#E6E3E3] rounded-[10px] mx-auto">
+                    <img className="rounded-tl-[10px] max-w-[387px] w-full  rounded-tr-[10px] h-[353px] " src={whyUs3} alt="Home" />
+                    <div  className="max-w-[387px] w-full flex flex-col justify-start items-start gap-[8px] py-[20px] md:py-[28px] px-[14px]">
+                        <span className="flex flex-row justify-center items-center gap-[8px]"><img src={homeIcon} alt="Verify" /><h3 className="font-Manrope font-[500] lg:text-[18px] text-[15px text-[#0D1412]">Modern living & Refined</h3></span>
                         <p className="font-Inter font-[400] text-[14px] text-center leading-[25px] text-[#535353] w-full">Easily find your perfect home with NetFinder Pro smart filters, search by price, range and location</p>
                     </div>
-                    <img className="rounded-tl-[10px] max-w-[387px] w-full rounded-tr-[10px] h-[353px]" src={whyUs3} alt="Home" />
                 </div>
+                
             </div>
         </div>
     </div>

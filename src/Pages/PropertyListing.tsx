@@ -14,6 +14,7 @@ import bath from "/src/assets/bath.png"
 import home from "/src/assets/houseline.png"
 import listing from "/src/assets/listing.png"
 import price from "/src/assets/price.png"
+import error from "/src/assets/error.png"
 import clear from "/src/assets/clear.png"
 import { useAuth } from '../context/AuthContext';
 import HeaderNavBar from '../Components/Universal/HeaderNavBar';
@@ -153,7 +154,7 @@ const PropertyPage:FC = () => {
             minPrice: '',
             maxPrice: '',
         };
-        // We set both immediately so one click does both jobs
+        
         setFilter(emptyFilter);
         setApplyFilter(emptyFilter);
         setSortBy('');
@@ -161,17 +162,20 @@ const PropertyPage:FC = () => {
     };
 
     return (
-        <div>
-			<HeaderNavBar/>
-            <div className='font-Manrope '>
-                <PropertyHeader />
-            </div>
+        <div className='overflow-x-hidden'>
+            <HeaderNavBar/>
+    
+            <PropertyHeader />
+        
 
             <div className='flex flex-col items-center justify-center md:max-w-[1200px] w-full mx-auto container '>
                 <div className=' flex flex-col relative z-10 items-center justify-center  '>
-                    <div className='flex flex-col lg:flex-row shadow-2xl  lg:h-[123px] lg:max-w-[1200px] lg:py-[27px] lg:px-[16px] gap-[21px] w-full mb-9 mt-9 items-center rounded-[10px] max-w-[399px] h-[463px] py-[12px] px-[19px]  text-[#656565] selectdiv '>
-                        <div className='w-[366px] lg:w-[183px] h-[69px] select'>
-                            <label htmlFor='location' className='flex items-center gap-1'>
+                    
+                    {/* FILTER BAR SECTION */}
+                    <div className='flex flex-col lg:flex-row shadow-2xl bg-white lg:h-[123px] lg:max-w-[1200px] lg:py-[27px] lg:px-[30px] lg:justify-between w-full mb-9 mt-9 items-center lg:items-end rounded-[10px] max-w-full h-auto  py-[12px] px-[8px] gap-[21px] lg:gap-4 text-[#656565] selectdiv mx-4 lg:mx-0' style={{width: 'calc(100% - 2rem)'}} >
+
+                        <div className='w-[366px] lg:w-[180px] xl:w-[220px] h-[69px] select'>
+                            <label htmlFor='location' className='flex items-center gap-1 mb-1'>
                                 <img src={location} alt='' />
                                 Location
                             </label>
@@ -180,7 +184,7 @@ const PropertyPage:FC = () => {
                                 id='location'
                                 value={filter.location.fullAddress}
                                 onChange={handleChange}
-                                className='w-full lg:w-[183px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select '>
+                                className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select '>
                                 <option value=''>All Cities</option>
                                 <option value='Ogun'>Ogun</option>
                                 <option value='Plateau'>Plateau</option>
@@ -190,11 +194,11 @@ const PropertyPage:FC = () => {
                                 <option value='Osun'>Osun</option>
                             </select>
                         </div>
-                        <div className='flex gap-[13px] w-full items-center max-w-[366px] justify-center selectdiv'>
-                            <div className='w-full h-[69px] select'>
+                        <div className='flex gap-[13px] w-full items-center max-w-[366px] justify-center lg:contents selectdiv'>
+                            <div className='w-full lg:w-[180px] xl:w-[210px] h-[69px] select'>
                                 <label
                                     htmlFor='propertyType'
-                                    className='flex items-center  gap-1 '>
+                                    className='flex items-center  gap-1 mb-1 '>
                                     <img src={home} alt='' />
                                     Property Type
                                 </label>
@@ -203,15 +207,15 @@ const PropertyPage:FC = () => {
                                     value={filter.propertyType}
                                     onChange={handleChange}
                                     id='propertyType'
-                                    className='lg:w-[183px] w-[162px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select '>
+                                    className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select '>
                                     <option value=''>Property type</option>
                                     <option value='House'>House</option>
                                     <option value='Residential'>Residential</option>
                                     <option value='Apartment'>Apartment</option>
                                 </select>
                             </div>
-                            <div className='w-full lg:w-[183px] h-[69px] select'>
-                                <label htmlFor='bedrooms' className='flex items-center  gap-1'>
+                            <div className='w-full lg:w-[170px] xl:w-[200px] h-[69px] select'>
+                                <label htmlFor='bedrooms' className='flex items-center  gap-1 mb-1'>
                                     <img src={bed} alt='' />
                                     No of Bedrooms
                                 </label>
@@ -220,7 +224,7 @@ const PropertyPage:FC = () => {
                                     value={filter.details.bedrooms}
                                     onChange={handleChange}
                                     id=''
-                                    className='lg:w-[183px] w-[162px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
+                                    className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
                                     <option value=''>Bedrooms</option>
                                     <option value='1'>1</option>
                                     <option value='2'>2</option>
@@ -230,8 +234,8 @@ const PropertyPage:FC = () => {
                             </div>
                         </div>
 
-                        <div className='w-full lg:w-[183px] h-[69px] select'>
-                            <label htmlFor='listing' className='flex items-center  gap-1'>
+                        <div className='w-[366px] lg:w-[160px] xl:w-[190px] h-[69px] select'>
+                            <label htmlFor='listing' className='flex items-center  gap-1 mb-1'>
                                 <img src={listing} alt='' />
                                 Status list
                             </label>
@@ -240,14 +244,14 @@ const PropertyPage:FC = () => {
                                 onChange={handleChange}
                                 id=''
                                 value={filter.listing}
-                                className='w-[366px] lg:w-[183px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
+                                className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
                                 <option value=''>Status</option>
                                 <option value='For Rent'>For Rent</option>
                                 <option value='For Sale'>For Sale</option>
                             </select>
                         </div>
-                        <div className='w-full lg:w-[183px] h-[69px] items-center'>
-                            <label htmlFor='price' className='flex items-center  gap-1'>
+                        <div className='w-[366px] lg:w-[190px] xl:w-[230px] h-[69px] items-center'>
+                            <label htmlFor='price' className='flex items-center  gap-1 mb-1'>
                                 <img src={price} alt='' />
                                 Price
                             </label>
@@ -255,7 +259,7 @@ const PropertyPage:FC = () => {
                                 <input
                                     type='number'
                                     placeholder='min'
-                                    className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px]'
+                                    className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] min-w-0'
                                     id='minPrice'
                                     name='minPrice'
                                     min='1000000'
@@ -267,7 +271,7 @@ const PropertyPage:FC = () => {
                                 <input
                                     type='number'
                                     placeholder='max'
-                                    className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px]'
+                                    className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] min-w-0'
                                     id='maxPrice'
                                     name='maxPrice'
                                     min='1000000'
@@ -279,30 +283,35 @@ const PropertyPage:FC = () => {
                         </div>
                         <button
                             onClick={() => { setApplyFilter(filter); setCurrentPage(1); }}
-                            className=' w-full lg:w-[95px] h-[49px] bg-[#1A3C34] rounded-[10px] py-[12px] px-[24px] mt-2 text-white'>
+                            className=' w-[366px] lg:w-[100px] xl:w-[120px] h-[39px] bg-[#1A3C34] rounded-[10px] text-white lg:mb-[0px] font-semibold'>
                             Apply
                         </button>
                     </div>
-                    <div className='w-full px-6'>
-                        <Sort
-                            allPosts={results?.length}
-                            filteredPosts={filteredResults?.length}
-                            setSortBy={setSortBy}
-                            sortBy={sortBy}
-                            setApplyFilter={setApplyFilter}
-                            filter={filter}
-                        />
-                    </div>
 
+                    {/* SORT SECTION - Hidden when 0 results */}
+                    {filteredResults.length > 0 && (
+                        <div className='w-full px-8 md:px-0'>
+                            <Sort
+                                allPosts={results?.length}
+                                filteredPosts={filteredResults?.length}
+                                setSortBy={setSortBy}
+                                sortBy={sortBy}
+                                setApplyFilter={setApplyFilter}
+                                filter={filter}
+                            />
+                        </div>
+                    )}
+
+                    {/* PROPERTY CARDS */}
                     {filteredResults.length > 0 ? (
-                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[55px] gap-x-[20px]  w-full middle px-8 md:px-0 '>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[55px] gap-x-[20px]  w-full middle px-8 md:px-0 justify-items-center'>
                             {currentProperty.map((result, id) => {
                                 return (
                                     <div
                                         key={id}
-                                        className='w-full max-w-[387px] min-h-[549px] shadow-2xl text-start flex flex-col items-center justify-center rounded-bl-[20px] rounded-br-[20px] relative mx-auto container '>
+                                        className='w-full max-w-[387px] max-h-[549px] shadow-2xl text-start flex flex-col items-center justify-center rounded-bl-[20px] rounded-br-[20px] relative mx-auto container '>
                                         <img className='h-[322px]' src={result.image} alt='' />
-                                        <div className='h-[227px] p-5 flex flex-col gap-[19px]'>
+                                        <div className='h-[227px] p-5 flex flex-col gap-[19px] '>
                                             <h3 className='text-[#0A1916] font-bold text-[20px] '>
                                                 {result.propertyName}
                                             </h3>
@@ -356,23 +365,21 @@ const PropertyPage:FC = () => {
                             })}
                         </div>
                     ) : (
-                        <div className='flex flex-col items-center justify-center gap-2 h-[803.69px]'>
-                            <div className='flex flex-col items-center justify-center gap-[82px]'>
-                                <img
-                                    className='w-[714px] h-[578.69px]'
-                                    src={clear}
-                                    alt=''
-                                />
-                                <div className='flex items-center flex-col'>
-                                    <div className='flex items-center gap-1'>
-                                        <img src='/src/assets/error.svg' alt='' />
-                                        <p className='text-[#FF0000]'>
-                                            We couldn't find any properties matching your search
-                                            criteria
-                                        </p>
-                                    </div>
-                                    <p>Try other filters</p>
+                        /* ERROR SECTION - Updated as requested */
+                        <div className='flex flex-col items-center justify-center gap-[40px] h-[803.69px] w-full'>
+                            <img
+                                className='w-full max-w-[500px] lg:max-w-[600px] h-auto object-contain'
+                                src={clear}
+                                alt=''
+                            />
+                            <div className='flex items-center flex-col w-full'>
+                                <div className='flex items-center md:gap-2 gap-1  justify-center'>
+                                    <img src={error} alt='' className='w-5 h-5' />
+                                    <p className='text-[#FF0000] font-medium text-center text-[16px] lg:text-[20px] w-full'>
+                                        We couldn't find any properties matching your search criteria
+                                    </p>
                                 </div>
+                                <p className='text-[#656565] text-[14px] lg:text-[16px]'>Try other filters</p>
                             </div>
 
                             <button
@@ -384,7 +391,7 @@ const PropertyPage:FC = () => {
                     )}
 
                     {filteredResults.length > 0 && (
-                        <div className='w-full px-9 md:px-0'>
+                        <div className='w-full px-9 md:px-0 my-14'>
                             <Pagination
                                 totalPosts={filteredResults.length}
                                 postPerPage={postPerPage}
@@ -395,7 +402,7 @@ const PropertyPage:FC = () => {
                     )}
                 </div>
             </div>
-			<Footer/>
+            <Footer/>
         </div>
     );
 };

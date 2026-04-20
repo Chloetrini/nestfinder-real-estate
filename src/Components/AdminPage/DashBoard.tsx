@@ -90,7 +90,7 @@ const Dashboard: React.FC = () => {
               <tbody className="divide-y divide-gray-100">
                 {currentPropertyPagin.map((proper) => (
                   <tr key={proper.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-4">
+                    <td className="px-4 py-4 min-w-[250px]">
                       <div className="flex items-center gap-3">
                         {proper.image && (
                           <img 
@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
                             className="w-12 h-12 rounded-lg object-cover border" 
                           />
                         )}
-                        <span className="font-bold text-[#0A1916] text-[15px]">
+                        <span className="font-bold text-[#0A1916] text-[14px] lg:text-[15px]">
                           {proper.propertyName}
                         </span>
                       </div>
@@ -109,10 +109,10 @@ const Dashboard: React.FC = () => {
                       {proper.location.fullAddress}
                     </td>
                     <td className="px-8 py-5 font-bold text-[#1A3C34]">₦{proper.price.toLocaleString()}</td>
-                    <td className="px-8 py-5">
+                    <td className="px-8 py-5 ">
                       <div className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full ${proper.sale === "For Sale" ? "bg-[#10B981]" : "bg-[#F59E0B]"}`}></span>
-                        <span className="text-[#023337] font-medium text-[14px]">{proper.sale}</span>
+                        <span className="text-[#023337] font-medium text-[14px] whitespace-nowrap">{proper.sale}</span>
                       </div>
                     </td>
                     <td className="px-8 py-5">

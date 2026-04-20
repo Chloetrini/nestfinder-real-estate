@@ -73,7 +73,7 @@ const RealDataFetching: FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[30px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-full max-w-[1240px] justify-items-center">
                 {results?.slice(0, 6).map((result, id) => {
                     return (
-                        <div key={id} className="w-full max-w-[387px] flex flex-col shadow-2xl text-start rounded-bl-[20px] rounded-br-[20px] relative bg-white transition-transform hover:scale-[1.02] duration-300">
+                        <div key={id} className="w-full max-w-[387px] flex flex-col shadow-2xl text-start rounded-[20px]  relative bg-white transition-transform hover:scale-[1.02] duration-300">
                            
                             <div className="h-[280px] md:h-[322px] w-full overflow-hidden rounded-tl-[10px] rounded-tr-[10px]">
                                 <img 
@@ -110,7 +110,7 @@ const RealDataFetching: FC = () => {
 
                                 <div className="flex items-center justify-between pt-2">
                                     <Button onClick={() => isLoggedIn ? navigate(`/property/${result.id}`) : setShowModal(true)}/>
-                                    <p className="md:text-[24px] text-[18px] font-bold text-[#1A3C34]">
+                                    <p className="lg:text-[24px] text-[20px] max-[321px]:text-[16px]  font-bold text-[#1A3C34]">
                                         <span className="text-[14px] md:text-[18px] mr-0.5">₦</span>
                                         {result.price.toLocaleString()}
                                     </p>
