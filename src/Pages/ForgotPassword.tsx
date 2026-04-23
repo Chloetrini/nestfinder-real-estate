@@ -89,11 +89,20 @@ const ForgotPassword = () => {
               placeholder="Enter your email"
               className={`w-full h-9 md:h-11.25 p-2 border-2 text-[10px] md:text-[14px]  rounded-lg my-0 md:my-2 block focus:outline-none transition-all duration-200
                 ${error.email 
-                  ? "border-red-500 placeholder-red-500 focus:ring-2 focus:ring-red-500" 
+                  ? "border-red-500 placeholder-red-500 " 
                   : "border-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 }`}
             />
-            
+                    {/* Trinity, I added this error message for email */}
+          {error.email && (
+          <p className="text-red-500 text-[12px] mb-3">
+           {!user.email.trim()
+           ? "Email cannot be left blank"
+           : "Please enter a valid email address"}
+           </p>
+            )}
+         
+
             <button 
               type="submit" 
               className="w-full h-[49px] bg-[#1A3C34] rounded-lg text-white text-[14px] font-light block my-6 hover:bg-[#A5A8A8] hover:cursor-pointer transition-all px-[24px] py-[12px]"
@@ -107,17 +116,9 @@ const ForgotPassword = () => {
             </span>
           </form>
         </div>
-        <div className="w-full h-[40vh] md:h-full md:w-1/2 order-1 md:order-2">
-          <img 
-            className="hidden md:block w-full h-full object-cover" 
-            src={desktop} 
-            alt="desktop-img" 
-          />
-          <img 
-            className="block md:hidden w-full h-full object-cover rounded-b-lg" 
-            src={mobile} 
-            alt="mobile-img" 
-          />
+         <div className="w-full h-[40vh] md:h-screen md:w-1/2 order-1 md:order-2 md:fixed md:right-0 md:top-0">
+          <img className="hidden md:block w-full h-screen object-cover" src={desktop} alt="desktop-img" />
+          <img className="block md:hidden w-full h-full object-cover" src={mobile} alt="mobile-img" />
         </div>
 
       </div>

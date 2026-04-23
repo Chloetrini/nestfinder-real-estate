@@ -41,7 +41,7 @@ const Sort = ({allPosts, filteredPosts,setSortBy,sortBy, setApplyFilter ,filter}
          
 
   return (
-    <div className='font-[Manrope] mt-20 flex justify-between items-center mb-9'>
+    <div className='font-[Manrope] mt-20 flex justify-between items-center mb-9  max-[321px]:px-9'>
         <div className='lg:text-[24px] text-[14px]'>
             <p>Showing <span>{filteredPosts} </span>of <span>{allPosts}</span> Properties</p>
         </div>

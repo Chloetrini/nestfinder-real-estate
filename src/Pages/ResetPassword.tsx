@@ -93,8 +93,18 @@ const ResetPassword = () => {
               value={user.password}
               onChange={handleChange}
               className={`w-full h-9 md:h-11.25 p-2 border-2 text-[10px] md:text-[14px] mb-4 rounded-lg my-0 md:my-2 block focus:outline-none transition-all duration-200
-                ${error.password ? "border-red-500 placeholder-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-500"}`}
+                ${error.password ? "border-red-500 placeholder-red-500  " : "border-gray-300 placeholder-gray-400 "}`}
             />
+               {/* Trinity, I added this error message for password */}
+            {error.password && (
+            <p className="text-red-500 text-[12px] mb-3">
+            {!user.password.trim()
+            ? "Password cannot be left blank"
+             : "Password must be at least 8 characters"}
+            </p>
+          )}
+
+
             <label className={`text-[13px] font-medium pb-1.5 md:pb-0 ${error.confirmpassword ? "text-red-500" : "text-black"}`} htmlFor="confirmpassword">Confirm Password</label>   
             <input
               type="password"
@@ -104,8 +114,17 @@ const ResetPassword = () => {
               value={user.confirmpassword}
               onChange={handleChange}
               className={`w-full h-9 md:h-11.25 p-2 border-2 text-[10px] md:text-[14px] mb-4 rounded-lg my-0 md:my-2 block focus:outline-none transition-all duration-200
-                ${error.confirmpassword ? "border-red-500 placeholder-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-500"}`}
+                ${error.confirmpassword ? "border-red-500 placeholder-red-500 " : "border-gray-300 placeholder-gray-400 "}`}
             />
+            {/* Trinity, I added this error message for confirm password */}
+            {error.confirmpassword && (
+           <p className="text-red-500 text-[12px] mb-3">
+           {!user.confirmpassword.trim()
+           ? "Confirm password cannot be left blank"
+           : "Passwords do not match"}
+          </p>
+        )}
+
 
             <button className="w-full h-[49px] bg-[#1A3C34] rounded-lg text-white text-[14px] font-light block my-4 md:my-8 hover:bg-[#A5A8A8] hover:cursor-pointer transition-all px-[24px] py-[12px]">
               Reset Password
@@ -119,9 +138,9 @@ const ResetPassword = () => {
         </div>
 
         
-        <div className="w-full h-[40vh] md:h-full md:w-1/2 order-1 md:order-2">
-          <img className="hidden md:block w-full h-full object-cover" src={desktop} alt="desktop-img" />
-          <img className="block md:hidden w-full h-full object-cover rounded-b-lg" src={mobile} alt="mobile-img" />
+        <div className="w-full h-[40vh] md:h-screen md:w-1/2 order-1 md:order-2 md:fixed md:right-0 md:top-0">
+          <img className="hidden md:block w-full h-screen object-cover" src={desktop} alt="desktop-img" />
+          <img className="block md:hidden w-full h-full object-cover" src={mobile} alt="mobile-img" />
         </div>
 
       </div>

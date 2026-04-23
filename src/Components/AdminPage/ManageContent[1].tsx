@@ -123,7 +123,7 @@ export const ManageContent: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-[#403F3F] text-[14px] whitespace-nowrap">{property.PropertyType}</td>
                     <td className="px-6 py-4 text-[#403F3F] text-[14px]">
-                      <p className="truncate max-w-[180px]">{property.location.fullAddress}</p>
+                      <p className="truncate hover:whitespace-normal hover:overflow-visible max-w-[180px]">{property.location.fullAddress} </p>
                     </td>
                     <td className="px-6 py-4 font-bold text-[#023337] whitespace-nowrap">₦{property.price.toLocaleString()}</td>
                     <td className="px-6 py-4">

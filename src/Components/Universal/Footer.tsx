@@ -12,7 +12,7 @@ const Footer: FC = () => {
 
     return (
         <footer className="bg-[#0A0A0A] w-full">
-            <div className="max-w-[1200px] mx-auto px-4 py-[40px] md:py-[60px]">
+            <div className="max-w-[1200px] mx-auto px-4 py-[40px] md:py-[60px] nav">
                 
                
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-12 xl:gap-[88px]">

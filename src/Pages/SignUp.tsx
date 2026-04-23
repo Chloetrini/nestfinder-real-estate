@@ -129,9 +129,16 @@ const SignUp:FC = () => {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 className={`w-full h-9 md:h-11.25 p-2 border-2 text-[14px] mb-4 rounded-lg my-2 block focus:outline-none transition-all duration-200
-                ${error.email ? "border-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-300 focus:ring-2 focus:ring-blue-500"}`}
+                ${error.email ? "border-red-500 " : "border-gray-300 focus:ring-2 focus:ring-blue-500"}`}
             />
-
+               {/* Trinity, I added this error message for email */}
+          {error.email && (
+          <p className="text-red-500 text-[12px] mb-3">
+           {!form.email.trim()
+           ? "Email cannot be left blank"
+           : "Please enter a valid email address"}
+           </p>
+            )}
          
             <label className={`text-[13px] font-medium ${error.password ? "text-red-500" : "text-black"}`} htmlFor="password">Password</label>
             <input
@@ -142,9 +149,16 @@ const SignUp:FC = () => {
                 onChange={handleChange}
                 placeholder="Enter your password (min 8 characters)"
                 className={`w-full h-9 md:h-11.25 p-2 border-2 text-[14px] mb-4 rounded-lg my-2 block focus:outline-none transition-all duration-200
-                ${error.password ? "border-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-300 focus:ring-2 focus:ring-blue-500"}`}
+                ${error.password ? "border-red-500 " : "border-gray-300 focus:ring-2 focus:ring-blue-500"}`}
             />
-
+                 {/*  Trinity, I added an error message for password */}
+           {error.password && (
+            <p className="text-red-500 text-[12px] mb-3">
+             {!form.password.trim()
+            ? "Password cannot be left blank"
+            : "Password must be at least 8 characters"}
+            </p>
+            )}
           
             <label className={`text-[13px] font-medium ${error.confirmpassword ? "text-red-500" : "text-black"}`}>Confirm Password</label>
             <input
@@ -155,8 +169,16 @@ const SignUp:FC = () => {
                 onChange={handleChange}
                 placeholder="Re-enter your password"
                 className={`w-full h-9 md:h-11.25 p-2 border-2 text-[14px] mb-4 rounded-lg my-2 block focus:outline-none transition-all duration-200
-                ${error.confirmpassword ? "border-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-300 focus:ring-2 focus:ring-blue-500"}`}
+                ${error.confirmpassword ? "border-red-500 " : "border-gray-300 focus:ring-2 focus:ring-blue-500"}`}
             />
+                 {/*  Trinity, I added an error message for confirm password as well*/}
+             {error.confirmpassword && (
+             <p className="text-red-500 text-[12px] mb-3">
+           {!form.confirmpassword.trim()
+           ? "Confirm password cannot be left blank"
+          : "Passwords do not match"}
+           </p>
+      )}
            
             <div className='flex flex-row gap-2 items-center mt-2'>
                 <input 
@@ -179,9 +201,9 @@ const SignUp:FC = () => {
         </div>
 
         {/* IMAGE SECTION */}
-        <div className="w-full h-[40vh] md:h-full md:w-1/2 order-1 md:order-2">
-            <img className="hidden md:block w-full h-full object-cover" src={desktop} alt="desktop-img" />
-            <img className="block md:hidden w-full h-full object-cover" src={mobile} alt="mobile-img" />
+         <div className="w-full h-[40vh] md:h-screen md:w-1/2 order-1 md:order-2 md:fixed md:right-0 md:top-0">
+          <img className="hidden md:block w-full h-screen object-cover" src={desktop} alt="desktop-img" />
+          <img className="block md:hidden w-full h-full object-cover" src={mobile} alt="mobile-img" />
         </div>
 
       </div>

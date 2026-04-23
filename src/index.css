@@ -2,11 +2,7 @@
 @import 'leaflet/dist/leaflet.css';
 
 @media (min-width: 1022px) and (max-width: 1294px) {
-	.middle {
-		display: grid;
-		grid-template-columns: 500px 500px;
 
-	}
 
 	.select {
 		width: 150px;
@@ -17,3 +13,13 @@
 }
 
 
+@media (min-width: 1024px) and (max-width: 1030px){
+ .inbetween{
+	display: grid;
+	grid-template-columns: auto auto;
+ }
+   .nav{
+	padding-left: 30px;
+	padding-right: 30px;
+   }
+}

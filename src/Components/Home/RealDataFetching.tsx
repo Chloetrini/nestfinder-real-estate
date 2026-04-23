@@ -70,7 +70,7 @@ const RealDataFetching: FC = () => {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[30px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-full max-w-[1240px] justify-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-y-[30px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-full max-w-[1240px] justify-items-center inbetween">
                 {results?.slice(0, 6).map((result, id) => {
                     return (
                         <div key={id} className="w-full max-w-[387px] flex flex-col shadow-2xl text-start rounded-[20px]  relative bg-white transition-transform hover:scale-[1.02] duration-300">
@@ -84,7 +84,7 @@ const RealDataFetching: FC = () => {
                             </div>
 
                             <div className="p-5 flex flex-col gap-[15px] md:gap-[19px] bg-[#FFFFFF] rounded-bl-[20px] rounded-br-[20px]">
-                                <h3 className="text-[#0A1916] font-bold md:text-[20px] text-[17px] truncate">
+                                <h3 className="text-[#0A1916] font-bold md:text-[20px] text-[17px] truncate uppercase" >
                                     {result.propertyName}
                                 </h3>
                                 
@@ -93,7 +93,7 @@ const RealDataFetching: FC = () => {
                                     <p className="md:text-[16px] text-[14px] text-gray-600 truncate">{result.location.fullAddress}</p>
                                 </div>
 
-                                <div className="flex items-center gap-[10px] md:text-[15px] text-[12px] text-gray-700">
+                                <div className="flex items-start gap-[10px] md:text-[15px] text-[12px] text-gray-700">
                                     <div className="flex items-center gap-1">
                                         <img className="h-4 w-4 shrink-0" src={size} alt="" />
                                         <p>{result.details.size} sqm</p>
@@ -110,7 +110,7 @@ const RealDataFetching: FC = () => {
 
                                 <div className="flex items-center justify-between pt-2">
                                     <Button onClick={() => isLoggedIn ? navigate(`/property/${result.id}`) : setShowModal(true)}/>
-                                    <p className="lg:text-[24px] text-[20px] max-[321px]:text-[16px]  font-bold text-[#1A3C34]">
+                                    <p className="lg:text-[24px] text-[20px] max-[321px]:text-[16px]  font-bold text-[#1A3C34] truncate">
                                         <span className="text-[14px] md:text-[18px] mr-0.5">₦</span>
                                         {result.price.toLocaleString()}
                                     </p>

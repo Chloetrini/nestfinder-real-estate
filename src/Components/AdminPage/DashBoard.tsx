@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-5 text-[#4F887B] text-[14px]">{proper.PropertyType}</td>
-                    <td className="px-6 py-5 text-[#4F887B] text-[14px] truncate max-w-[150px]">
+                    <td className="px-6 py-5 text-[#4F887B] text-[14px] truncate hover:whitespace-normal hover:overflow-visible max-w-[150px]">
                       {proper.location.fullAddress}
                     </td>
                     <td className="px-8 py-5 font-bold text-[#1A3C34]">₦{proper.price.toLocaleString()}</td>
@@ -133,7 +133,7 @@ const Dashboard: React.FC = () => {
           )}
         </div>
 
-        <div className='w-full px-1 md:px-11'>
+        <div className='w-full flex justify-center mt-8'>
           <Pagination
             totalPosts={validProperties.length}
             postPerPage={postPerPage}
