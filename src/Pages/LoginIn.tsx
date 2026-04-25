@@ -5,6 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState, type FC } from "react";
 import { useAuth } from "../context/AuthContext";
 
+// Import eye icons you'll need to install lucide-react
+import { Eye, EyeOff } from "lucide-react"; 
+
 // ---- BACKEND: imported loginUser and saveToken from api service ----
 import { loginUser, saveToken } from "../services/api";
 
@@ -30,6 +33,9 @@ const LogIn: FC = () => {
   const [form, setForm] = useState<Form>({ email: "", password: "", terms: false });
   const [error, setError] = useState<ErrorType>({ email: false, password: false });
   
+  // ---- PASSWORD VISIBILITY: new state for toggling password visibility ----
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  
   // ---- BACKEND ADDED: loading state ----
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -43,18 +49,19 @@ const LogIn: FC = () => {
     type: "success",
     message: "",
   });
-//   BACKEND REMOVED
-//  const [invalidCredentials, setInvalidCredentials] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const inputFieldName = name as keyof Form;
     setForm({ ...form, [inputFieldName]: type === "checkbox" ? checked : value });
     setError({ ...error, [inputFieldName as keyof ErrorType]: false });
-    // BACKEND REMOVED
-    // setInvalidCredentials(false);
   };
 
-  // ---- BACKEND UPDATED: handleSubmit is now async and calls real backend ----
+  // ---- PASSWORD VISIBILITY: function to toggle password visibility ----
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password } = form;
@@ -76,68 +83,17 @@ const LogIn: FC = () => {
       setError(newError);
       return;
     }
-//   ---- BACKEND REMOVED: hardcoded admin email/password check ----  
-// const adminEmail = "admin123@gmail.com";
 
-// const adminPassword = "admin123";
-
-
-
-// if (email === adminEmail && password === adminPassword) {
-
-// setIsAdmin(true);
-
-// setIsLoggedIn(true);
-
-// setUser({ name: "Admin", email: adminEmail });
-
-// navigate("/");
-
-// return;
-
-// }
-
-
-// --- BACKEND REMOVED: isSignedUp comparison ----
-// if (isSignedUp && email.trim() === isSignedUp.email.trim() && password === isSignedUp.password) {
-
-// setIsAdmin(false);
-
-// setIsLoggedIn(true);
-
-// const firstName = email.split('@')[0];
-
-// const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-
-// setUser({ name: formattedName, email: email });
-
-// navigate("/");
-
-// return;
-
-// }
-
-
-
-// setInvalidCredentials(true);
-
-// };
     try {
       setIsLoading(true);
 
-      // ---- BACKEND CALL: send login credentials to real backend ----
       const result = await loginUser({ email, password });
 
       if (result.success) {
-        // ---- BACKEND ADDED: save JWT token to localStorage ----
         saveToken(result.token);
-
-        // ---- BACKEND ADDED: set user from backend response using Context ----
         setIsLoggedIn(true);
         setUser({ name: result.user.name, email: result.user.email });
 
-        /// ---- BACKEND ADDED: set admin state based on role from backend ----
-        // ---- BACKEND ADDED: admin goes to dashboard, user goes to home ----
         if (result.user.role === "admin") {
           setIsAdmin(true);
           navigate("/adminPage");
@@ -146,7 +102,6 @@ const LogIn: FC = () => {
           navigate("/");
         }
       } else {
-        // ---- BACKEND ADDED: show error modal with backend message ----
         setModal({
           show: true,
           type: "error",
@@ -154,7 +109,6 @@ const LogIn: FC = () => {
         });
       }
     } catch (error) {
-      // ---- BACKEND ADDED: show error modal on network failure ----
       setModal({
         show: true,
         type: "error",
@@ -187,7 +141,7 @@ const LogIn: FC = () => {
               <p className="mb-4 text-[11px] md:text-[13px] font-[Inter] text-[#525050]">welcome back, Please enter your details</p>
             </div>
 
-            <label className={`text-[13px]  ]  ${error.email ? "text-red-500" : "text-black"}`} >Email</label>
+            <label className={`text-[13px] ${error.email ? "text-red-500" : "text-black"}`}>Email</label>
             <input 
               type="text" 
               name="email" 
@@ -205,20 +159,38 @@ const LogIn: FC = () => {
               </p>
             )}
 
-            <label className={`text-[13px] font-[Manrope]  font-medium ${error.password ? "text-red-500" : "text-black"}`}>Password</label>
-            <input 
-              type="password" 
-              name="password" 
-              id="password"
-              value={form.password} 
-              onChange={handleChange} 
-              placeholder="Enter your password"
-              className={`w-full h-11.25 p-2 border-2 font-[Manrope] text-[14px] mb-4 rounded-lg my-2 focus:outline-none transition-all duration-200
-               ${error.password ? "border-red-500 placeholder-red-500" : "border-gray-300 focus:ring-2 focus:ring-blue-500 placeholder-gray-400"}`}
-            />
+            <label className={`text-[13px] font-[Manrope] font-medium ${error.password ? "text-red-500" : "text-black"}`}>Password</label>
+            
+            {/* ---- UPDATED: Password input with eye icon wrapper ---- */}
+            <div className="relative w-full mb-4">
+              <input 
+                type={showPassword ? "text" : "password"}
+                name="password" 
+                id="password"
+                value={form.password} 
+                onChange={handleChange} 
+                placeholder="Enter your password"
+                className={`w-full h-11.25 p-2 border-2 font-[Manrope] text-[14px] rounded-lg my-2 focus:outline-none transition-all duration-200 pr-12
+                 ${error.password ? "border-red-500 placeholder-red-500" : "border-gray-300 focus:ring-2 focus:ring-blue-500 placeholder-gray-400"}`}
+              />
+              
+              {/* Eye icon button */}
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
 
             {error.password && (
-              <p className="text-red-500 text-[12px] mb-3 font-[Manrope]">
+              <p className="text-red-500 text-[12px] -mt-3 mb-3 font-[Manrope]">
                 {!form.password.trim() ? "Password cannot be left blank" : "Password must be at least 8 characters"}
               </p>
             )}
@@ -233,10 +205,9 @@ const LogIn: FC = () => {
               </span>
             </div>
 
-            {/* ---- BACKEND ADDED: button shows loading state ---- */}
             <button 
               disabled={isLoading}
-              className="w-full font-[Manrope] h-[49px] bg-[#1A3C34] rounded-lg text-white font-light my-6 hover:bg-[#264d43] transform hover:scale-105 px-[24px] py-[12px] disabled:opacity-80 disabled:cursor-not-allowedn">
+              className="w-full font-[Manrope] h-[49px] bg-[#1A3C34] rounded-lg text-white font-light my-6 hover:bg-[#264d43] transform hover:scale-105 px-[24px] py-[12px] disabled:opacity-80 disabled:cursor-not-allowed">
               {isLoading ? "Logging in..." : "Login"}
             </button>
 
@@ -252,7 +223,6 @@ const LogIn: FC = () => {
         </div>
       </div>
 
-      {/* ---- BACKEND ADDED: modal for error messages ---- */}
       {modal.show && (
         <Modal
           type={modal.type}

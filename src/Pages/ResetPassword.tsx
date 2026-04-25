@@ -38,6 +38,8 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+   // ---- PASSWORD VISIBILITY: new state for toggling password visibility ----
+    const [showPassword, setShowPassword] = useState<boolean>(false);
   // ---- BACKEND ADDED: loading state ----
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
