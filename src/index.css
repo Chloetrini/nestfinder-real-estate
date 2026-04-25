@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import 'leaflet/dist/leaflet.css';
+
 
 @media (min-width: 1022px) and (max-width: 1294px) {
 
@@ -13,13 +13,22 @@
 }
 
 
-@media (min-width: 1024px) and (max-width: 1030px){
+@media (min-width: 1024px) and (max-width: 1200px){
  .inbetween{
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: 480px 480px;
+	
  }
    .nav{
 	padding-left: 30px;
 	padding-right: 30px;
    }
+   .okay{
+	max-width: 450px;
+
+   }
+   .pad{
+	padding: 0 33px;
+   }
+ 
 }

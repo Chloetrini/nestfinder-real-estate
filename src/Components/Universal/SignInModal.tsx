@@ -17,7 +17,7 @@ const SignInModal: FC = () => {
     }
 
     return (
-        <div className='fixed top-0 left-0 w-screen h-screen backdrop-blur-md bg-black/40 flex items-center justify-center z-[9999] p-4'>
+        <div className='fixed top-0 left-0 w-screen h-screen backdrop-blur-md bg-black/40 flex items-center justify-center z-[9999] p-4 font-[Manrope]'>
             
             <div className='relative w-full max-w-md bg-white p-8 md:p-12 flex flex-col items-center justify-center rounded-2xl shadow-2xl'>
                 

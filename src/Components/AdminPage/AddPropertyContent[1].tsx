@@ -1,77 +1,105 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useProperties } from "../../context/AddPropertyContext";
-import {type PropertyTypee } from "../../context/AddPropertyContext";
+import {type PropertyType} from "../../context/AddPropertyContext";
 import { ManageContext } from "../../context/ManagePropertyContext"; 
 import upload from "/src/assets/upload.png"
 import browse from "/src/assets/browse.png"
 import save from "/src/assets/save.png"
 import cancel from "/src/assets/cancel.png"
-import toast, { Toaster } from "react-hot-toast";
+
+// ---- BACKEND: imported api functions ----
+import { createProperty, updateProperty as updatePropertyAPI } from "../../services/api";
+
+// ---- BACKEND ADDED: imported Modal component ----
+import Modal from "../Universal/Modal";
+
+// ---- BACKEND ADDED: imported Nigeria states data ----
+import { allStates, getCitiesByState } from "../../data/nigeriaStates";
+import { useNavigate } from "react-router-dom";
 
 export const AddPropertyContent: React.FC = () => {
     const { publishProperty, updateProperty, editingProperty, setEditingProperty } = useProperties();
     const manageContext = useContext(ManageContext);
-    
-    const [images, setImages] = useState<string[]>([]);
-    const [form, setForm] = useState<PropertyTypee>({
-        id: Date.now(), 
+    const navigate = useNavigate()
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [modal, setModal] = useState<{
+        show: boolean;
+        type: "success" | "error";
+        message: string;
+    }>({ show: false, type: "success", message: "" });
+
+    const [form, setForm] = useState<PropertyType>({
+        _id: "",
         propertyName: "",
         price: 0,
-        propertyDescription: "", 
-        PropertyType: "",
+        propertyDescription: "",
+        propertyType: "House",
         sale: "For Sale",
         location: { city: "", state: "", fullAddress: "" },
-        details: { bedrooms: 0, bathrooms: 0, size: 0 },
-        image: [],
-        amenities: {
-            Security: false,
-            Garden: false,
-            Water: false,
-            Electricity: false,
-            Gym: false,
-            Pool: false
-        },
+        propertyDetails: { bedrooms: 0, bathroom: 0, size: 0 },
+        coordinates: { longitude: 0, latitude: 0},
+        images: [],
+        amenities: [],
         isFeatured: false,
-        isDraft: false
+        isDraft: false,
+        agentName: "",
+        agentPhone: "",
+        discount: "",
     });
 
     useEffect(() => {
         if (editingProperty) {
             setForm(editingProperty);
-            const rawImage = editingProperty.image;
-            if (Array.isArray(rawImage)) {
-                setImages(rawImage);
-            } else if (typeof rawImage === "string") {
-                setImages([rawImage]); 
-            } else {
-                setImages([]);
-            }
+            setImagePreviews(editingProperty.images || []);
+            setImageFiles([]);
         } else {
-            setImages([]);
+            setImagePreviews([]);
+            setImageFiles([]);
         }
     }, [editingProperty]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({
-            ...prev, 
-            [name]: name === "price" 
-                ? (value === "" ? 0 : Number(value)) 
-                : value
-        }));
-    };
+    const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+) => {
+  const { name, value } = e.target;
 
-    const nestedHandleChange = (section: 'location' | 'details', field: string, value: any) => {
+  const numericFields = new Set(["price", "longitude", "latitude"]);
+
+  setForm((prev) => {
+    const parsedValue =
+      numericFields.has(name)
+        ? value === "" ? 0 : Number(value)
+        : value;
+
+    if (name === "latitude" || name === "longitude") {
+      return {
+        ...prev,
+        coordinates: {
+          ...prev.coordinates,
+          [name]: parsedValue,
+        },
+      };
+    }
+
+    return {
+      ...prev,
+      [name]: parsedValue,
+    };
+  });
+};
+
+    const nestedHandleChange = (section: 'location' | 'propertyDetails', field: string, value: any) => {
         setForm(prev => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
     };
 
     const handleAmenity = (amenity: string) => {
         setForm((prev) => ({
             ...prev,
-            amenities: {
-                ...prev.amenities,
-                [amenity]: !prev.amenities[amenity as keyof typeof prev.amenities] 
-            }
+            amenities: prev.amenities.includes(amenity)
+                ? prev.amenities.filter((a) => a !== amenity)
+                : [...prev.amenities, amenity]
         }));
     };
 
@@ -79,56 +107,98 @@ export const AddPropertyContent: React.FC = () => {
         if (e.target.files) {
             const filesArray = Array.from(e.target.files);
             const newPreviews = filesArray.map(file => URL.createObjectURL(file));
-            setImages(prev => [...prev, ...newPreviews]);
+            setImageFiles(prev => [...prev, ...filesArray]);
+            setImagePreviews(prev => [...prev, ...newPreviews]);
         }
     };
 
-    const handleSubmit = (status: 'publish' | 'draft') => {
-        if (!form.propertyName.trim() || form.price <= 0) {
-            toast.error("Please enter a property name and price!");
-            return;
-        }
+    const handleSubmit = async (status: 'publish' | 'draft') => {
+        try {
+            setIsLoading(true);
+            const formData = new FormData();
+            formData.append("propertyName", form.propertyName);
+            formData.append("price", String(form.price));
+            formData.append("propertyDescription", form.propertyDescription);
+            formData.append("propertyType", form.propertyType);
+            formData.append("sale", form.sale);
+            formData.append("city", form.location.city);
+            formData.append("state", form.location.state);
+            formData.append("fullAddress", form.location.fullAddress);
+            formData.append("bedrooms", String(form.propertyDetails.bedrooms));
+            formData.append("bathroom", String(form.propertyDetails.bathroom));
+            formData.append("size", String(form.propertyDetails.size));
+            formData.append("amenities", JSON.stringify(form.amenities));
+            formData.append("isFeatured", String(form.isFeatured));
+            formData.append("isDraft", status === 'draft' ? "true" : "false");
+            formData.append("agentName", form.agentName);
+            formData.append("agentPhone", form.agentPhone);
+            formData.append("discount", form.discount);
+            formData.append("latitude", String(form.coordinates?.latitude ?? ""));
+            formData.append("longitude", String(form.coordinates?.longitude ?? ""));
+            imageFiles.forEach((file) => formData.append("images", file));
 
-        const finalData = { ...form, image: images, isDraft: status === 'draft' };
-        if (editingProperty) {
-            updateProperty(finalData);
-            toast.success("Property Updated!");
-        } else {
-            publishProperty({ ...finalData, id: Date.now() });
-            toast.success(status === 'draft' ? "Saved to Drafts" : "Property Published");
+            let result;
+            if (editingProperty) {
+                result = await updatePropertyAPI(editingProperty._id, formData);
+                if (result.success) {
+                    updateProperty(result.property);
+                    setModal({ show: true, type: "success", message: "Property updated successfully!" });
+                } else {
+                    setModal({ show: true, type: "error", message: result.message || "Failed to update property" });
+                }
+            } else {
+                result = await createProperty(formData);
+                if (result.success) {
+                    publishProperty(result.property);
+                    setModal({
+                        show: true, type: "success",
+                        message: status === 'draft' ? "Property saved to drafts!" : "Property published successfully!",
+                    });
+                } else {
+                    setModal({ show: true, type: "error", message: result.message || "Failed to save property" });
+                }
+            }
+        } catch (error) {
+            setModal({ show: true, type: "error", message: "Something went wrong. Please try again." });
+        } finally {
+            setIsLoading(false);
         }
-        setEditingProperty(null);
-        manageContext?.setActivePage("All Properties");
+    };
+
+    const handleModalClose = () => {
+        setModal({ ...modal, show: false });
+        if (modal.type === "success") {
+            setEditingProperty(null);
+            manageContext?.setActivePage("All Properties");
+             navigate("/adminPage/manage-property"); 
+            // ---- BACKEND ADDED: clear form after successful publish ----
+            setForm({
+                _id: "",
+                propertyName: "",
+                price: 0,
+                propertyDescription: "",
+                propertyType: "House",
+                sale: "For Sale",
+                location: { city: "", state: "", fullAddress: "" },
+                propertyDetails: { bedrooms: 0, bathroom: 0, size: 0 },
+                coordinates: { longitude: 0, latitude: 0},
+                images: [],
+                amenities: [],
+                isFeatured: false,
+                isDraft: false,
+                agentName: "",
+                agentPhone: "",
+                discount: "",
+            });
+            setImageFiles([]);
+            setImagePreviews([]);
+        }
     };
 
     const amenityList = ["Security", "Garden", "Water", "Electricity", "Gym", "Pool"];
 
     return (
         <div className="flex flex-col bg-[#E5E7EB] min-h-screen pb-20 overflow-x-hidden">
-            <Toaster 
-                position="top-center"
-                reverseOrder={false}
-                toastOptions={{
-                    style: {
-                        background: '#FFFFFF',
-                        color: '#1A3C34', 
-                        border: '1px solid #75928B',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                        fontFamily: 'Lato, sans-serif',
-                        padding: '12px 24px',
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.05)'
-                    },
-                    success: {
-                        duration: 3000,
-                        iconTheme: { primary: '#1A3C34', secondary: '#FFFFFF' },
-                    },
-                    error: {
-                        duration: 4000,
-                        iconTheme: { primary: '#EF4444', secondary: '#FFFFFF' },
-                    },
-                }}
-            />
 
             {/* Nav */}
             <nav className="h-[76px] bg-white px-4 md:px-10 flex items-center border-b border-[#BAB9B9] shrink-0">
@@ -140,18 +210,18 @@ export const AddPropertyContent: React.FC = () => {
             {/* Header row */}
             <div className="flex flex-col sm:flex-row justify-between px-4 md:px-10 py-6 items-start sm:items-center gap-4">
                 <div className="flex flex-col gap-[8px]">
-                    <h1 className="font-bold font-['Lato'] text-[20px] md:text-[22px] text-[#023337]">Add New Property</h1>
+                    <h1 className="font-bold font-['Lato'] text-[20px] md:text-[22px] text-[#023337] ">Add New Property</h1>
                     <p className="font-['Lato'] text-[14px] text-[#000000]">Fill in the details below to list a new property</p>
                 </div>
                 <div className="flex gap-3 w-full sm:w-auto shrink-0">
                     <button
-                        onClick={() => handleSubmit('publish')}
+                        onClick={() => handleSubmit('publish')} disabled={isLoading}
                         className="flex-1 sm:flex-none sm:w-[160px] h-[48px] rounded-[8px] border-[1px] border-[#75928B] bg-[#1A3C34] font-bold text-[15px] font-['Lato'] text-[#FFFFFF] whitespace-nowrap px-3"
                     >
-                        {editingProperty ? "Update Property" : "Publish Property"}
+                        {isLoading ? "Saving..." : editingProperty ? "Update Property" : "Publish Property"}
                     </button>
                     <button
-                        onClick={() => handleSubmit('draft')}
+                        onClick={() => handleSubmit('draft')} disabled={isLoading}
                         className="flex-1 sm:flex-none sm:w-[150px] h-[48px] rounded-[8px] border-[1px] bg-[#FFFFFF] border-[#75928B] flex items-center justify-center gap-2 font-bold text-[15px] text-[#031D17] font-['Lato'] whitespace-nowrap px-3"
                     >
                         <img className="w-[12.8px] h-[12.8px]" src={save} alt="" />
@@ -160,11 +230,6 @@ export const AddPropertyContent: React.FC = () => {
                 </div>
             </div>
 
-            {/* Main two-column layout
-                - stacked on mobile/tablet (< 1280px)
-                - side-by-side from xl (1280px) upward
-                At exactly 1024px we keep stacked so neither panel is cramped.
-            */}
             <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-5">
 
                 {/* LEFT — Basic Information */}
@@ -173,12 +238,12 @@ export const AddPropertyContent: React.FC = () => {
                         <h2 className="font-bold font-['Lato'] text-[20px] md:text-[22px] text-[#1A3C34]">Basic Information</h2>
                     </div>
 
-                    <div className="flex flex-col gap-5 ">
+                    <div className="flex flex-col gap-5 max-[321px]:text-[13px]">
                         {/* Property Title */}
                         <div className="flex flex-col gap-[12px]">
                             <label className="font-['Lato'] font-bold text-[16px] text-[#444545]">Property Title</label>
                             <input
-                                className="w-full h-[48px] rounded-[8px] border-[1px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
+                                className="w-full max-w-[563px] h-[48px] rounded-[8px] border-[1px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
                                 name="propertyName"
                                 value={form.propertyName}
                                 onChange={handleChange}
@@ -190,7 +255,7 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex flex-col gap-[12px]">
                             <label className="font-bold font-['Lato'] text-[16px] text-[#444545]">Property Description</label>
                             <textarea
-                                className="w-full min-h-[155px] rounded-[8px] border-[1px] border-[#E5E7EB] p-3 bg-[#F9FAFB] resize-none outline-none"
+                                className="w-full max-w-[563px] min-h-[155px] rounded-[8px] border-[1px] border-[#E5E7EB] p-3 bg-[#F9FAFB] resize-none outline-none"
                                 name="propertyDescription"
                                 value={form.propertyDescription}
                                 onChange={handleChange}
@@ -202,11 +267,11 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex flex-col gap-[12px]">
                             <label className="font-['Lato'] font-bold text-[18px] text-[#444545]">Price (₦)</label>
                             <input
-                                className="w-full h-[48px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none"
+                                className="w-full max-w-[563px] h-[48px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none"
                                 name="price"
-                                min="1000000"
-                                step="1000000"
                                 placeholder="0.00"
+                                step={1000000}
+                                min={0}
                                 type="number"
                                 value={form.price === 0 ? "" : form.price}
                                 onChange={handleChange}
@@ -214,20 +279,20 @@ export const AddPropertyContent: React.FC = () => {
                         </div>
 
                         {/* Property Type + Listing Status */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px] max-w-[563px]">
                             <div className="flex flex-col gap-[12px]">
                                 <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Property Type</label>
                                 <select
-                                    name="PropertyType"
-                                    value={form.PropertyType}
+                                    name="propertyType"
+                                    value={form.propertyType}
                                     onChange={handleChange}
                                     className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-full outline-none bg-[#F9FAFB] px-2"
                                 >
-                                    <option value="">Select Type</option>
                                     <option value="House">House</option>
                                     <option value="Villa">Villa</option>
                                     <option value="Apartment">Apartment</option>
                                     <option value="Residential">Residential</option>
+                                    <option value="Duplex">Duplex</option>
                                 </select>
                             </div>
                             <div className="flex flex-col gap-[12px]">
@@ -243,113 +308,126 @@ export const AddPropertyContent: React.FC = () => {
                                 </select>
                             </div>
                         </div>
+                         {/* Agent Info */}
+                        <div className="flex flex-col md:flex-row gap-[20px] pt-10">
+                        <div className="flex flex-col gap-[12px] w-full md:w-[271.5px]">
+                            <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Agent Name</label>
+                            <input className="border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none" name="agentName" value={form.agentName} onChange={handleChange} placeholder="Agent name" />
+                        </div>
+                        <div className="flex flex-col gap-[12px] w-full md:w-[271.5px]">
+                            <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Agent Phone</label>
+                            <input className="border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none" name="agentPhone" value={form.agentPhone} onChange={handleChange} placeholder="+234 800 000 0000" />
+                        </div>
+                        </div>
 
+                        {/* Discount */}
+                        <div className="flex flex-col pt-5 gap-[12px]">
+                        <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Discount (optional e.g 10%)</label>
+                        <input className="w-full md:max-w-[563px] border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none" name="discount" value={form.discount} onChange={handleChange} placeholder="e.g 10%" />
+                        </div>
                         {/* Location */}
-                        <div className="pt-4">
-                            <h3 className="font-bold text-[18px] text-[#023337] mb-4">Location</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
-                                <div className="flex flex-col">
-                                    <label className="font-bold text-[15px] text-[#444545] mb-2">City</label>
+                        <div className="pt-10">
+                            <h3 className="font-bold text-[18px] text-[#023337]">Location</h3>
+                            <div className="flex flex-col sm:flex-row gap-[20px] max-w-[563px] pt-2">
+                                <div className="flex flex-col flex-1">
+                                    <label className="font-bold font-['Lato'] text-[15px] text-[#444545] mb-3">State</label>
+                                    <select
+                                        value={form.location.state}
+                                        onChange={(e) => {
+                                            nestedHandleChange("location", "state", e.target.value);
+                                            nestedHandleChange("location", "city", "");
+                                        }}
+                                        className="w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                                        <option value="">Select State</option>
+                                        {allStates.map((state) => (
+                                            <option key={state} value={state}>{state}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col flex-1">
+                                    <label className="font-bold font-['Lato'] text-[15px] text-[#444545] mb-3">City</label>
                                     <select
                                         value={form.location.city}
                                         onChange={(e) => nestedHandleChange("location", "city", e.target.value)}
-                                        className="w-full h-[48px] border-[1px] rounded-[8px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
-                                    >
+                                        className="w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
                                         <option value="">Select City</option>
-                                        <option value="Ogun">Ogun</option>
-                                        <option value="Plateau">Plateau</option>
-                                        <option value="Lagos">Lagos</option>
-                                        <option value="Abuja">Abuja</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="font-bold text-[15px] text-[#444545] mb-2">State</label>
-                                    <select
-                                        value={form.location.state}
-                                        onChange={(e) => nestedHandleChange("location", "state", e.target.value)}
-                                        className="w-full h-[48px] border-[1px] rounded-[8px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
-                                    >
-                                        <option value="">Select State</option>
-                                        <option value="Lagos">Lagos</option>
-                                        <option value="Abuja">Abuja</option>
+                                        {getCitiesByState(form.location.state).map((city) => (
+                                            <option key={city} value={city}>{city}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
-                            <div className="mt-4 flex flex-col gap-2">
-                                <label className="font-bold text-[16px] text-[#444545]">Full Address</label>
-                                <input
-                                    className="w-full h-[48px] border-[1px] rounded-[8px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
-                                    value={form.location.fullAddress}
-                                    onChange={(e) => nestedHandleChange("location", "fullAddress", e.target.value)}
-                                    placeholder="e.g Admiralty way, Lekki phase 1"
-                                />
+                            <div className="flex flex-col gap-[12px] py-4 max-w-[563px]">
+                                <label className="font-['Lato'] font-bold text-[16px] text-[#444545]">Full Address</label>
+                                <input className="w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none mt-2" value={form.location.fullAddress} onChange={(e) => nestedHandleChange("location", "fullAddress", e.target.value)} placeholder="e.g Admiralty way, Lekki phase 1" />
                             </div>
                         </div>
 
                         {/* Property Details */}
                         <div className="pt-4">
                             <h2 className="font-bold text-[16px] text-[#023337] mb-4">Property Details</h2>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-3 gap-4 max-w-[563px]">
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-bold text-[15px] text-[#444545]">Bedroom</label>
+                                    <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Bedroom</label>
                                     <select
-                                        value={form.details.bedrooms}
-                                        onChange={(e) => nestedHandleChange("details", "bedrooms", Number(e.target.value))}
+                                        value={form.propertyDetails.bedrooms}
+                                        onChange={(e) => nestedHandleChange("propertyDetails", "bedrooms", Number(e.target.value))}
                                         className="border-[1px] w-full h-[48px] rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
                                     >
                                         <option value="0">Select</option>
-                                        {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+                                        {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
+                                            <option key={num} value={num}>{num}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-bold text-[15px] text-[#444545]">Bathroom</label>
+                                    <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Bathroom</label>
                                     <select
-                                        value={form.details.bathrooms}
-                                        onChange={(e) => nestedHandleChange("details", "bathrooms", Number(e.target.value))}
+                                        value={form.propertyDetails.bathroom}
+                                        onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))}
                                         className="border-[1px] w-full h-[48px] rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
                                     >
                                         <option value="0">Select</option>
-                                        {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+                                        {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
+                                            <option key={num} value={num}>{num}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-bold text-[15px] text-[#444545]">Size (sqm)</label>
+                                    <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Size (sqm)</label>
                                     <input
                                         className="border-[1px] w-full h-[48px] rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
-                                        value={form.details.size}
-                                        onChange={(e) => nestedHandleChange("details", "size", e.target.value)}
-                                        placeholder="e.g 1200"
+                                        value={form.propertyDetails.size}
+                                        onChange={(e) => nestedHandleChange("propertyDetails", "size", e.target.value)}
+                                        placeholder="e.g 350"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Bottom action buttons */}
-                        <div className="flex justify-end gap-3 mt-8">
+                        {/* Bottom action buttons — visible only on desktop (xl and above) */}
+                        <div className="hidden xl:flex justify-end gap-3 mt-8">
                             <button
-                                onClick={() => handleSubmit('draft')}
+                                onClick={() => handleSubmit('draft')} disabled={isLoading}
                                 className="w-full sm:w-[140px] h-[48px] rounded-[8px] border-[1px] bg-white border-[#75928B] flex items-center justify-center gap-2 font-bold text-[#031D17]"
                             >
                                 <img className="w-[12.8px] h-[12.8px]" src={save} alt="" /> Save Draft
                             </button>
                             <button
-                                onClick={() => handleSubmit('publish')}
-                                className="w-full sm:w-[140px] h-[48px] rounded-[8px] bg-[#1A3C34] text-white font-bold"
+                                onClick={() => handleSubmit('publish')} disabled={isLoading}
+                                className="w-full sm:w-[140px] h-[48px] rounded-[8px] bg-[#1A3C34] text-white font-bold "
                             >
-                                {editingProperty ? "Update" : "Publish"}
+                                {editingProperty ? "Update Property" : "Publish Property"}
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* RIGHT — Upload + Amenities
-                    Fixed width only at xl+; full width below that.
-                */}
+                {/* RIGHT — Upload + Amenities */}
                 <div className="bg-white p-6 md:p-8 flex flex-col gap-8 rounded-[8px] w-full xl:w-[420px] xl:shrink-0 min-w-0 self-start">
                     {/* Upload */}
                     <div>
                         <h2 className="font-bold text-[20px] text-[#1A3C34] mb-2">Upload Property Image</h2>
-                        <p className="font-bold text-[14px] text-[#444545] mb-3">Property Image</p>
                         <label
                             htmlFor="file-upload"
                             className="relative w-full h-[266px] border-[1px] border-dashed border-[#75928B] rounded-[8px] flex flex-col items-center justify-center p-4 cursor-pointer"
@@ -357,7 +435,7 @@ export const AddPropertyContent: React.FC = () => {
                             <input
                                 id="file-upload"
                                 type="file"
-                                multiple
+                                multiple accept="image/*" 
                                 className="hidden"
                                 onChange={handleImageUpload}
                             />
@@ -365,7 +443,7 @@ export const AddPropertyContent: React.FC = () => {
                                 <div className="p-3 bg-[#183730] rounded-lg">
                                     <img className="w-6 h-6" src={upload} alt="" />
                                 </div>
-                                <p className="text-[14px] text-black px-4">Drag and drop images here or click to browse PNG, JPG up to 10MB each</p>
+                                <p className="text-[14px] text-black px-4">Drag and drop images here or click to browse</p>
                             </div>
                             <div className="mt-4 flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg">
                                 <img src={browse} alt="browse" className="w-4 h-4" />
@@ -373,18 +451,21 @@ export const AddPropertyContent: React.FC = () => {
                             </div>
                         </label>
 
-                        {images.length > 0 && (
+                        {imagePreviews.length > 0 && (
                             <p className="font-bold text-[14px] text-[#444545] mt-6 mb-2">Uploaded Images</p>
                         )}
                         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-2 gap-3">
-                            {images.map((url, idx) => (
+                            {imagePreviews.map((url, idx) => (
                                 <div key={idx} className="relative">
                                     <img src={url} className="w-full h-24 object-cover rounded-lg border shadow-sm" alt="preview" />
                                     <button
-                                        onClick={() => setImages(prev => prev.filter((_, i) => i !== idx))}
-                                        className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center"
+                                        onClick={() => {
+                                            setImagePreviews(prev => prev.filter((_, i) => i !== idx));
+                                            setImageFiles(prev => prev.filter((_, i) => i !== idx));
+                                        }}
+                                        className="absolute top-1 right-1 bg-white rounded-full p-1"
                                     >
-                                        <img src={cancel}alt="remove" className="w-5 h-5" />
+                                        <img src={cancel} alt="remove" className="w-4 h-4" />
                                     </button>
                                 </div>
                             ))}
@@ -394,19 +475,21 @@ export const AddPropertyContent: React.FC = () => {
                     {/* Amenities */}
                     <div className="flex flex-col gap-5">
                         <h2 className="font-bold text-[16px] text-[#023337]">Amenities</h2>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {amenityList.map((item) => (
                                 <div
                                     key={item}
                                     onClick={() => handleAmenity(item)}
-                                    className="flex items-center gap-2 cursor-pointer border border-[#E5E7EB] rounded-[8px] px-3 py-3"
+                                    className={`flex items-center gap-2 cursor-pointer border rounded-[8px] px-3 py-3 ${
+                                        form.amenities.includes(item) ? "border-[#1A3C34] bg-[#f0fdf4]" : "border-[#E5E7EB]"
+                                    }`}
                                 >
                                     <div className={`w-5 h-5 rounded-[4px] flex-shrink-0 flex items-center justify-center border transition-all ${
-                                        form.amenities[item as keyof typeof form.amenities]
+                                        form.amenities.includes(item)
                                             ? "bg-[#1A3C34] border-[#1A3C34]"
                                             : "bg-white border-gray-300"
                                     }`}>
-                                        {form.amenities[item as keyof typeof form.amenities] && (
+                                        {form.amenities.includes(item) && (
                                             <span className="text-white text-[11px]">✓</span>
                                         )}
                                     </div>
@@ -415,9 +498,64 @@ export const AddPropertyContent: React.FC = () => {
                             ))}
                         </div>
                     </div>
+                {/* coordinates */}
+                    <div className="flex flex-col gap-2">
+                            
+                           <h2 className="font-bold text-[16px] text-[#023337]">Map Coordinates</h2>
+                           <div className="flex w-full gap-5 mt-2">
+                            <div className="flex flex-col">
+                                <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Longitude</label>
+                                <input type="number" className="w-full h-[40px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none mt-3"
+                                name="longitude" 
+                                placeholder="0.0000"
+                                min="0.0000"
+                                step="0.0001"
+                                value={form.coordinates.longitude === 0 ? "" : form.coordinates.longitude}
+                                onChange={handleChange}/>
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Latitude</label>
+                                <input type="number" className="w-full h-[40px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none mt-3"
+                                name="latitude"
+                                placeholder="0.0000" 
+                                min="0.0000"
+                                step="0.0001"
+                                value={form.coordinates.latitude === 0 ? "" : form.coordinates.latitude}
+                                onChange={handleChange}/>
+                            </div>
+
+                           </div>
+                           
+
+                    </div>
+
+
+
+                    
                 </div>
 
             </div>
+
+            {/* Bottom action buttons — visible only on mobile/tablet (below xl), always last on page */}
+            <div className="flex xl:hidden justify-end gap-3 mt-6 px-4 md:px-5">
+                <button
+                    onClick={() => handleSubmit('draft')} disabled={isLoading}
+                    className="flex-1 sm:flex-none sm:w-[140px] h-[48px] rounded-[8px] border-[1px] bg-white border-[#75928B] flex items-center justify-center gap-2 font-bold text-[#031D17]"
+                >
+                    <img className="w-[12.8px] h-[12.8px]" src={save} alt="" /> Save Draft
+                </button>
+                <button
+                    onClick={() => handleSubmit('publish')} disabled={isLoading}
+                    className="flex-1 sm:flex-none sm:w-[140px] h-[48px] rounded-[8px] bg-[#1A3C34] text-white font-bold"
+                >
+                    {editingProperty ? "Update Property" : "Publish Property"}
+                </button>
+            </div>
+
+            {modal.show && (
+                <Modal type={modal.type} message={modal.message} onClose={handleModalClose} />
+            )}
         </div>
     );
 };

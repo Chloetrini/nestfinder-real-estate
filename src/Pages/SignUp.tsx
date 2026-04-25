@@ -2,9 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import desktop from "../../src/assets/desktop.png"
 import mobile from "../../src/assets/mobile.png"
 import nestpro from "../../src/assets/logo.png"
-import logo from "/src/assets/NestFinder Pro.png"
+
 import React, { useState , type FC } from "react";
-import { useAuth } from "../context/AuthContext";
+import { registerUser } from "../services/api";
+import Modal from "../Components/Universal/Modal";
 
 type Form = {
   email: string;
@@ -20,7 +21,7 @@ type ErrorType = {
 };
 
 const SignUp:FC = () => {
-  const {setIsSignedUp} = useAuth()
+  
   const [form, setForm] = useState<Form>({
     email: "",
     password: "",
@@ -33,8 +34,21 @@ const SignUp:FC = () => {
     confirmpassword: false,
     terms: false,
   });
-  const navigate = useNavigate();
+  // ---- BACKEND ADDED: loading state ----
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // ---- BACKEND ADDED: modal state ----
+  const [modal, setModal] = useState<{
+    show: boolean;
+    type: "success" | "error";
+    message: string;
+  }>({
+    show: false,
+    type: "success",
+    message: "",
+  });
+
+  const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const inputFieldName = name as keyof Form;
@@ -42,8 +56,10 @@ const SignUp:FC = () => {
     setError({ ...error, [inputFieldName]: false });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+ // ---- BACKEND UPDATED: handleSubmit is now async and calls real backend ----
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     let hasError = false;
     const newError: ErrorType = {
       email: false,
@@ -52,22 +68,30 @@ const SignUp:FC = () => {
       terms: false,
     };
 
-    // 1. Validation Logic
     if (!form.email.trim() || !form.email.includes("@")) {
       newError.email = true;
       hasError = true;
     }
+
     if (!form.password.trim() || form.password.length < 8) {
       newError.password = true;
       hasError = true;
     }
+
     if (!form.confirmpassword.trim() || form.confirmpassword !== form.password) {
       newError.confirmpassword = true;
       hasError = true;
     }
+
     if (!form.terms) {
-       newError.terms = true;
-       hasError = true;
+      newError.terms = true;
+      // ---- BACKEND UPDATED: show modal instead of alert ----
+      setModal({
+        show: true,
+        type: "error",
+        message: "You must agree to the terms and conditions.",
+      });
+      hasError = true;
     }
 
     if (hasError) {
@@ -75,23 +99,60 @@ const SignUp:FC = () => {
       return;
     }
 
-    // 2. Success Logic
-    setIsSignedUp({
-        email: form.email,
-        password: form.password
-    });
+    try {
+      setIsLoading(true);
 
-    navigate("/login", { 
-        state: { 
-            email: form.email, 
-            password: form.password, 
-            confirmpassword: form.confirmpassword 
-        } 
+      // ---- BACKEND CALL: send registration data to real backend ----
+      // ---- BACKEND REMOVED: setIsSignedUp() and navigate with state ----
+      const result = await registerUser({
+        name: form.email.split("@")[0],
+        email: form.email,
+        password: form.password,
+      });
+
+      if (result.success) {
+        // ---- BACKEND ADDED: show success modal then go to login ----
+        setModal({
+          show: true,
+          type: "success",
+          message: "Account created! Please check your email to verify your account.",
+        });
+      } else {
+        // ---- BACKEND ADDED: show error modal with backend message ----
+        setModal({
+          show: true,
+          type: "error",
+          message: result.message || "Registration failed. Please try again.",
+        });
+      }
+    } catch (error) {
+      // ---- BACKEND ADDED: show error modal on network failure ----
+      setModal({
+        show: true,
+        type: "error",
+        message: "Something went wrong. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+
+    setForm({
+      email: "",
+      password: "",
+      confirmpassword: "",
+      terms: false,
     });
   };
-
+// ---- BACKEND ADDED: handle modal close ----
+  // if success, navigate to login when user clicks OK
+  const handleModalClose = () => {
+    setModal({ ...modal, show: false });
+    if (modal.type === "success") {
+      navigate("/login");
+    }
+  };
   return (
-    <div className="w-full h-screen bg-white flex items-center justify-center overflow-hidden">
+    <div className="w-full h-screen bg-white flex items-center justify-center overflow-hidden font-[Manrope]">
       <div className="flex flex-col md:flex-row w-full h-full max-w-[1600px] mx-auto"> 
         
         {/* FORM SECTION */}
@@ -103,21 +164,16 @@ const SignUp:FC = () => {
             <div className="flex flex-col gap-3">
                 <div className="flex gap-4 items-center mb-2">
                     <img className="hidden md:block w-6 cursor-pointer" src={nestpro} onClick={()=>navigate("/")} alt="logo-icon" />
-                    <img className="hidden md:block" src={logo} alt="NestFinder Pro" />
+                    <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-700 text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
                 </div>
                 
                 <h4  onClick={() => { if (window.innerWidth < 768) navigate("/"); }} className="text-[17px] md:text-[32px] font-semibold tracking-wide md:cursor-default cursor-pointer">Create An account</h4>
-                <span className="font-light text-[13px] mb-6">Already have an account?
-                    <Link to="/login" className="underline font-medium ml-1">Log In</Link>
+                <span className="font-light text-[13px] mb-6 font-[Inter] text-[#525050]">Already have an account?
+                    <Link to="/login" className="underline font-medium ml-1 transition-all transform hover:scale-105">Log In</Link>
                 </span>
             </div>
 
-            
-            {error.terms && form.email && form.password && (
-              <p className="text-red-500 text-[12px] mb-4 bg-red-50 p-2 rounded border border-red-100 font-medium animate-in fade-in duration-300">
-                Please agree to the terms and conditions to continue.
-              </p>
-            )}
+      
 
        
             <label className={`text-[13px] font-medium ${error.email ? "text-red-500" : "text-black"}`} htmlFor="email">Email</label>
@@ -193,9 +249,10 @@ const SignUp:FC = () => {
                     I agree to the terms and conditions
                 </label>
             </div>
-            
-            <button className="w-full  h-[49px] bg-[#1A3C34] rounded-lg text-white font-light my-6 px-[24px] py-[12px] hover:bg-[#A5A8A8] transition-all">
-                Sign Up
+            {/* ---- BACKEND ADDED: button shows loading state ---- */}
+          
+            <button  className="w-full  h-[49px] bg-[#1A3C34] rounded-lg text-white font-light my-6 px-[24px] py-[12px] hover:bg-[#264d43] transition-all transform hover:scale-105 disabled:opacity-80 disabled:cursor-not-allowedn">
+                 {isLoading ? "Creating account..." : "Sign Up"}
             </button>
           </form>
         </div>
@@ -207,6 +264,15 @@ const SignUp:FC = () => {
         </div>
 
       </div>
+
+      {/* ---- BACKEND ADDED: modal for success and error messages ---- */}
+      {modal.show && (
+        <Modal
+          type={modal.type}
+          message={modal.message}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   )
 }

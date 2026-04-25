@@ -1,23 +1,41 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PropertyContext } from "../../context/AddPropertyContext";
 import { ManageContext } from "../../context/ManagePropertyContext";
 import up from "/src/assets/up.png"
 import down from "/src/assets/down.png"
 import Pagination from "../Universal/Pagination";
 import { useNavigate } from "react-router-dom";
-
+// ---- BACKEND: imported getUsersCount from api service ----
+import { getUsersCount } from "../../services/api";
 const Dashboard: React.FC = () => {
   const { properties, deleteProperty, setEditingProperty } = useContext(PropertyContext)!;
   const { setActivePage } = useContext(ManageContext)!;
   const navigate = useNavigate();
 
+
+  
   // Filter out any empty or incomplete property objects to prevent the "0 Naira / Empty Image" row
-  const validProperties = properties.filter(p => p.propertyName && p.id);
+  const validProperties = properties.filter(property => property.propertyName && property._id);
 
   const totalProperties = validProperties.length;
-  const activeListings = validProperties.filter(p => p.sale === "For Sale" || p.sale === "For Rent").length;
-  const pendingProperties = validProperties.filter(p => p.isDraft).length;
-  const totalUsers = 1240; 
+  const activeListings = validProperties.filter(property => property.sale === "For Sale" || property.sale === "For Rent").length
+  const pendingProperties = validProperties.filter(property => property.isDraft===true).length;
+  // ---- BACKEND ADDED: fetch real users count from backend ----
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchUsersCount = async () => {
+      try {
+        const data = await getUsersCount();
+        if (data.success) {
+          setTotalUsers(data.count);
+        }
+      } catch (error) {
+        console.error("Failed to fetch users count:", error);
+      }
+    };
+    fetchUsersCount();
+  }, []);
 
   const StatCard = ({ title, value, image, percent }: { title: string, value: number, image:string, percent: string }) => (
     <div className="bg-white p-4 rounded-xl border-[1px] border-[#1A3C34] shadow-sm">
@@ -57,7 +75,7 @@ const Dashboard: React.FC = () => {
                 setActivePage("Add Property");
                 navigate("/adminPage/add-property");
             }}
-            className="w-full sm:w-auto bg-[#1A3C34] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#023337] transition-all shadow-md">
+            className="w-full sm:w-auto bg-[#1A3C34] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#264d43] transition-all transform hover:scale-105 shadow-md">
             Add Property
           </button>
         </div>
@@ -89,12 +107,13 @@ const Dashboard: React.FC = () => {
 
               <tbody className="divide-y divide-gray-100">
                 {currentPropertyPagin.map((proper) => (
-                  <tr key={proper.id} className="hover:bg-gray-50">
+                  // ---- BACKEND UPDATED: key uses _id instead of id ----
+                  <tr key={proper._id} className="hover:bg-gray-50">
                     <td className="px-4 py-4 min-w-[250px]">
                       <div className="flex items-center gap-3">
-                        {proper.image && (
+                        {proper.images && (
                           <img 
-                            src={Array.isArray(proper.image) ? proper.image[0] : proper.image} 
+                            src={Array.isArray(proper.images) ? proper.images[0] : proper.images} 
                             alt="" 
                             className="w-12 h-12 rounded-lg object-cover border" 
                           />
@@ -104,7 +123,7 @@ const Dashboard: React.FC = () => {
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-5 text-[#4F887B] text-[14px]">{proper.PropertyType}</td>
+                    <td className="px-6 py-5 text-[#4F887B] text-[14px]">{proper.propertyType}</td>
                     <td className="px-6 py-5 text-[#4F887B] text-[14px] truncate hover:whitespace-normal hover:overflow-visible max-w-[150px]">
                       {proper.location.fullAddress}
                     </td>
@@ -119,7 +138,7 @@ const Dashboard: React.FC = () => {
                       <div className="flex justify-center items-center gap-3">
                         <button onClick={() => { setEditingProperty(proper); navigate("/adminPage/edit-property"); }} className="text-[#21C45D] font-bold text-[13px]">Edit</button>
                         <span className="text-[#21C45D]">/</span>
-                        <button onClick={() => deleteProperty(proper.id)} className="text-red-500 font-bold text-[13px]">Delete</button>
+                        <button onClick={() => deleteProperty(proper._id)} className="text-red-500 font-bold text-[13px]">Delete</button>
                       </div>
                     </td>
                   </tr>

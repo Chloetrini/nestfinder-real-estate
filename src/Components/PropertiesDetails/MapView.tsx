@@ -7,21 +7,26 @@ interface MapProps {
   propertyName: string;
   location: {
     fullAddress: string;
-    coordinates: { lat: number, lng: number }
+    // ---- BACKEND UPDATED: coordinates is optional since not all properties have it ----
+   
   };
+   coordinates?: { latitude: number, longitude: number }
   image: string;
 }
 
-const MapView = ({ location, image, propertyName }: MapProps) => {
+const MapView = ({ location, image, propertyName ,coordinates}: MapProps) => {
   const [open, setOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
 
   const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
-  const position = { lat: location.coordinates.lat, lng: location.coordinates.lng };
-
+  // ---- BACKEND UPDATED: coordinates is optional, fallback to Lagos coordinates ----
+  const position = {
+  lat: coordinates?.latitude ?? 6.5244,
+  lng: coordinates?.longitude ?? 3.3792
+};
   return (
-    <div className="mt-10 font-Manrope">
+    <div className="mt-10 font-[Manrope]">
       <h5 className="text-[24px] font-bold mb-5 underline">Location</h5>
       
       <div className="h-[444px] w-full rounded-2xl overflow-hidden border">

@@ -1,105 +1,150 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { useFetch } from "../Hooks/useFetch";
 import { CircleLoader } from "react-spinners";
+
+// ---- BACKEND: imported api functions ----
+import { getAdminProperties, deleteProperty as deletePropertyAPI } from "../services/api";
+
+// ---- BACKEND REMOVED: useFetch hook no longer needed ----
+// import { useFetch } from "../../Hooks/useFetch";
 
 export const useProperties = () => {
   const context = useContext(PropertyContext);
-  
   if (!context) {
     throw new Error("useProperties must be used within a PropertyProvider");
   }
-  
   return context;
 };
 
-
-export type PropertyTypee = {
-    id: number;
-    propertyName: string;
-     price: number;
-    propertyDescription: string;
-    PropertyType: string;
-    sale: "For Sale"|"For Rent";
-   location: {
-     city: string;
-     state: string;
-     fullAddress: string;
-   }
-   details: {
-     bedrooms: number;
-     bathrooms: number;
-     size: number;
-   }
-     image: string[] ;
-   amenities: { [key: string]: boolean };
-    isFeatured: boolean;
-    isDraft: boolean
-}
+// ---- BACKEND UPDATED: PropertyType now matches backend model ----
+// ---- BACKEND REMOVED: id is now _id string from MongoDB ----
+export type PropertyType = {
+  _id: string;
+  propertyName: string;
+  price: number;
+  propertyDescription: string;
+  propertyType: "Villa" | "Duplex" | "Apartment" | "Residential" | "House";
+  sale: "For Sale" | "For Rent";
+  location: {
+    city: string;
+    state: string;
+    fullAddress: string;
+  };
+  propertyDetails: {
+    bedrooms: number;
+    bathroom: number;
+    size: number;
+  };
+   coordinates: {
+    longitude: number;
+    latitude: number;
+  };
+  // ---- BACKEND UPDATED: images array instead of image ----
+  images: string[];
+  amenities: string[];
+  isFeatured: boolean;
+  isDraft: boolean;
+  agentName: string;
+  agentPhone: string;
+  discount: string;
+};
 
 export type PropertyContextType = {
-    properties: PropertyTypee[];
-    publishProperty: (newProperty: PropertyTypee)=> void
-    deleteProperty: (id:number)=>void
-    editingProperty: PropertyTypee | null;
-    setEditingProperty: (property: PropertyTypee | null) => void;
-    updateProperty: (updatedProperty: PropertyTypee) => void;
-}
+  properties: PropertyType[];
+  // ---- BACKEND UPDATED: publishProperty now handled by backend ----
+  publishProperty: (newProperty: PropertyType) => void;
+  // ---- BACKEND UPDATED: deleteProperty now calls backend ----
+  deleteProperty: (id: string) => void;
+  editingProperty: PropertyType | null;
+  setEditingProperty: (property: PropertyType | null) => void;
+  // ---- BACKEND UPDATED: updateProperty now handled by backend ----
+  updateProperty: (updatedProperty: PropertyType) => void;
+  // ---- BACKEND ADDED: refetch properties from backend ----
+  fetchProperties: () => void;
+  isLoading: boolean;
+};
 
 export const PropertyContext = createContext<PropertyContextType | null>(null);
 
-export const PropertyProvider: React.FC<{children: React.ReactNode}> = ({children})=>{
-    const [properties, setProperties] = useState<PropertyTypee[]>([
-        ]);
-const { results, isLoading } = useFetch<PropertyTypee[]>("/data/properties.json");
+export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [properties, setProperties] = useState<PropertyType[]>([]);
+  const [editingProperty, setEditingProperty] = useState<PropertyType | null>(null);
 
-  // 3. When the hook finishes fetching (results is no longer null), 
-  // we put those results into our 'properties' list.
-  useEffect(() => {
-    if (results) {
-      console.log("Data fetched successfully:", results);
-      setProperties(results);
+  // ---- BACKEND ADDED: loading state ----
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // ---- BACKEND ADDED: fetch all properties from backend on mount ----
+  const fetchProperties = async () => {
+    try {
+      setIsLoading(true);
+
+      // ---- BACKEND CALL: get all properties including drafts for admin ----
+      // ---- BACKEND REMOVED: useFetch("/data/properties.json") ----
+      const data = await getAdminProperties();
+
+      if (data.success) {
+        console.log("Data fetched successfully from backend:", data.properties);
+        setProperties(data.properties);
+      }
+    } catch (error) {
+      console.error("Failed to fetch properties:", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [results]);
-
-
-      const publishProperty = (newProperty: PropertyTypee) => {
-    setProperties([...properties, newProperty]);
   };
 
-  // Go through all my houses and make a new list containing every house except the one with the id I just clicked. Then, make that new list my main list."
+  useEffect(() => {
+    fetchProperties();
+  }, []);
 
+  // ---- BACKEND UPDATED: publishProperty adds to local state after backend save ----
+  const publishProperty = (newProperty: PropertyType) => {
+    setProperties((prev) => [newProperty, ...prev]);
+  };
 
-  const deleteProperty = (id: number) => {
-    setProperties((prev) => prev.filter((property) => property.id !== id));
-};
+  // ---- BACKEND UPDATED: deleteProperty calls real backend then updates local state ----
+  // "Go through all my houses and make a new list containing every house except the one with the id I just clicked."
+  const deleteProperty = async (id: string) => {
+    try {
+      const result = await deletePropertyAPI(id);
+      if (result.success) {
+        setProperties((prev) => prev.filter((property) => property._id !== id));
+      } else {
+        alert("Failed to delete property");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Something went wrong during deletion");
+    }
+  };
 
-  const [editingProperty, setEditingProperty] = useState<PropertyTypee| null>(null)
-
+  // ---- BACKEND UPDATED: updateProperty updates local state after backend save ----
   // ======= Go through my list, find the house with the matching ID, swap the old info for the new info, and then close it.========
-  const updateProperty = (updatedProp: PropertyTypee) => {
-    setProperties(prev => prev.map(propertys => propertys.id === updatedProp.id ? updatedProp : propertys));
-    // this just means i'm clearing  the box after saving my property
-    setEditingProperty(null); 
-};
+  const updateProperty = (updatedProp: PropertyType) => {
+    setProperties((prev) =>
+      prev.map((p) => (p._id === updatedProp._id ? updatedProp : p))
+    );
+    // this just means i'm clearing the box after saving my property
+    setEditingProperty(null);
+  };
 
-  return(
+  return (
     <PropertyContext.Provider value={{
-      properties, 
-    publishProperty, 
-    deleteProperty,
-    editingProperty, 
-    setEditingProperty, 
-    updateProperty,
+      properties,
+      publishProperty,
+      deleteProperty,
+      editingProperty,
+      setEditingProperty,
+      updateProperty,
+      fetchProperties,
+      isLoading,
     }}>
-     {isLoading ? (
-        <div className='flex justify-center font-bold h-screen items-center '>
+      {isLoading ? (
+        <div className='flex justify-center font-bold h-screen items-center'>
           <CircleLoader size={40} color={'green'} />
         </div>
       ) : (
         children
       )}
     </PropertyContext.Provider>
-  )
-
-}
-
+  );
+};

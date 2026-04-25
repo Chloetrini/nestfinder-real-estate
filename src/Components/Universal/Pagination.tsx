@@ -40,7 +40,7 @@ const Pagination = ({ totalPosts, postPerPage, setCurrentPage, currentPage }: Pa
   const visiblePages = getVisiblePages();
 
   return (
-    <div className="flex flex-nowrap justify-between items-center mt-4 mb-7 h-[42px] mx-auto w-full px-2 sm:px-4 gap-1 sm:gap-2 md:gap-4">
+    <div className="flex flex-nowrap justify-between items-center mt-4 mb-7 h-[42px] mx-auto w-full  gap-1 sm:gap-2 md:gap-4 Font-[Inter]">
       {/* Previous Button */}
       <div className="flex-shrink-0">
         <button

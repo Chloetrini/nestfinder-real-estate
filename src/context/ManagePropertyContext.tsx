@@ -1,6 +1,6 @@
 import React, {createContext, useState} from "react"
 
-export type ManageType = "Dashboard" | "Add Property" | "Update Property" | "All Properties" | "For Sale" | "For Rent" | "Featured" | "Draft"
+export type ManageType = "Dashboard" | "Add Property" | "Update Property" | "All Properties" | "For Sale" | "For Rent" | "Featured" | "Draft" |"Enquiries";
 
 export type ManageContextType = {
     activepage: ManageType;

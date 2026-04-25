@@ -4,7 +4,9 @@ import { ManageContext } from "../../context/ManagePropertyContext"
 import search from "/src/assets/searchm.png"
 import Pagination from "../Universal/Pagination"
 import { useNavigate } from 'react-router-dom'
-
+// ---- BACKEND: imported updateProperty to publish drafts ----
+import { updateProperty as updatePropertyAPI } from "../../services/api"
+import Modal from "../Universal/Modal"
 export const ManageContent: React.FC = () => {
   const navigate = useNavigate()
   const propertiesContext = useContext(PropertyContext)
@@ -14,12 +16,18 @@ export const ManageContent: React.FC = () => {
     return <p className="p-10">Content loading...</p>
   }
 
-  const { properties, deleteProperty, setEditingProperty } = propertiesContext
+  const { properties, deleteProperty, setEditingProperty,updateProperty } = propertiesContext
   const { activepage, setActivePage, searchBar, setSearchBar } = manageContext
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(6);
-  
+ // ---- BACKEND ADDED: modal state for success and error messages ----
+  const [modal, setModal] = useState<{
+    show: boolean;
+    type: "success" | "error";
+    message: string;
+  }>({ show: false, type: "success", message: "" });
+
   // Filtering Logic
   const filteredProperties = properties.filter((property) => {
     let pageMatch = false;
@@ -29,7 +37,7 @@ export const ManageContent: React.FC = () => {
     else pageMatch = property.sale === activepage;
 
     const matchSearch = (property.propertyName?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
-      (property.PropertyType?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
+      (property.propertyType?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
       (property.location?.city?.toLowerCase() || "").includes(searchBar.toLowerCase()) || 
       (property.location?.state?.toLowerCase() || "").includes(searchBar.toLowerCase());
 
@@ -41,6 +49,63 @@ export const ManageContent: React.FC = () => {
   const firstPostIndex = lastPostIndex - postPerPage;
   const currentPropertyPagin = filteredProperties.slice(firstPostIndex, lastPostIndex);
 
+  // ---- BACKEND ADDED: publish a draft property directly from manage table ----
+  const handlePublishDraft = async (propertyId: string) => {
+    try {
+      // ---- find the property we want to publish ----
+      const prop = properties.find((p) => p._id === propertyId);
+      if (!prop) return;
+
+      // ---- build full FormData with all existing property data ----
+      const formData = new FormData();
+      formData.append("propertyName", prop.propertyName);
+      formData.append("price", String(prop.price));
+      formData.append("propertyDescription", prop.propertyDescription);
+      formData.append("propertyType", prop.propertyType);
+      formData.append("sale", prop.sale);
+      formData.append("city", prop.location.city);
+      formData.append("state", prop.location.state);
+      formData.append("fullAddress", prop.location.fullAddress);
+      formData.append("bedrooms", String(prop.propertyDetails.bedrooms));
+      formData.append("bathroom", String(prop.propertyDetails.bathroom));
+      formData.append("size", String(prop.propertyDetails.size));
+      formData.append("amenities", JSON.stringify(prop.amenities));
+      formData.append("isFeatured", String(prop.isFeatured));
+      formData.append("agentName", prop.agentName || "");
+      formData.append("agentPhone", prop.agentPhone || "");
+      formData.append("discount", prop.discount || "");
+      // ---- set isDraft to false to publish ----
+      formData.append("isDraft", "false");
+
+      const result = await updatePropertyAPI(propertyId, formData);
+
+      if (result.success) {
+        updateProperty(result.property);
+        setModal({
+          show: true,
+          type: "success",
+          message: "Property published successfully!",
+        });
+      } else {
+        setModal({
+          show: true,
+          type: "error",
+          message: result.message || "Failed to publish property",
+        });
+      }
+    } catch (error) {
+      setModal({
+        show: true,
+        type: "error",
+        message: "Something went wrong. Please try again.",
+      });
+    }
+  };
+
+  // ---- BACKEND ADDED: delete with modal confirmation ----
+  const handleDelete = async (propertyId: string) => {
+    await deleteProperty(propertyId);
+  };
   return (
     <div className="flex flex-col bg-[#F3F4F6] min-h-screen w-full pb-10">
       <nav className="h-[76px] w-full bg-white px-4 md:px-10 flex items-center border-b border-[#BAB9B9] sticky top-0 z-20">
@@ -59,7 +124,7 @@ export const ManageContent: React.FC = () => {
               setActivePage("Add Property");
               navigate("/adminPage/add-property");
             }}
-            className="w-full sm:w-auto bg-[#1A3C34] text-white px-6 py-3 rounded-[8px] font-bold text-[15px] hover:bg-[#023337] transition-all">
+            className="w-full sm:w-auto bg-[#1A3C34] text-white px-6 py-3 rounded-[8px] font-bold text-[15px] hover:bg-[#264d43] transition-all transform hover:scale-105">
             Add New Property
           </button>
         </div>
@@ -106,12 +171,12 @@ export const ManageContent: React.FC = () => {
 
               <tbody className="divide-y divide-gray-100">
                 {currentPropertyPagin.map((property) => (
-                  <tr key={property.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={property._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 min-w-[250px]">
                       <div className="flex items-center gap-3">
-                        {property.image && (
+                        {property.images && (
                           <img 
-                            src={Array.isArray(property.image) ? property.image[0] : property.image} 
+                            src={Array.isArray(property.images) ? property.images[0] : property.images} 
                             alt="" 
                             className="w-12 h-12 rounded-lg object-cover border border-gray-200" 
                           />
@@ -119,18 +184,23 @@ export const ManageContent: React.FC = () => {
                         <span className="font-bold text-[#0A1916] text-[14px] md:text-[15px]">
                           {property.propertyName}
                         </span>
+                        {/* ---- BACKEND ADDED: show Draft badge on draft properties ---- */}
+                            {property.isDraft && (
+                              <span className="text-[11px] text-orange-500 font-medium">Draft</span>
+                            )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-[#403F3F] text-[14px] whitespace-nowrap">{property.PropertyType}</td>
+                    <td className="px-6 py-4 text-[#403F3F] text-[14px] whitespace-nowrap">{property.propertyType}</td>
                     <td className="px-6 py-4 text-[#403F3F] text-[14px]">
                       <p className="truncate hover:whitespace-normal hover:overflow-visible max-w-[180px]">{property.location.fullAddress} </p>
                     </td>
                     <td className="px-6 py-4 font-bold text-[#023337] whitespace-nowrap">₦{property.price.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                  
-                        <span className={`w-2 h-2 rounded-full ${property.sale === "For Sale" ? "bg-[#10B981]" : "bg-[#F59E0B]"}`}></span>
-                        <span className="text-[#023337] font-medium text-[14px] whitespace-nowrap">{property.sale}</span>
+                   {/* ---- BACKEND UPDATED: show Draft status for draft properties ---- */}
+                        <span className={`w-2 h-2 rounded-full ${property.isDraft ? "bg-orange-400" :
+                            property.sale === "For Sale" ? "bg-[#10B981]" : "bg-[#F59E0B]"}`}></span>
+                        <span className="text-[#023337] font-medium text-[14px] whitespace-nowrap">{property.isDraft ? "Draft" : property.sale}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -144,9 +214,22 @@ export const ManageContent: React.FC = () => {
                         >
                           Edit
                         </button>
+                        {/* ---- BACKEND ADDED: Publish button only for draft properties ---- */}
+                          {property.isDraft && (
+                            <>
+                              <button
+                                onClick={() => handlePublishDraft(property._id)}
+                                className="text-[#1A3C34] font-normal text-[15px] hover:underline">
+                                Publish
+                              </button>
+                              <span className="text-[#21C45D]">/</span>
+                            </>
+                          )}
+
+                          {/* ---- Delete button — always shown ---- */}
                         <span className="text-gray-300">/</span>
                         <button 
-                          onClick={() => deleteProperty(property.id)}
+                          onClick={() => handleDelete(property._id)}
                           className="text-[#FF0000] font-medium text-[14px] hover:underline"
                         >
                           Delete
@@ -167,7 +250,7 @@ export const ManageContent: React.FC = () => {
         </div>
 
        
-        <div className="w-full flex justify-center mt-8">
+        <div className="w-full flex justify-center mt-8 ">
           <Pagination
             totalPosts={filteredProperties.length}
             postPerPage={postPerPage}
@@ -176,6 +259,14 @@ export const ManageContent: React.FC = () => {
           />
         </div>
       </div>
+       {/* ---- BACKEND ADDED: modal for success and error messages ---- */}
+      {modal.show && (
+        <Modal
+          type={modal.type}
+          message={modal.message}
+          onClose={() => setModal({ ...modal, show: false })}
+        />
+      )}
     </div>
   )
 }

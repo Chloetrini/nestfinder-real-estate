@@ -8,26 +8,85 @@ import { ManageContext } from "../../context/ManagePropertyContext"
 import { useContext } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
+// ---- BACKEND ADDED: imported removeToken to clear JWT on logout ----
+import { removeToken } from "../../services/api"
+
 const Sidebar = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const manageContext = useContext(ManageContext)
     if (!manageContext) return ("No content")
 
-    const { setActivePage } = manageContext
+    const { activepage, setActivePage } = manageContext
 
-    const isActive = (path: string) => {
-        return location.pathname === path;
+    // ---- HELPER CONSTANTS FOR NAVIGATION LOGIC ----
+    const isActive = (path: string) => location.pathname === path;
+    const isPageActive = (page: string) => activepage === page;
+
+    // ---- NAVIGATION FUNCTIONS (CLEANER ONCLICK HANDLERS) ----
+    const handleDashboardClick = () => {
+        setActivePage("Dashboard");
+        navigate("/adminPage");
     };
 
-    const handleClick = () => {
-        navigate("/adminPage")
-    }
+    const handleAddPropertyClick = () => {
+        setActivePage("Add Property");
+        navigate("/adminPage/add-property");
+    };
 
     const handleManageClick = () => {
-        setActivePage("All Properties")
-        navigate("/adminPage/manage-property")
-    }
+        setActivePage("All Properties");
+        navigate("/adminPage/manage-property");
+    };
+
+    // ---- BACKEND ADDED: navigate to enquiries page ----
+    const handleEnquiriesClick = () => {
+        setActivePage("Enquiries");
+        navigate("/adminPage/enquiries");
+    };
+
+    const handleLogout = () => {
+        removeToken();
+        navigate("/login");
+    };
+
+    // This encapsulates the tutor's logic for active states 
+    const getSidebarActiveStates = () => {
+        const isDashboardActive =
+            isActive("/adminPage") &&
+            !isPageActive("Add Property") &&
+            !isPageActive("Update Property") &&
+            !isPageActive("All Properties") &&
+            !isPageActive("For Sale") &&
+            !isPageActive("For Rent") &&
+            !isPageActive("Featured") &&
+            !isPageActive("Draft") &&
+            !isPageActive("Enquiries");
+
+        const isAddPropertyActive =
+            isActive("/adminPage/add-property") ||
+            isPageActive("Add Property") ||
+            isPageActive("Update Property");
+
+        const isManageActive =
+            (isActive("/adminPage/manage-property") ||
+                isPageActive("All Properties") ||
+                isPageActive("For Sale") ||
+                isPageActive("For Rent") ||
+                isPageActive("Featured") ||
+                isPageActive("Draft")) &&
+            !isPageActive("Add Property") &&
+            !isPageActive("Update Property");
+
+        // ---- BACKEND ADDED: Enquiries is active when on enquiries page ----
+        const isEnquiriesActive =
+            isPageActive("Enquiries") ||
+            isActive("/adminPage/enquiries");
+
+        return { isDashboardActive, isAddPropertyActive, isManageActive, isEnquiriesActive };
+    };
+
+    const { isDashboardActive, isAddPropertyActive, isManageActive, isEnquiriesActive } = getSidebarActiveStates();
 
     return (
         <div className="fixed bottom-0 left-0 w-full bg-white border-t border-[#BAB9B9] z-50 lg:static lg:w-[260px] lg:min-h-screen lg:border-t-0 lg:border-r flex lg:flex-col justify-between">
@@ -67,21 +126,21 @@ const Sidebar = () => {
 
                         {/* Dashboard */}
                         <div 
-                            onClick={handleClick} 
+                            onClick={handleDashboardClick} 
                             className={`flex flex-col lg:flex-row items-center w-full lg:w-[260px] py-1 lg:py-[9px] px-1 lg:px-4 gap-0.5 lg:gap-2 cursor-pointer transition-colors
-                            ${isActive("/adminPage") ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
+                            ${isDashboardActive ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
                         >
-                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isActive("/adminPage") ? "" : "opacity-70"}`} src={home} alt="home" />
+                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isDashboardActive ? "" : "opacity-70"}`} src={home} alt="home" />
                             <span className="font-lato text-[9px] lg:text-[16px]">Dashboard</span>
                         </div>
 
                         {/* Add Property */}
                         <div 
-                            onClick={() => navigate("/adminPage/add-property")} 
+                            onClick={handleAddPropertyClick} 
                             className={`flex flex-col lg:flex-row items-center w-full lg:w-[260px] py-1 lg:py-[9px] px-1 lg:px-4 gap-0.5 lg:gap-2 cursor-pointer transition-colors
-                            ${isActive("/adminPage/add-property") ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
+                            ${isAddPropertyActive ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
                         >
-                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isActive("/adminPage/add-property") ? "" : "opacity-70"}`} src={circle} alt="add" />
+                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isAddPropertyActive ? "" : "opacity-70"}`} src={circle} alt="add" />
                             <span className="hidden md:block font-lato text-[9px] lg:text-[16px]">Add Property</span>
                             <span className="font-lato text-[9px] block md:hidden">Add</span>
                         </div>
@@ -90,16 +149,27 @@ const Sidebar = () => {
                         <div 
                             onClick={handleManageClick} 
                             className={`flex flex-col lg:flex-row items-center w-full lg:w-[260px] py-1 lg:py-[9px] px-1 lg:px-4 gap-0.5 lg:gap-2 cursor-pointer transition-colors
-                            ${isActive("/adminPage/manage-property") ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
+                            ${isManageActive ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
                         >
-                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isActive("/adminPage/manage-property") ? "" : "opacity-70"}`} src={user} alt="manage" />
+                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isManageActive ? "" : "opacity-70"}`} src={user} alt="manage" />
                             <span className="hidden md:block font-lato text-[9px] lg:text-[16px]">Manage Property</span>
                             <span className="font-lato text-[9px] block md:hidden">Manage</span>
                         </div>
 
+                        {/* ---- BACKEND ADDED: Enquiries sidebar item ---- */}
+                        <div 
+                            onClick={handleEnquiriesClick} 
+                            className={`flex flex-col lg:flex-row items-center w-full lg:w-[260px] py-1 lg:py-[9px] px-1 lg:px-4 gap-0.5 lg:gap-2 cursor-pointer transition-colors
+                            ${isEnquiriesActive ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
+                        >
+                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isEnquiriesActive ? "" : "opacity-70"}`} src={user} alt="enquiries" />
+                            <span className="hidden md:block font-lato text-[9px] lg:text-[16px]">Enquiries</span>
+                            <span className="font-lato text-[9px] block md:hidden">Enquiries</span>
+                        </div>
+
                         {/* Logout — mobile only */}
                         <div
-                            onClick={() => navigate("/login")}
+                            onClick={handleLogout}
                             className="flex flex-col items-center w-full py-1 px-1 gap-0.5 cursor-pointer lg:hidden text-[#FF0000]"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +187,7 @@ const Sidebar = () => {
                 <div className="flex items-center gap-2">
                     <img src={users} alt="user" />
                     <button
-                        onClick={() => navigate("/login")}
+                        onClick={handleLogout}
                         className="text-[#FF0000] font-lato text-[16px] font-medium hover:underline"
                     >
                         Logout
