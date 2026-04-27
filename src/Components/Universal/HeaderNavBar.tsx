@@ -118,9 +118,9 @@ const HeaderNavBar: FC = () => {
             </div>
           ) : (
             <>
-              <button onClick={handleLoggedIn} className="border rounded-[10px] py-[10px] px-[24px] text-[#1A3C34] font-[400]">Login</button>
+              <button onClick={handleLoggedIn} className="border rounded-[10px] py-[10px] px-[24px] text-[#1A3C34] font-[400] hover:scale-105 hover:transition-all hover:transform">Login</button>
               <button
-                className="bg-[#1A3C34] rounded-[10px] py-[10px] px-[24px] text-white hover:bg-[#264d43]"
+                className="bg-[#1A3C34] rounded-[10px] py-[10px] px-[24px] text-white hover:bg-[#264d43] hover:scale-105 hover:transition-all hover:transform"
                 onClick={handleSignUpClick}
               >
                 Sign Up

@@ -128,7 +128,7 @@ const LogIn: FC = () => {
             <div className="flex flex-col gap-3">
               <div className="flex gap-4 items-center mb-2">
                 
-                <img className="hidden md:block w-6 cursor-pointer" src={nestpro} onClick={() => navigate("/")} alt="arrow" />
+                <img className="hidden md:block w-6 cursor-pointer hover:scale-135 hover:transition-all hover:transform" src={nestpro} onClick={() => navigate("/")} alt="arrow" />
                 <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-[700] text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
               </div>
               

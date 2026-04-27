@@ -165,7 +165,7 @@ const ResetPassword = () => {
             <div className="flex flex-col gap-3">
               <div className="flex gap-4 items-center">
                 <img
-                  className="hidden md:block w-6 cursor-pointer"
+                  className="hidden md:block w-6 cursor-pointer hover:scale-135 hover:transition-all hover:transform"
                   src={nestpro}
                   onClick={() => navigate("/")}
                   alt="arrow"
