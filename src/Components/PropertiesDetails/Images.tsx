@@ -17,7 +17,7 @@ const Placeholder = ({ className }: { className: string }) => (
 const Images = ({ images }: ImagesProps) => {
   // ---- helper to safely get image at a specific index ----
   const getImage = (index: number): string | null => images[index] || null;
-
+  
   return ( 
     <div className="flex lg:flex-row flex-col gap-4">
         {/* Main large image (Index 0) */}

@@ -17,6 +17,25 @@ import Modal from "../Universal/Modal";
 import { allStates, getCitiesByState } from "../../data/nigeriaStates";
 import { useNavigate } from "react-router-dom";
 
+
+// ---- VALIDATION: type for tracking field-level error messages ----
+type FormErrors = {
+    propertyName?: string;
+    propertyDescription?: string;
+    price?: string;
+    propertyType?: string;
+    sale?: string;
+    agentName?: string;
+    agentPhone?: string;
+    state?: string;
+    city?: string;
+    fullAddress?: string;
+    bedrooms?: string;
+    bathroom?: string;
+    size?: string;
+    images?: string;
+};
+
 export const AddPropertyContent: React.FC = () => {
     const { publishProperty, updateProperty, editingProperty, setEditingProperty } = useProperties();
     const manageContext = useContext(ManageContext);
@@ -24,11 +43,15 @@ export const AddPropertyContent: React.FC = () => {
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
     const [modal, setModal] = useState<{
         show: boolean;
         type: "success" | "error";
         message: string;
     }>({ show: false, type: "success", message: "" });
+
+    // ---- VALIDATION: state to hold all field-level error messages ----
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const [form, setForm] = useState<PropertyType>({
         _id: "",
@@ -48,7 +71,7 @@ export const AddPropertyContent: React.FC = () => {
         agentPhone: "",
         discount: "",
     });
-
+    
     useEffect(() => {
         if (editingProperty) {
             setForm(editingProperty);
@@ -88,10 +111,16 @@ export const AddPropertyContent: React.FC = () => {
       [name]: parsedValue,
     };
   });
+
+  // ---- VALIDATION: clear the error for a field as soon as the user starts filling it in ----
+  setErrors((prev) => ({ ...prev, [name]: undefined }));
 };
 
     const nestedHandleChange = (section: 'location' | 'propertyDetails', field: string, value: any) => {
         setForm(prev => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
+
+        // ---- VALIDATION: clear nested field errors (state, city, fullAddress, bedrooms, bathroom, size) on change ----
+        setErrors((prev) => ({ ...prev, [field]: undefined }));
     };
 
     const handleAmenity = (amenity: string) => {
@@ -109,10 +138,102 @@ export const AddPropertyContent: React.FC = () => {
             const newPreviews = filesArray.map(file => URL.createObjectURL(file));
             setImageFiles(prev => [...prev, ...filesArray]);
             setImagePreviews(prev => [...prev, ...newPreviews]);
+
+            // ---- VALIDATION: clear the images error once the user uploads at least one image ----
+            setErrors((prev) => ({ ...prev, images: undefined }));
         }
+    };
+    // ---- ADDED: drag and drop handlers ----
+    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+        const filesArray = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith("image/"));
+        if (filesArray.length > 0) {
+            const newPreviews = filesArray.map(file => URL.createObjectURL(file));
+            setImageFiles(prev => [...prev, ...filesArray]);
+            setImagePreviews(prev => [...prev, ...newPreviews]);
+        }
+    };
+    // ---- END ADDED ----
+    // ---- VALIDATION: validates fields required for "Save to Draft" (property name + location) ----
+    const validateDraft = (): FormErrors => {
+        const newErrors: FormErrors = {};
+
+        if (!form.propertyName.trim()) {
+            newErrors.propertyName = "Please enter the property name.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+
+        return newErrors;
+    };
+
+    // ---- VALIDATION: validates all fields required for "Publish Property" ----
+    const validatePublish = (): FormErrors => {
+        // Start with the draft rules (name + location), then add the rest
+        const newErrors: FormErrors = validateDraft();
+
+        if (!form.propertyDescription.trim()) {
+            newErrors.propertyDescription = "Please enter a property description.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (!form.price || form.price <= 0) {
+            newErrors.price = "Please enter a valid price.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (!form.agentName.trim()) {
+            newErrors.agentName = "Please enter the agent name.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (!form.agentPhone.trim()) {
+            newErrors.agentPhone = "Please enter the agent phone number.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (form.propertyDetails.bedrooms === 0) {
+            newErrors.bedrooms = "Please select the number of bedrooms.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (form.propertyDetails.bathroom === 0) {
+            newErrors.bathroom = "Please select the number of bathrooms.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (!form.propertyDetails.size || Number(form.propertyDetails.size) <= 0) {
+            newErrors.size = "Please enter the property size.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+        if (imageFiles.length === 0 && imagePreviews.length === 0) {
+            newErrors.images = "Please upload at least one property image.";
+            setModal({ show: true, type: "error", message: "Please fill out all required field" });
+        }
+
+        return newErrors;
     };
 
     const handleSubmit = async (status: 'publish' | 'draft') => {
+        // ---- VALIDATION: run the appropriate validator before submitting ----
+        const validationErrors = status === 'draft' ? validateDraft() : validatePublish();
+
+        // ---- VALIDATION: if there are any errors, set them in state and stop submission ----
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        // ---- VALIDATION: clear any previous errors if validation passes ----
+        setErrors({});
+
         try {
             setIsLoading(true);
             const formData = new FormData();
@@ -135,6 +256,8 @@ export const AddPropertyContent: React.FC = () => {
             formData.append("discount", form.discount);
             formData.append("latitude", String(form.coordinates?.latitude ?? ""));
             formData.append("longitude", String(form.coordinates?.longitude ?? ""));
+            const existingImages = imagePreviews.filter(src => !src.startsWith('blob:'));
+            formData.append("existingImages", JSON.stringify(existingImages));
             imageFiles.forEach((file) => formData.append("images", file));
 
             let result;
@@ -165,6 +288,7 @@ export const AddPropertyContent: React.FC = () => {
         }
     };
 
+
     const handleModalClose = () => {
         setModal({ ...modal, show: false });
         if (modal.type === "success") {
@@ -192,6 +316,9 @@ export const AddPropertyContent: React.FC = () => {
             });
             setImageFiles([]);
             setImagePreviews([]);
+
+            // ---- VALIDATION: clear errors after form reset ----
+            setErrors({});
         }
     };
 
@@ -208,6 +335,9 @@ export const AddPropertyContent: React.FC = () => {
             </nav>
 
             {/* Header row */}
+            <form action="">
+
+            
             <div className="flex flex-col sm:flex-row justify-between px-4 md:px-10 py-6 items-start sm:items-center gap-4">
                 <div className="flex flex-col gap-[8px]">
                     <h1 className="font-bold font-['Lato'] text-[20px] md:text-[22px] text-[#023337] ">Add New Property</h1>
@@ -215,12 +345,14 @@ export const AddPropertyContent: React.FC = () => {
                 </div>
                 <div className="flex gap-3 w-full sm:w-auto shrink-0">
                     <button
+                        type="button"
                         onClick={() => handleSubmit('publish')} disabled={isLoading}
                         className="flex-1 sm:flex-none sm:w-[160px] h-[48px] rounded-[8px] border-[1px] border-[#75928B] bg-[#1A3C34] font-bold text-[15px] font-['Lato'] text-[#FFFFFF] whitespace-nowrap px-3"
                     >
                         {isLoading ? "Saving..." : editingProperty ? "Update Property" : "Publish Property"}
                     </button>
                     <button
+                        type="button"
                         onClick={() => handleSubmit('draft')} disabled={isLoading}
                         className="flex-1 sm:flex-none sm:w-[150px] h-[48px] rounded-[8px] border-[1px] bg-[#FFFFFF] border-[#75928B] flex items-center justify-center gap-2 font-bold text-[15px] text-[#031D17] font-['Lato'] whitespace-nowrap px-3"
                     >
@@ -243,31 +375,39 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex flex-col gap-[12px]">
                             <label className="font-['Lato'] font-bold text-[16px] text-[#444545]">Property Title</label>
                             <input
-                                className="w-full max-w-[563px] h-[48px] rounded-[8px] border-[1px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
+                                className={`w-full max-w-[563px] h-[48px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] outline-none ${errors.propertyName ? "border-red-500" : "border-[#E5E7EB]"}`}
                                 name="propertyName"
                                 value={form.propertyName}
                                 onChange={handleChange}
                                 placeholder="Enter property name"
                             />
+                            {/* ---- VALIDATION: property name error message ---- */}
+                            {errors.propertyName && (
+                                <p className="text-red-500 text-[13px] mt-[-6px]">{errors.propertyName}</p>
+                            )}
                         </div>
 
                         {/* Description */}
                         <div className="flex flex-col gap-[12px]">
                             <label className="font-bold font-['Lato'] text-[16px] text-[#444545]">Property Description</label>
                             <textarea
-                                className="w-full max-w-[563px] min-h-[155px] rounded-[8px] border-[1px] border-[#E5E7EB] p-3 bg-[#F9FAFB] resize-none outline-none"
+                                className={`w-full max-w-[563px] min-h-[155px] rounded-[8px] border-[1px] p-3 bg-[#F9FAFB] resize-none outline-none ${errors.propertyDescription ? "border-red-500" : "border-[#E5E7EB]"}`}
                                 name="propertyDescription"
                                 value={form.propertyDescription}
                                 onChange={handleChange}
                                 placeholder="Describe the property..."
                             />
+                            {/* ---- VALIDATION: description error message ---- */}
+                            {errors.propertyDescription && (
+                                <p className="text-red-500 text-[13px] mt-[-6px]">{errors.propertyDescription}</p>
+                            )}
                         </div>
 
                         {/* Price */}
                         <div className="flex flex-col gap-[12px]">
                             <label className="font-['Lato'] font-bold text-[18px] text-[#444545]">Price (₦)</label>
                             <input
-                                className="w-full max-w-[563px] h-[48px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none"
+                                className={`w-full max-w-[563px] h-[48px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] outline-none ${errors.price ? "border-red-500" : "border-[#E5E7EB]"}`}
                                 name="price"
                                 placeholder="0.00"
                                 step={1000000}
@@ -276,6 +416,10 @@ export const AddPropertyContent: React.FC = () => {
                                 value={form.price === 0 ? "" : form.price}
                                 onChange={handleChange}
                             />
+                            {/* ---- VALIDATION: price error message ---- */}
+                            {errors.price && (
+                                <p className="text-red-500 text-[13px] mt-[-6px]">{errors.price}</p>
+                            )}
                         </div>
 
                         {/* Property Type + Listing Status */}
@@ -312,11 +456,32 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="flex flex-col md:flex-row gap-[20px] pt-10">
                         <div className="flex flex-col gap-[12px] w-full md:w-[271.5px]">
                             <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Agent Name</label>
-                            <input className="border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none" name="agentName" value={form.agentName} onChange={handleChange} placeholder="Agent name" />
+                            <input
+                               
+                                className={`border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] outline-none ${errors.agentName ? "border-red-500" : "border-[#E5E7EB]"}`}
+                                name="agentName"
+                                value={form.agentName}
+                                onChange={handleChange}
+                                placeholder="Agent name"
+                            />
+                            {/* ---- VALIDATION: agent name error message ---- */}
+                            {errors.agentName && (
+                                <p className="text-red-500 text-[13px] mt-[-6px]">{errors.agentName}</p>
+                            )}
                         </div>
                         <div className="flex flex-col gap-[12px] w-full md:w-[271.5px]">
                             <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Agent Phone</label>
-                            <input className="border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none" name="agentPhone" value={form.agentPhone} onChange={handleChange} placeholder="+234 800 000 0000" />
+                            <input
+                                className={`border-[1px] rounded-[8px] h-[48px] px-[12px] bg-[#F9FAFB] outline-none ${errors.agentPhone ? "border-red-500" : "border-[#E5E7EB]"}`}
+                                name="agentPhone"
+                                value={form.agentPhone}
+                                onChange={handleChange}
+                                placeholder="+234 800 000 0000"
+                            />
+                            {/* ---- VALIDATION: agent phone error message ---- */}
+                            {errors.agentPhone && (
+                                <p className="text-red-500 text-[13px] mt-[-6px]">{errors.agentPhone}</p>
+                            )}
                         </div>
                         </div>
 
@@ -337,29 +502,46 @@ export const AddPropertyContent: React.FC = () => {
                                             nestedHandleChange("location", "state", e.target.value);
                                             nestedHandleChange("location", "city", "");
                                         }}
-                                        className="w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                                        className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] bg-[#F9FAFB] outline-none ${errors.state ? "border-red-500" : "border-[#E5E7EB]"}`}>
                                         <option value="">Select State</option>
                                         {allStates.map((state) => (
                                             <option key={state} value={state}>{state}</option>
                                         ))}
                                     </select>
+                                    {/* ---- VALIDATION: state error message ---- */}
+                                    {errors.state && (
+                                        <p className="text-red-500 text-[13px] mt-1">{errors.state}</p>
+                                    )}
                                 </div>
                                 <div className="flex flex-col flex-1">
                                     <label className="font-bold font-['Lato'] text-[15px] text-[#444545] mb-3">City</label>
                                     <select
                                         value={form.location.city}
                                         onChange={(e) => nestedHandleChange("location", "city", e.target.value)}
-                                        className="w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none">
+                                        className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] bg-[#F9FAFB] outline-none ${errors.city ? "border-red-500" : "border-[#E5E7EB]"}`}>
                                         <option value="">Select City</option>
                                         {getCitiesByState(form.location.state).map((city) => (
                                             <option key={city} value={city}>{city}</option>
                                         ))}
                                     </select>
+                                    {/* ---- VALIDATION: city error message ---- */}
+                                    {errors.city && (
+                                        <p className="text-red-500 text-[13px] mt-1">{errors.city}</p>
+                                    )}
                                 </div>
                             </div>
                             <div className="flex flex-col gap-[12px] py-4 max-w-[563px]">
                                 <label className="font-['Lato'] font-bold text-[16px] text-[#444545]">Full Address</label>
-                                <input className="w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] border-[#E5E7EB] bg-[#F9FAFB] outline-none mt-2" value={form.location.fullAddress} onChange={(e) => nestedHandleChange("location", "fullAddress", e.target.value)} placeholder="e.g Admiralty way, Lekki phase 1" />
+                                <input
+                                    className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] bg-[#F9FAFB] outline-none mt-2 ${errors.fullAddress ? "border-red-500" : "border-[#E5E7EB]"}`}
+                                    value={form.location.fullAddress}
+                                    onChange={(e) => nestedHandleChange("location", "fullAddress", e.target.value)}
+                                    placeholder="e.g Admiralty way, Lekki phase 1"
+                                />
+                                {/* ---- VALIDATION: full address error message ---- */}
+                                {errors.fullAddress && (
+                                    <p className="text-red-500 text-[13px] mt-[-6px]">{errors.fullAddress}</p>
+                                )}
                             </div>
                         </div>
 
@@ -372,35 +554,47 @@ export const AddPropertyContent: React.FC = () => {
                                     <select
                                         value={form.propertyDetails.bedrooms}
                                         onChange={(e) => nestedHandleChange("propertyDetails", "bedrooms", Number(e.target.value))}
-                                        className="border-[1px] w-full h-[48px] rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
+                                        className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] bg-[#F9FAFB] outline-none ${errors.bedrooms ? "border-red-500" : "border-[#E5E7EB]"}`}
                                     >
                                         <option value="0">Select</option>
                                         {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
                                             <option key={num} value={num}>{num}</option>
                                         ))}
                                     </select>
+                                    {/* ---- VALIDATION: bedrooms error message ---- */}
+                                    {errors.bedrooms && (
+                                        <p className="text-red-500 text-[12px]">{errors.bedrooms}</p>
+                                    )}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Bathroom</label>
                                     <select
                                         value={form.propertyDetails.bathroom}
                                         onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))}
-                                        className="border-[1px] w-full h-[48px] rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
+                                        className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] bg-[#F9FAFB] outline-none ${errors.bathroom ? "border-red-500" : "border-[#E5E7EB]"}`}
                                     >
                                         <option value="0">Select</option>
                                         {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
                                             <option key={num} value={num}>{num}</option>
                                         ))}
                                     </select>
+                                    {/* ---- VALIDATION: bathroom error message ---- */}
+                                    {errors.bathroom && (
+                                        <p className="text-red-500 text-[12px]">{errors.bathroom}</p>
+                                    )}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Size (sqm)</label>
                                     <input
-                                        className="border-[1px] w-full h-[48px] rounded-[8px] px-[10px] border-[#E5E7EB] bg-[#F9FAFB] outline-none"
+                                        className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] bg-[#F9FAFB] outline-none ${errors.size ? "border-red-500" : "border-[#E5E7EB]"}`}
                                         value={form.propertyDetails.size}
                                         onChange={(e) => nestedHandleChange("propertyDetails", "size", e.target.value)}
                                         placeholder="e.g 350"
                                     />
+                                    {/* ---- VALIDATION: size error message ---- */}
+                                    {errors.size && (
+                                        <p className="text-red-500 text-[12px]">{errors.size}</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -408,12 +602,14 @@ export const AddPropertyContent: React.FC = () => {
                         {/* Bottom action buttons — visible only on desktop (xl and above) */}
                         <div className="hidden xl:flex justify-end gap-3 mt-8">
                             <button
+                                type="button"
                                 onClick={() => handleSubmit('draft')} disabled={isLoading}
                                 className="w-full sm:w-[140px] h-[48px] rounded-[8px] border-[1px] bg-white border-[#75928B] flex items-center justify-center gap-2 font-bold text-[#031D17]"
                             >
                                 <img className="w-[12.8px] h-[12.8px]" src={save} alt="" /> Save Draft
                             </button>
                             <button
+                                type="button"
                                 onClick={() => handleSubmit('publish')} disabled={isLoading}
                                 className="w-full sm:w-[140px] h-[48px] rounded-[8px] bg-[#1A3C34] text-white font-bold "
                             >
@@ -428,9 +624,17 @@ export const AddPropertyContent: React.FC = () => {
                     {/* Upload */}
                     <div>
                         <h2 className="font-bold text-[20px] text-[#1A3C34] mb-2">Upload Property Image</h2>
+                        {/* ---- MODIFIED: added drag and drop handlers and dynamic border style ---- */}
                         <label
                             htmlFor="file-upload"
-                            className="relative w-full h-[266px] border-[1px] border-dashed border-[#75928B] rounded-[8px] flex flex-col items-center justify-center p-4 cursor-pointer"
+                            className={`relative w-full h-[266px] border-[1px] border-dashed rounded-[8px] flex flex-col items-center justify-center p-4 cursor-pointer transition-colors duration-200 ${
+                                isDragging
+                                    ? "border-[#1A3C34] bg-[#f0fdf4]"
+                                    : "border-[#75928B]"
+                            }`}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
                         >
                             <input
                                 id="file-upload"
@@ -450,6 +654,10 @@ export const AddPropertyContent: React.FC = () => {
                                 <span className="text-sm font-medium">Browse Files</span>
                             </div>
                         </label>
+                        {/* ---- VALIDATION: images error message ---- */}
+                        {errors.images && (
+                            <p className="text-red-500 text-[13px] mt-2">{errors.images}</p>
+                        )}
 
                         {imagePreviews.length > 0 && (
                             <p className="font-bold text-[14px] text-[#444545] mt-6 mb-2">Uploaded Images</p>
@@ -540,22 +748,25 @@ export const AddPropertyContent: React.FC = () => {
             {/* Bottom action buttons — visible only on mobile/tablet (below xl), always last on page */}
             <div className="flex xl:hidden justify-end gap-3 mt-6 px-4 md:px-5">
                 <button
+                    type="button"
                     onClick={() => handleSubmit('draft')} disabled={isLoading}
                     className="flex-1 sm:flex-none sm:w-[140px] h-[48px] rounded-[8px] border-[1px] bg-white border-[#75928B] flex items-center justify-center gap-2 font-bold text-[#031D17]"
                 >
                     <img className="w-[12.8px] h-[12.8px]" src={save} alt="" /> Save Draft
                 </button>
                 <button
+                    type="button"
                     onClick={() => handleSubmit('publish')} disabled={isLoading}
                     className="flex-1 sm:flex-none sm:w-[140px] h-[48px] rounded-[8px] bg-[#1A3C34] text-white font-bold"
                 >
-                    {editingProperty ? "Update Property" : "Publish Property"}
+                     {isLoading ? "Saving..." : editingProperty ? "Update Property" : "Publish Property"}
                 </button>
             </div>
 
             {modal.show && (
                 <Modal type={modal.type} message={modal.message} onClose={handleModalClose} />
             )}
+        </form> 
         </div>
     );
 };

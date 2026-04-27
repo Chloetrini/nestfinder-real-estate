@@ -119,7 +119,7 @@ const Users: React.FC = () => {
                     {users.map((user) => (
                       <tr key={user._id} className="h-[70px]">
                         <td className="px-4 py-4 font-bold text-[#0A1916] text-[14px]">{user.email}</td>
-                        <td className={`px-4 py-4 text-[#403F3F] text-[14px] ${user.isVerified? "text-green-400" :"text-amber-300"}`}>{user.isVerified === true ? "Verified" : "Unverified"}</td>
+                        <td className={`px-4 py-4 text-[#403F3F] text-[14px] ${user.isVerified? "text-green-400" :"text-amber-500"}`}>{user.isVerified === true ? "Verified" : "Unverified"}</td>
                         <td className="px-4 py-4 text-[#403F3F] text-[14px]">{user.role === "admin" ? "Admin" : "User"}</td>
                         <td className="px-4 py-4 text-[#403F3F] text-[14px]">{formatDate(user.createdAt)}</td>
                         <td className="px-4 py-4 text-nowrap">
