@@ -34,7 +34,7 @@ const Footer: FC = () => {
   
   };
     return (
-        <footer className="bg-[#0A0A0A] w-full">
+        <footer className="bg-[#0A0A0A] w-full" id="contact">
             <div className="max-w-[1200px] mx-auto px-4 py-[40px] md:py-[60px] nav">
                 
                
@@ -45,9 +45,9 @@ const Footer: FC = () => {
                         <div className="flex flex-col gap-4">
                             <div className="flex gap-[13px] items-center">
                                 <img className="w-[20px] h-[20px]" src={Vector} alt="logo" />
-                                <h1 className="text-white font-[Manrope] font-700 text-[23.5px]">NestFinder Pro</h1>
+                                <h1 className="text-white font-[Manrope] font-[700] text-[23.5px]">NestFinder Pro</h1>
                             </div>
-                            <p className="text-white text-[16px] md:text-[18px] font-400 font-[Manrope] leading-relaxed">
+                            <p className="text-white text-[16px] md:text-[18px] font-[400] font-[Manrope] leading-relaxed">
                                 Your trusted partner in finding premium properties across Nigeria. We connect buyers, sellers and renters with verified listings
                             </p>
                         </div>
@@ -63,7 +63,7 @@ const Footer: FC = () => {
                                     e.preventDefault();
                                     isLoggedIn ? navigate('/') : setShowModal(true)
                                 }} 
-                                className="bg-[#1A3C34] text-white font-400 font-[Manrope] rounded-[10px] px-6 h-[49px] whitespace-nowrap transition-colors hover:bg-[#132c26]"
+                                className="bg-[#1A3C34] text-white font-[400] font-[Manrope] rounded-[10px] px-6 h-[49px] whitespace-nowrap transition-colors hover:bg-[#132c26]"
                             >
                                 Subscribe
                             </button>
@@ -82,8 +82,8 @@ const Footer: FC = () => {
                         
                        
                         <div className="flex flex-col gap-6 font-[Inter]">
-                            <h5 className="text-[20px] text-white whitespace-nowrap  font-700">QUICK LINKS</h5>
-                            <nav className="flex flex-col gap-4 uppercase text-white font-500">
+                            <h5 className="text-[20px] text-white whitespace-nowrap  font-[700]">QUICK LINKS</h5>
+                            <nav className="flex flex-col gap-4 uppercase text-white font-[500]">
                               <Link to="/" onClick={handleHomeClick} className="hover:text-[#1A3C34]">
                                     Home
                                 </Link>
@@ -101,8 +101,8 @@ const Footer: FC = () => {
 
                        
                         <div className="flex flex-col gap-6 md:items-start text-left font-[Inter] ">
-                            <h5 className="font-700 text-[20px] text-white whitespace-nowrap">PROPERTY</h5>
-                            <nav className="flex flex-col gap-4 font-500">
+                            <h5 className="font-[700] text-[20px] text-white whitespace-nowrap">PROPERTY</h5>
+                            <nav className="flex flex-col gap-4 font-[500]">
                                 <a className="text-[16px] text-white hover:text-[#1A3C34] transition-colors" href="#">HOUSES</a>
                                 <a className="text-[16px] text-white hover:text-[#1A3C34] transition-colors" href="#">APARTMENT</a>
                                 <a className="text-[16px] text-white hover:text-[#1A3C34] transition-colors" href="#">VILLAS</a>
@@ -112,8 +112,8 @@ const Footer: FC = () => {
 
                         
                         <div className="flex flex-col gap-6 min-w-[200px] w-full md:w-auto mt-4 md:mt-0 ]">
-                            <h5 className="text-[20px] text-white font-[Inter] font-700">CONTACT</h5>
-                            <div className="flex flex-col gap-5 font-500 font-[Poppins]">
+                            <h5 className="text-[20px] text-white font-[Inter] font-[700]">CONTACT</h5>
+                            <div className="flex flex-col gap-5 font-[500] font-[Poppins]">
                                 <div className="flex gap-3 items-start">
                                     <img className="w-5 h-5 mt-1" src={location} alt="map" />
                                     <p className="text-[16px] text-white leading-snug">123 Prestige Drive, Lagos</p>

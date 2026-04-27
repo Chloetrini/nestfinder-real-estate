@@ -1,7 +1,8 @@
 import Logo from "/src/assets/logo.png"
-import user from "/src/assets/addd.png"
+import user from "/src/assets/manage.png"
 import home from "/src/assets/dashboard.png"
 import users from "/src/assets/users.png"
+import enquiries from "/src/assets/clipboard.png"
 import circle from "/src/assets/addd.png"
 
 import { ManageContext } from "../../context/ManagePropertyContext"
@@ -53,7 +54,8 @@ const Sidebar = () => {
     // This encapsulates the tutor's logic for active states 
     const getSidebarActiveStates = () => {
         const isDashboardActive =
-            isActive("/adminPage") &&
+              (isActive("/adminPage") || isActive("/adminPage/users")) 
+              &&
             !isPageActive("Add Property") &&
             !isPageActive("Update Property") &&
             !isPageActive("All Properties") &&
@@ -96,7 +98,7 @@ const Sidebar = () => {
                 {/* Logo — desktop only */}
                 <div className="hidden lg:flex items-center gap-[4px] p-[20px] h-[76px] w-[260px]">
                     <div className="flex items-center gap-[10.22px] w-[162.22px] h-[46px]">
-                        <img className="cursor-pointer" src={Logo} onClick={() => navigate("/")} alt="Arrow Logo" />
+                        <img className="cursor-pointer hover:transition-all hover:transform hover:scale-135" src={Logo} onClick={() => navigate("/")} alt="Arrow Logo" />
                         <h1 className="font-Manrope font-bold text-[17.89px] leading-none text-[#1A3C34]">
                             NestFinder Pro
                         </h1>
@@ -162,7 +164,7 @@ const Sidebar = () => {
                             className={`flex flex-col lg:flex-row items-center w-full lg:w-[260px] py-1 lg:py-[9px] px-1 lg:px-4 gap-0.5 lg:gap-2 cursor-pointer transition-colors
                             ${isEnquiriesActive ? "lg:bg-[#1A3C34] text-[#1A3C34] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
                         >
-                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isEnquiriesActive ? "" : "opacity-70"}`} src={user} alt="enquiries" />
+                            <img className={`w-4 h-4 lg:w-6 lg:h-6 ${isEnquiriesActive ? "" : "opacity-70"}`} src={enquiries} alt="enquiries" />
                             <span className="hidden md:block font-lato text-[9px] lg:text-[16px]">Enquiries</span>
                             <span className="font-lato text-[9px] block md:hidden">Enquiries</span>
                         </div>

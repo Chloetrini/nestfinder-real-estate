@@ -129,12 +129,12 @@ const LogIn: FC = () => {
               <div className="flex gap-4 items-center mb-2">
                 
                 <img className="hidden md:block w-6 cursor-pointer" src={nestpro} onClick={() => navigate("/")} alt="arrow" />
-                <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-700 text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
+                <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-[700] text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
               </div>
               
               <h4 
                 onClick={() => { if (window.innerWidth < 768) navigate("/"); }} 
-                className="text-[17px] md:text-[32px] font-700 font-[Manrope] md:cursor-default cursor-pointer text-[#081411]"
+                className="text-[17px] md:text-[32px] font-[700] font-[Manrope] md:cursor-default cursor-pointer text-[#081411]"
               >
                 Log in
               </h4>

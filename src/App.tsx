@@ -38,7 +38,7 @@ const { isCheckingAuth } = useAuth();
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<Navigate to="/" />} />
-
+         <Route path="/about" element={<AboutPage />} />
         <Route
           path="/login"
           element={ <LogIn/>
@@ -48,9 +48,9 @@ const { isCheckingAuth } = useAuth();
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail/>} />
+         
 
         <Route element={<ProtectedRoute />}>
-            <Route path="/about" element={<AboutPage />} />
           <Route path="/property" element={<PropertyPage />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
         </Route>

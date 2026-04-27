@@ -12,7 +12,7 @@ const Testimonials2 = () => {
             {/* Header Section */}
             <div className="flex flex-col justify-center items-center gap-[12px]">
                 <p className="font-[Manrope] font-[700] text-[#131817] text-center text-[16px] uppercase tracking-wider">testimonials</p>
-                <h1 className="font-[Manrope] font-[700] text-[#131817] text-center md:text-[42px] text-[30px] leading-tight px-4">What Our Satisfied Clients Says</h1>
+                <h1 className="font-[Manrope] font-[700] text-[#131817] text-center md:text-[42px] text-[30px] leading-tight px-4">What Our Satisfied Clients Say</h1>
             </div>
 
             {/* Grid Logic: 1 column mobile, 6 columns for tablet/desktop to handle your col-spans */}

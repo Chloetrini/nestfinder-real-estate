@@ -79,7 +79,7 @@ const RealDataFetching: FC = () => {
                     Discover Our Featured Properties
                 </h1>
                 <p className="font-Inter font-[400] text-[14px] md:text-[18px] leading-[24px] md:leading-[30px] text-center text-[#535353] w-full max-w-[23rem] md:max-w-[40rem]">
-                    Dive into our exquisite collection of our featured properties at Nest Finder Pro, every corner whispers comfort and every detail is crafted with perfection
+                    Dive into our exquisite collection of our featured properties at Nest Finder Pro. Every corner whispers comfort and every detail is crafted with perfection
                 </p>
             </div>
 

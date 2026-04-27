@@ -11,7 +11,7 @@ const WhyChooseUs = () => {
     <div className=" items-center justify-center flex flex-col max-w-[1200px] w-full  px-4 mx-auto container  ">
         <div className="flex flex-col justify-center items-center gap-[40px]  pb-30 ">
             <div className="flex flex-col justify-center items-center gap-[9px] py-[20px]">
-                <p className="font-[Manrope] font-[700] text-center text-[16px] text-[#353535]">WHY CHOOSE US</p>
+                <p className="font-[Manrope] font-[700] text-center text-[16px] text-[#353535]">WHY CHOOSE US?</p>
                 <h1 className="font-[Manrope] font-[700] text-center md:text-[42px]  md:w-[600px] lg:w-full text-[30px] px-4 text-[#131817]">Find Your Perfect Home With NestFinder Pro</h1>
             </div>
             <div className="grid lg:grid-cols-3 grid-cols-1 flex-wrap justify-center items-center gap-[20px] w-full inbetween">

@@ -15,6 +15,10 @@ import { resetPassword } from "../services/api";
 // ---- BACKEND ADDED: imported Modal component ----
 import Modal from "../Components/Universal/Modal";
 
+
+// Import eye icons from Lucide React
+import { Eye, EyeOff } from "lucide-react";  
+
 type User = {
   password: string;
   confirmpassword: string;
@@ -34,6 +38,9 @@ const ResetPassword = () => {
     confirmpassword: false,
   });
 
+  // ---- PASSWORD VISIBILITY: states for toggling password visibility ----
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   // ---- BACKEND ADDED: get token from URL query params ----
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -59,6 +66,15 @@ const ResetPassword = () => {
     setUser({ ...user, [inputFieldName]: value });
     setError({ ...error, [inputFieldName]: false });
   };
+// ---- PASSWORD VISIBILITY: functions to toggle password visibility ----
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -154,30 +170,46 @@ const ResetPassword = () => {
                   onClick={() => navigate("/")}
                   alt="arrow"
                 />
-                <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-700 text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
+                <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-[700] text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
               </div>
               <h4 className="text-[17px] md:text-[32px] font-semibold">Reset Password</h4>
-              <p className="mb-4 md:mb-6 text-[11px] lg:text-[18px]  md:text-[16px] md:w-85 w-full font-[Inter] font-400 text-[#525050" >
+              <p className="mb-4 md:mb-6 text-[11px] lg:text-[18px]  md:text-[16px] md:w-85 w-full font-[Inter] font-[400] text-[#525050" >
                 Please enter a new password to take you back to your account
               </p>
             </div>
-
+             {/* PASSWORD FIELD WITH EYE ICON */}
             <label
               className={`text-[13px] font-medium pb-1.5 md:pb-0 ${error.password ? "text-red-500" : "text-black"}`}
               htmlFor="password"
             >
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Enter your password"
-              value={user.password}
-              onChange={handleChange}
-              className={`w-full h-9 md:h-11.25 p-2 border-2 text-[10px] md:text-[14px] mb-4 rounded-lg my-0 md:my-2 block focus:outline-none transition-all duration-200
-                ${error.password ? "border-red-500 placeholder-red-500" : "border-gray-300 placeholder-gray-400"}`}
+            <div className="relative w-full">
+               <input
+                 type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  value={user.password}
+                  onChange={handleChange}
+                  className={`w-full h-9 md:h-11.25 p-2 border-2 text-[10px] md:text-[14px] mb-4 rounded-lg my-0 md:my-2 block focus:outline-none transition-all duration-200
+                    ${error.password ? "border-red-500 placeholder-red-500" : "border-gray-300 placeholder-gray-400"}`}
             />
+                {/* Eye icon button for password */}
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 md:top-1/2 top-4.5 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+            </div>
+            
             {/* Trinity, I added this error message for password */}
             {error.password && (
               <p className="text-red-500 text-[12px] mb-3">
@@ -186,15 +218,16 @@ const ResetPassword = () => {
                   : "Password must be at least 8 characters"}
               </p>
             )}
-
+             {/* CONFIRM PASSWORD FIELD WITH EYE ICON */}
             <label
               className={`text-[13px] font-medium pb-1.5 md:pb-0 ${error.confirmpassword ? "text-red-500" : "text-black"}`}
               htmlFor="confirmpassword"
             >
               Confirm Password
             </label>
-            <input
-              type="password"
+            <div className="relative w-full">
+              <input
+              type={showConfirmPassword ? "text" : "password"}
               name="confirmpassword"
               id="confirmpassword"
               placeholder="Re-enter your password"
@@ -203,6 +236,21 @@ const ResetPassword = () => {
               className={`w-full h-9 md:h-11.25 p-2 border-2 text-[10px] md:text-[14px] mb-4 rounded-lg my-0 md:my-2 block focus:outline-none transition-all duration-200
                 ${error.confirmpassword ? "border-red-500 placeholder-red-500" : "border-gray-300 placeholder-gray-400"}`}
             />
+               {/* Eye icon button for confirm password */}
+                <button
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  className="absolute right-3 md:top-1/2 top-4.5 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+            </div>
+           
             {/* Trinity, I added this error message for confirm password */}
             {error.confirmpassword && (
               <p className="text-red-500 text-[12px] mb-3">

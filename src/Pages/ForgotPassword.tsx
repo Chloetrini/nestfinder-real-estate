@@ -129,7 +129,7 @@ const ForgotPassword = () => {
                   onClick={() => navigate("/")} 
                   alt="arrow" 
                 />
-                <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-700 text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
+                <h1 onClick={() => navigate("/")} className="text-[#1A3C34] font-[Manrope] font-[700] text-[22.17px] hidden md:block cursor-pointer">NestFinder Pro</h1>
               </div >
               <div className="flex flex-col gap-[12px]">
                     <h4 className="text-[24px] md:text-[32px] font-semibold">Forgot Password</h4>

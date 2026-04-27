@@ -198,9 +198,9 @@ export const ManageContent: React.FC = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                    {/* ---- BACKEND UPDATED: show Draft status for draft properties ---- */}
-                        <span className={`w-2 h-2 rounded-full ${property.isDraft ? "bg-orange-400" :
+                        <span className={`w-2 h-2 rounded-full ${property.isDraft ? "bg-[#808080]" :
                             property.sale === "For Sale" ? "bg-[#10B981]" : "bg-[#F59E0B]"}`}></span>
-                        <span className="text-[#023337] font-medium text-[14px] whitespace-nowrap">{property.isDraft ? "Draft" : property.sale}</span>
+                        <span className="text-[#023337] font-medium text-[14px] whitespace-nowrap">{property.isDraft ? "Pending" : property.sale}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -217,12 +217,13 @@ export const ManageContent: React.FC = () => {
                         {/* ---- BACKEND ADDED: Publish button only for draft properties ---- */}
                           {property.isDraft && (
                             <>
+                            <span className="text-[#21C45D]">/</span>
                               <button
                                 onClick={() => handlePublishDraft(property._id)}
                                 className="text-[#1A3C34] font-normal text-[15px] hover:underline">
                                 Publish
                               </button>
-                              <span className="text-[#21C45D]">/</span>
+                              
                             </>
                           )}
 

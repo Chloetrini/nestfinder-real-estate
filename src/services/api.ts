@@ -157,7 +157,19 @@ export const deleteProperty = async (id: string) => {
   });
   return res.json();
 };
-
+// ---- GET DASHBOARD STATS ----
+// This function calls the backend to get real statistics for the dashboard
+// It returns counts and percentage changes for:
+// - Total Properties
+// - Active Listings
+// - Pending Properties (Drafts)
+// The token is sent in the headers so the backend knows the user is an admin
+export const getDashboardStats = async () => {
+  const res = await fetch(`${BASE_URL}/api/properties/stats`, {
+    headers: buildHeaders(), // buildHeaders() adds the JWT token to the request
+  });
+  return res.json();
+};
 
 // ---- Get total users count (admin only) ----
 export const getUsersCount = async () => {
@@ -167,6 +179,24 @@ export const getUsersCount = async () => {
   });
   return res.json();
 };
+// Get all users (admin only)
+export const getAllUsers = async () => {
+  const res = await fetch(`${BASE_URL}/api/auth/users/count/all`, {
+    method: "GET",
+    headers: buildHeaders(true),
+  });
+  return res.json();
+};
+
+// delete a user (admin only)
+export const deleteUser = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/api/auth/delete/${id}`, {
+    method: "DELETE",
+    headers: buildHeaders(true),
+  });
+  return res.json();
+};
+
 
 
 

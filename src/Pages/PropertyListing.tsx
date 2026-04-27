@@ -184,7 +184,10 @@ const PropertyPage: FC = () => {
 
   return (
     <div>
-      <HeaderNavBar />
+     
+        <HeaderNavBar />
+      
+      
       <div className="font-Manrope z-0">
         <PropertyHeader />
       </div>

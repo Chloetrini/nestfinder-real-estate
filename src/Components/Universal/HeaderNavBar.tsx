@@ -50,7 +50,7 @@ const HeaderNavBar: FC = () => {
 
    const handleAboutClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    isLoggedIn ? navigate('/about') : setShowModal(true);
+    navigate('/about') 
     setIsMenu(false);
   };
 
@@ -74,18 +74,18 @@ const HeaderNavBar: FC = () => {
 
   return (
     <div className="md:bg-white bg-[#1A3C34] w-full lg:mb-3 relative nav z-30 ">
-      <div className="mx-auto container lg:max-w-[1200px] w-full px-6 lg:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px]">
+      <div className="lg:mx-auto lg:container lg:max-w-[1200px] w-full px-6  md:px-3 lg:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px] navv">
 
         <div className="flex flex-row items-center gap-[8px]">
           <img className="hidden md:block" src={logo} alt="Logo" />
           <img className="block md:hidden w-[25px]" src={logoo} alt="Logo Mobile" />
-          <p className="font-[Manrope] font-700 text-[18px]  text-[#FFFFFF] md:text-[#1A3C34]">
+          <p className="font-[Manrope] font-[700] text-[18px]  text-[#FFFFFF] md:text-[#1A3C34]">
             NestFinder Pro
           </p>
         </div>
 
         {/* DESKTOP NAVIGATION with Active States */}
-        <nav className="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-[32px] font-[Manrope] font-400 text-[18px]">
+        <nav className="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-[32px] font-[Manrope] font-[400] text-[18px]">
           <Link to="/" onClick={handleHomeClick} className={navLinkClass('/')}>
             Home
           </Link>
@@ -105,20 +105,20 @@ const HeaderNavBar: FC = () => {
             <div className="flex items-center gap-4">
               <p
                 onClick={handleNameClick}
-                className={`text-[#1A3C34] ${isAdmin ? "cursor-pointer hover:underline font-700 " : ""}`}
+                className={`text-[#1A3C34] ${isAdmin ? "cursor-pointer underline font-[700] hover:transition-all hover:transform hover:scale-105 " : ""}`}
               >
                 Hi, {user.name}
               </p>
               <button
                 onClick={handleLoggedOut}
-                className="border-[1px] border-[#1A3C34] rounded-[10px] py-[10px] px-[20px] text-[#1A3C34] hover:bg-[#1A3C34] hover:text-white transition-all font-400"
+                className="border-[1px] border-[#1A3C34] rounded-[10px] py-[10px] px-[20px] text-[#1A3C34] hover:bg-[#1A3C34] hover:text-white transition-all font-[400]"
               >
                 Log Out
               </button>
             </div>
           ) : (
             <>
-              <button onClick={handleLoggedIn} className="border rounded-[10px] py-[10px] px-[24px] text-[#1A3C34] font-400">Login</button>
+              <button onClick={handleLoggedIn} className="border rounded-[10px] py-[10px] px-[24px] text-[#1A3C34] font-[400]">Login</button>
               <button
                 className="bg-[#1A3C34] rounded-[10px] py-[10px] px-[24px] text-white hover:bg-[#264d43]"
                 onClick={handleSignUpClick}
@@ -158,7 +158,7 @@ const HeaderNavBar: FC = () => {
             {isLoggedIn ? (
               <>
                 <p className="text-center text-[16px] font-medium opacity-90">
-                  Hi, {user.name} {isAdmin && <span className="text-[12px] bg-[#F4A261] px-2 py-0.5 rounded text-[#1A3C34] ml-2">Admin</span>}
+                  Hi, {user.name} {isAdmin && <span className="text-[12px] bg-[#F4A261] px-2 py-0.5 rounded text-[#1A3C34] ml-2 " >Admin</span>}
                 </p>
                 <button onClick={handleLoggedOut} className="border border-white py-2 rounded-md hover:bg-white hover:text-[#1A3C34] transition-all">
                   Log Out

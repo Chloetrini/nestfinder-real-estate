@@ -103,8 +103,11 @@ const PropertyDetails = () => {
 
   return (
     <div>
-      <HeaderNavBar />
-      <div className="w-full mx-auto container px-3 md:px-10 space-y-14 mt-8 ">
+      <div className='md:px-5'>
+           <HeaderNavBar />
+      </div>
+     
+      <div className="w-full mx-auto container px-3 md:px-10 space-y-14 mt-8 md:max-w-[1280px]">
 
         {/* ---- BACKEND UPDATED: pass full images array to Images component ---- */}
         {/* ---- BACKEND REMOVED: mainImage single string ---- */}

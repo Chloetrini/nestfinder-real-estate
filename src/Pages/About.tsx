@@ -4,10 +4,16 @@ import HeaderNavBar from '../Components/Universal/HeaderNavBar';
 import Footer from '../Components/Universal/Footer';
 import about from "/src/assets/properties/sunset.png"
 import house from "/src/assets/houseee.png"
-
+import { useAuth } from '../context/AuthContext';
+import SignInModal from '../Components/Universal/SignInModal';
 const AboutPage: FC = () => {
   const navigate = useNavigate();
-
+   const {isLoggedIn, setShowModal,showModal} = useAuth()
+   const handlePropertyClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isLoggedIn ? navigate('/property') : setShowModal(true);
+    
+  };
   return (
     <div className="bg-white min-h-screen font-Manrope">
         <HeaderNavBar/>
@@ -98,13 +104,14 @@ const AboutPage: FC = () => {
       <section className="py-20 text-center px-6">
         <h2 className="text-[#1A3C34] text-3xl font-bold mb-6">Ready to find your dream nest?</h2>
         <button 
-          onClick={() => navigate('/property')}
+          onClick={handlePropertyClick}
           className="bg-[#1A3C34] text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-[#264d43] transition-all transform hover:scale-105"
         >
           Explore Properties
         </button>
       </section>
       <Footer/>
+      {showModal && <SignInModal />}
     </div>
   );
 };

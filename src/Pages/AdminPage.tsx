@@ -6,6 +6,7 @@ import { AddPropertyContent } from '../Components/AdminPage/AddPropertyContent[1
 import Enquiries from '../Components/AdminPage/Enquiries';
 import { useContext, useEffect } from 'react';
 import { ManageContext } from '../context/ManagePropertyContext';
+import Users from '../Components/AdminPage/Users';
 
 const AdminPage = () => {
 
@@ -48,6 +49,7 @@ const AdminPage = () => {
                     <Route path="manage-property" element={<ManageContent />} />
                     {/* ---- BACKEND ADDED: enquiries route ---- */}
                     <Route path="enquiries" element={<Enquiries />} />
+                    <Route path="users" element={<Users />} />
                     
                 
                 </Routes>
@@ -55,6 +57,7 @@ const AdminPage = () => {
          </div>
 
        </main>
+       
     </div>
   );
 }
