@@ -613,7 +613,7 @@ export const AddPropertyContent: React.FC = () => {
                                 onClick={() => handleSubmit('publish')} disabled={isLoading}
                                 className="w-full sm:w-[140px] h-[48px] rounded-[8px] bg-[#1A3C34] text-white font-bold "
                             >
-                                {editingProperty ? "Update Property" : "Publish Property"}
+                                {isLoading ? "Saving..." : editingProperty ? "Update Property" : "Publish Property"}
                             </button>
                         </div>
                     </div>
@@ -712,17 +712,6 @@ export const AddPropertyContent: React.FC = () => {
                            <h2 className="font-bold text-[16px] text-[#023337]">Map Coordinates</h2>
                            <div className="flex w-full gap-5 mt-2">
                             <div className="flex flex-col">
-                                <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Longitude</label>
-                                <input type="number" className="w-full h-[40px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none mt-3"
-                                name="longitude" 
-                                placeholder="0.0000"
-                                min="0.0000"
-                                step="0.0001"
-                                value={form.coordinates.longitude === 0 ? "" : form.coordinates.longitude}
-                                onChange={handleChange}/>
-                            </div>
-
-                            <div className="flex flex-col">
                                 <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Latitude</label>
                                 <input type="number" className="w-full h-[40px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none mt-3"
                                 name="latitude"
@@ -730,6 +719,16 @@ export const AddPropertyContent: React.FC = () => {
                                 min="0.0000"
                                 step="0.0001"
                                 value={form.coordinates.latitude === 0 ? "" : form.coordinates.latitude}
+                                onChange={handleChange}/>
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Longitude</label>
+                                <input type="number" className="w-full h-[40px] rounded-[8px] border-[1px] px-[12px] bg-[#F9FAFB] border-[#E5E7EB] outline-none mt-3"
+                                name="longitude" 
+                                placeholder="0.0000"
+                                min="0.0000"
+                                step="0.0001"
+                                value={form.coordinates.longitude === 0 ? "" : form.coordinates.longitude}
                                 onChange={handleChange}/>
                             </div>
 

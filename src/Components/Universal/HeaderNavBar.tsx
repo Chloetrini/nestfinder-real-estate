@@ -103,7 +103,7 @@ const HeaderNavBar: FC = () => {
             Contact
           </Link>
           <Link to="/property" onClick={handlePropertyClick} className={navLinkClass('/property')}>
-            Property
+            Properties
           </Link>
         </nav>
 

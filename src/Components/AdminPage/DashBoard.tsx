@@ -8,7 +8,7 @@ import Pagination from "../Universal/Pagination";
 import { useNavigate } from "react-router-dom";
 // ---- BACKEND: imported getUsersCount from api service ----
 // ---- BACKEND ADDED: also imported getDashboardStats for real percentage data ----
-import { getUsersCount, getDashboardStats } from "../../services/api";
+import { getUsersCount, getDashboardStats, } from "../../services/api";
 
 const Dashboard: React.FC = () => {
   const { properties, deleteProperty, setEditingProperty } = useContext(PropertyContext)!;
@@ -20,7 +20,9 @@ const Dashboard: React.FC = () => {
 
   // these counts come from your local properties data as before ----
   const totalProperties = validProperties.length;
-  const activeListings = validProperties.filter(property => property.sale === "For Sale" || property.sale === "For Rent").length;
+  const activeListings = validProperties.filter(
+  property => property.isDraft === false
+).length;
   const pendingProperties = validProperties.filter(property => property.isDraft===true).length;
 
   // ---- BACKEND ADDED: fetch real users count from backend ----
@@ -110,12 +112,12 @@ const Dashboard: React.FC = () => {
 };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(4);
+  const [postPerPage] = useState(6);
 
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
   
-  const currentPropertyPagin = [...validProperties].reverse().slice(firstPostIndex, lastPostIndex);
+  const currentPropertyPagin = [...validProperties].slice(firstPostIndex, lastPostIndex);
 
   return (
     <div className="flex flex-col bg-[#F3F4F6] min-h-screen w-full">
@@ -214,7 +216,7 @@ const Dashboard: React.FC = () => {
                     </td>
                     <td className="px-8 py-5">
                       <div className="flex justify-center items-center gap-3">
-                        <button onClick={() => { setEditingProperty(proper); navigate("/adminPage/edit-property"); }} className="text-[#21C45D] font-bold text-[13px]">Edit</button>
+                        <button onClick={() => { setEditingProperty(proper); navigate("/adminPage/add-property"); }} className="text-[#21C45D] font-bold text-[13px]">Edit</button>
                         <span className="text-[#21C45D]">/</span>
                         <button onClick={() => deleteProperty(proper._id)} className="text-red-500 font-bold text-[13px]">Delete</button>
                       </div>

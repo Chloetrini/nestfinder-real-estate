@@ -208,7 +208,7 @@ export const ManageContent: React.FC = () => {
                         <button 
                           onClick={() => { 
                             setEditingProperty(property);
-                            navigate("/adminPage/edit-property");
+                            navigate("/adminPage/add-property");
                           }} 
                           className="text-[#21C45D] font-medium text-[14px] hover:underline"
                         >

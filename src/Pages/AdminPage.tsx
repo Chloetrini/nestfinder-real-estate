@@ -45,7 +45,6 @@ const AdminPage = () => {
                     <Route index element={<Dashboard />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="add-property" element={<AddPropertyContent />} />
-                    <Route path="edit-property" element={<AddPropertyContent />} />
                     <Route path="manage-property" element={<ManageContent />} />
                     {/* ---- BACKEND ADDED: enquiries route ---- */}
                     <Route path="enquiries" element={<Enquiries />} />
