@@ -62,8 +62,15 @@ const HeaderNavBar: FC = () => {
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Logic for contact (scrolling or navigation)
-    isLoggedIn ? navigate('/') : setShowModal(true);
+    navigate('/');
+    const footer = document.getElementById("footer-section");
+  if (footer) {
+    footer.scrollIntoView({ 
+      behavior: "smooth", 
+      block: "start" 
+    });
+    return
+  }
     setIsMenu(false);
   };
 

@@ -34,7 +34,7 @@ const Footer: FC = () => {
   
   };
     return (
-        <footer className="bg-[#0A0A0A] w-full" id="contact">
+        <footer className="bg-[#0A0A0A] w-full" id="footer-section">
             <div className="max-w-[1200px] mx-auto px-4 py-[40px] md:py-[60px] nav">
                 
                
