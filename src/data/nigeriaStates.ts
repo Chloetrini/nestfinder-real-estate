@@ -10,6 +10,10 @@ export const nigeriaStates: { state: string; cities: string[] }[] = [
     cities: ["Aba", "Umuahia", "Ohafia", "Arochukwu", "Bende", "Isuikwuato", "Obingwa", "Osisioma", "Ugwunagbo", "Ukwa East", "Ukwa West", "Umu Nneochi"]
   },
   {
+    state: "Abuja",
+    cities: ["Abuja Central", "Garki", "Wuse", "Maitama", "Asokoro", "Gwarinpa", "Jabi", "Kubwa", "Lugbe", "Gwagwalada", "Kuje", "Bwari", "Abaji", "Kwali", "Dutse", "Nyanya", "Karu", "Zuba", "Karmo", "Dawaki", "Galadimawa", "Lokogoma", "Apo", "Lifecamp", "Katampe"]
+  },
+  {
     state: "Adamawa",
     cities: ["Yola", "Mubi", "Ngurore", "Jimeta", "Numan", "Ganye", "Gombi", "Guyuk", "Hong", "Jada", "Lamurde", "Madagali", "Maiha", "Mayo Belwa", "Michika", "Fufore", "Demsa", "Toungo", "Wurno", "Song"]
   },
@@ -61,10 +65,7 @@ export const nigeriaStates: { state: string; cities: string[] }[] = [
     state: "Enugu",
     cities: ["Enugu", "Nsukka", "Oji River", "Agwu", "Awgu", "Enugu East", "Enugu North", "Enugu South", "Ezeagu", "Igbo Etiti", "Igbo Eze North", "Igbo Eze South", "Isi Uzo", "Nkanu East", "Nkanu West", "Udenu", "Udi", "Uzo Uwani"]
   },
-  {
-    state: "Abuja",
-    cities: ["Abuja Central", "Garki", "Wuse", "Maitama", "Asokoro", "Gwarinpa", "Jabi", "Kubwa", "Lugbe", "Gwagwalada", "Kuje", "Bwari", "Abaji", "Kwali", "Dutse", "Nyanya", "Karu", "Zuba", "Karmo", "Dawaki", "Galadimawa", "Lokogoma", "Apo", "Lifecamp", "Katampe"]
-  },
+  
   {
     state: "Gombe",
     cities: ["Gombe", "Kaltungo", "Billiri", "Akko", "Balanga", "Dukku", "Funakaye", "Kwami", "Nafada", "Shomgom", "Yamaltu Deba"]
