@@ -709,6 +709,7 @@ export const AddPropertyContent: React.FC = () => {
                                 <div key={idx} className="relative">
                                     <img src={url} className="w-full h-24 object-cover rounded-lg border shadow-sm" alt="preview" />
                                     <button
+                                    type="button"
                                         onClick={() => {
                                             setImagePreviews(prev => prev.filter((_, i) => i !== idx));
                                             setImageFiles(prev => prev.filter((_, i) => i !== idx));

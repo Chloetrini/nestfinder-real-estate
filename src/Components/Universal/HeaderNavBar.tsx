@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { useContext, useState, type FC } from 'react';
 // Added useLocation to track which page is currently active
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logo from "/src/assets/logo.png";
@@ -8,14 +8,19 @@ import { useAuth } from '../../context/AuthContext';
 
 // ---- BACKEND ADDED: imported removeToken to clear JWT on logout ----
 import { removeToken } from '../../services/api';
+import { ManageContext } from '../../context/ManagePropertyContext';
 
 const HeaderNavBar: FC = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser, setShowModal, isAdmin, setIsAdmin } = useAuth();
   const [isMenu, setIsMenu] = useState(false);
   const navigate = useNavigate();
+  
   const location = useLocation(); // Hook to get current path
 
+const manageContext = useContext(ManageContext)
+    if (!manageContext) return ("No content")
 
+    const {  setActivePage } = manageContext
   const isActive = (path: string) => location.pathname === path;
 
   
@@ -25,7 +30,10 @@ const HeaderNavBar: FC = () => {
     }`;
 
   const handleNameClick = () => {
-    if (isAdmin) navigate('/adminPage');
+    if (isAdmin) 
+    setActivePage("Dashboard"),
+   navigate('/adminPage')
+      ;
   };
 
   const handleLoggedIn = () => {
