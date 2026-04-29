@@ -133,8 +133,8 @@ const RealDataFetching: FC = () => {
 
                             {result.discount && (
                                  <div className={`absolute px-4 py-2 rounded-[8px] bg-[#F4A261] text-white top-3 right-3 text-[18px] font-400 shadow-md w-[112px] flex items-center justify-center h-[49px] font-[Manrope] max-[321px]:w-[100px]
-                      ${Number(result.discount.replace(/[^0-9]/g, "")) >= 40 ? "bg-green-500" :
-                        Number(result.discount.replace(/[^0-9]/g, "")) >= 20 ? "bg-[#F4A261]" : "bg-red-500"}`}>
+                      ${Number(result.discount.replace(/[^0-9]/g, "")) >= 40 ? "bg-red-500" :
+                        Number(result.discount.replace(/[^0-9]/g, "")) >= 20 ? "bg-[#F4A261]" : "bg-green-500"}`}>
                         {result.discount} Off
                     </div>
                             )}
