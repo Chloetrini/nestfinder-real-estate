@@ -117,16 +117,40 @@ const Users: React.FC = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {users.map((user) => (
-                      <tr key={user._id} className="h-[70px]">
-                        <td className="px-4 py-4 font-bold text-[#0A1916] text-[14px]">{user.email}</td>
-                        <td className={`px-4 py-4 text-[#403F3F] text-[14px] ${user.isVerified? "text-green-400" :"text-amber-500"}`}>{user.isVerified === true ? "Verified" : "Unverified"}</td>
-                        <td className="px-4 py-4 text-[#403F3F] text-[14px]">{user.role === "admin" ? "Admin" : "User"}</td>
-                        <td className="px-4 py-4 text-[#403F3F] text-[14px]">{formatDate(user.createdAt)}</td>
-                        <td className="px-4 py-4 text-nowrap">
-                            <button onClick={() => handleDelete(user._id)}
-                              className="text-[#FF0000] font-normal text-[14px] hover:underline">Delete User</button>
-                        </td>
-                      </tr>
+                    <tr key={user._id} className="h-[70px]">
+                     <td className="px-4 py-4 font-bold text-[#0A1916] text-[14px]">{user.email}</td>
+                     <td className={`px-4 py-4 text-[14px] ${user.isVerified ? "text-green-400" : "text-amber-500"}`}>
+                      {user.isVerified === true ? "Verified" : "Unverified"}
+                     </td>
+                     <td className="px-4 py-4 text-[#403F3F] text-[14px]">
+                      <span className="flex items-center gap-1">
+                        {user.role === "admin" ? "Admin" : "User"}
+                        {user.role === "admin" && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="#F59E0B"
+                            className="w-4 h-4 inline-block"
+                          >
+                            <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                          </svg>
+                        )}
+                      </span>
+                      </td>
+                     <td className="px-4 py-4 text-[#403F3F] text-[14px]">{formatDate(user.createdAt)}</td>
+                     <td className="px-4 py-4 text-nowrap">
+                      <button
+                        onClick={() => user.role !== "admin" && handleDelete(user._id)}disabled={user.role === "admin"}
+                        className={`font-normal text-[14px] ${
+                          user.role === "admin"
+                            ? "text-gray-300 cursor-not-allowed"
+                            : "text-[#FF0000] hover:underline cursor-pointer"
+                        }`}
+                      >
+                        Delete User
+                      </button>
+                    </td>
+                  </tr>
                     ))}
                   </tbody>
                 </table>
@@ -135,26 +159,45 @@ const Users: React.FC = () => {
               {/* MOBILE LIST: Visible on mobile, hidden on desktop */}
               <div className="lg:hidden flex flex-col divide-y divide-gray-100">
                 {users.map((user) => (
-                  <div key={user._id} className="p-4 flex flex-col gap-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-bold text-[#0A1916] text-[16px]">{user.email}</p>
-                         <p className={` py-4 text-[#403F3F] text-[14px] ${user.isVerified? "text-green-400" :"text-amber-300"}`}>{user.isVerified === true ? "Verified" : "Unverified"}</p>
-                        <p className="text-[12px] text-[#75928B]">{formatDate(user.createdAt)}</p>
-                      </div>
-                    </div>
-                    <div>
-                      <a href={`mailto:${user.role}`} className="text-[13px] text-gray-500 ">{user.role === "admin" ? "Admin" : "User"}</a>
-                    </div>
-                    <div className="flex items-center justify-end gap-4 pt-2">
-                      <button 
-                        onClick={() => handleDelete(user._id)}
-                        className="text-[14px] font-medium text-[#FF0000]"
-                      >
-                        Delete User
-                      </button>
-                    </div>
-                  </div>
+                <div key={user._id} className="p-4 flex flex-col gap-3">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="font-bold text-[#0A1916] text-[16px]">{user.email}</p>
+                <p className={`py-4 text-[14px] ${user.isVerified ? "text-green-400" : "text-amber-300"}`}>
+                  {user.isVerified === true ? "Verified" : "Unverified"}
+                </p>
+                <p className="text-[12px] text-[#75928B]">{formatDate(user.createdAt)}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-[13px] text-gray-500">
+                {user.role === "admin" ? "Admin" : "User"}
+              </span>
+              {user.role === "admin" && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="#F59E0B"
+                  className="w-4 h-4"
+                >
+                  <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              )}
+            </div>
+            <div className="flex items-center justify-end gap-4 pt-2">
+              <button
+                onClick={() => user.role !== "admin" && handleDelete(user._id)}
+                disabled={user.role === "admin"}
+                className={`text-[14px] font-medium ${
+                  user.role === "admin"
+                    ? "text-gray-300 cursor-not-allowed"
+                    : "text-[#FF0000] cursor-pointer"
+                }`}
+              >
+                Delete User
+              </button>
+            </div>
+          </div>
                 ))}
               </div>
             </>

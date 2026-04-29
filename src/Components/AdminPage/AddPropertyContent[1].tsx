@@ -426,30 +426,44 @@ export const AddPropertyContent: React.FC = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px] max-w-[563px]">
                             <div className="flex flex-col gap-[12px]">
                                 <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Property Type</label>
-                                <select
-                                    name="propertyType"
-                                    value={form.propertyType}
-                                    onChange={handleChange}
-                                    className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-full outline-none bg-[#F9FAFB] px-2"
-                                >
-                                    <option value="House">House</option>
-                                    <option value="Villa">Villa</option>
-                                    <option value="Apartment">Apartment</option>
-                                    <option value="Residential">Residential</option>
-                                    <option value="Duplex">Duplex</option>
-                                </select>
+                                <div className="relative w-full">
+                                    <select
+                                        name="propertyType"
+                                        value={form.propertyType}
+                                        onChange={handleChange}
+                                        className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-full outline-none bg-[#F9FAFB] px-2 pr-[40px] appearance-none cursor-pointer"
+                                    >
+                                        <option value="House">House</option>
+                                        <option value="Villa">Villa</option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Residential">Residential</option>
+                                        <option value="Duplex">Duplex</option>
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                                        <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                             <div className="flex flex-col gap-[12px]">
                                 <label className="font-bold font-['Lato'] text-[15px] text-[#444545]">Listing Status</label>
-                                <select
-                                    name="sale"
-                                    value={form.sale}
-                                    onChange={handleChange}
-                                    className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-full outline-none bg-[#F9FAFB] px-2"
-                                >
-                                    <option value="For Sale">For Sale</option>
-                                    <option value="For Rent">For Rent</option>
-                                </select>
+                                <div className="relative w-full">
+                                    <select
+                                        name="sale"
+                                        value={form.sale}
+                                        onChange={handleChange}
+                                        className="border-[1px] border-[#E5E7EB] rounded-[8px] h-[48px] w-full outline-none bg-[#F9FAFB] px-2 pr-[40px] appearance-none cursor-pointer"
+                                    >
+                                        <option value="For Sale">For Sale</option>
+                                        <option value="For Rent">For Rent</option>
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                                        <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                          {/* Agent Info */}
@@ -496,18 +510,25 @@ export const AddPropertyContent: React.FC = () => {
                             <div className="flex flex-col sm:flex-row gap-[20px] max-w-[563px] pt-2">
                                 <div className="flex flex-col flex-1">
                                     <label className="font-bold font-['Lato'] text-[15px] text-[#444545] mb-3">State</label>
-                                    <select
-                                        value={form.location.state}
-                                        onChange={(e) => {
-                                            nestedHandleChange("location", "state", e.target.value);
-                                            nestedHandleChange("location", "city", "");
-                                        }}
-                                        className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] bg-[#F9FAFB] outline-none ${errors.state ? "border-red-500" : "border-[#E5E7EB]"}`}>
-                                        <option value="">Select State</option>
-                                        {allStates.map((state) => (
-                                            <option key={state} value={state}>{state}</option>
-                                        ))}
-                                    </select>
+                                    <div className="relative w-full">
+                                        <select
+                                            value={form.location.state}
+                                            onChange={(e) => {
+                                                nestedHandleChange("location", "state", e.target.value);
+                                                nestedHandleChange("location", "city", "");
+                                            }}
+                                            className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] pr-[40px] bg-[#F9FAFB] outline-none appearance-none cursor-pointer ${errors.state ? "border-red-500" : "border-[#E5E7EB]"}`}>
+                                            <option value="">Select State</option>
+                                            {allStates.map((state) => (
+                                                <option key={state} value={state}>{state}</option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                                            <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                     {/* ---- VALIDATION: state error message ---- */}
                                     {errors.state && (
                                         <p className="text-red-500 text-[13px] mt-1">{errors.state}</p>
@@ -515,15 +536,22 @@ export const AddPropertyContent: React.FC = () => {
                                 </div>
                                 <div className="flex flex-col flex-1">
                                     <label className="font-bold font-['Lato'] text-[15px] text-[#444545] mb-3">City</label>
-                                    <select
-                                        value={form.location.city}
-                                        onChange={(e) => nestedHandleChange("location", "city", e.target.value)}
-                                        className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] bg-[#F9FAFB] outline-none ${errors.city ? "border-red-500" : "border-[#E5E7EB]"}`}>
-                                        <option value="">Select City</option>
-                                        {getCitiesByState(form.location.state).map((city) => (
-                                            <option key={city} value={city}>{city}</option>
-                                        ))}
-                                    </select>
+                                    <div className="relative w-full">
+                                        <select
+                                            value={form.location.city}
+                                            onChange={(e) => nestedHandleChange("location", "city", e.target.value)}
+                                            className={`w-full h-[48px] border-[1px] rounded-[8px] py-[10px] px-[12px] pr-[40px] bg-[#F9FAFB] outline-none appearance-none cursor-pointer ${errors.city ? "border-red-500" : "border-[#E5E7EB]"}`}>
+                                            <option value="">Select City</option>
+                                            {getCitiesByState(form.location.state).map((city) => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                                            <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                     {/* ---- VALIDATION: city error message ---- */}
                                     {errors.city && (
                                         <p className="text-red-500 text-[13px] mt-1">{errors.city}</p>
@@ -551,16 +579,23 @@ export const AddPropertyContent: React.FC = () => {
                             <div className="grid grid-cols-3 gap-4 max-w-[563px]">
                                 <div className="flex flex-col gap-2">
                                     <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Bedroom</label>
-                                    <select
-                                        value={form.propertyDetails.bedrooms}
-                                        onChange={(e) => nestedHandleChange("propertyDetails", "bedrooms", Number(e.target.value))}
-                                        className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] bg-[#F9FAFB] outline-none ${errors.bedrooms ? "border-red-500" : "border-[#E5E7EB]"}`}
-                                    >
-                                        <option value="0">Select</option>
-                                        {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
-                                            <option key={num} value={num}>{num}</option>
-                                        ))}
-                                    </select>
+                                    <div className="relative w-full">
+                                        <select
+                                            value={form.propertyDetails.bedrooms}
+                                            onChange={(e) => nestedHandleChange("propertyDetails", "bedrooms", Number(e.target.value))}
+                                            className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] pr-[40px] bg-[#F9FAFB] outline-none appearance-none cursor-pointer ${errors.bedrooms ? "border-red-500" : "border-[#E5E7EB]"}`}
+                                        >
+                                            <option value="0">Select</option>
+                                            {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
+                                                <option key={num} value={num}>{num}</option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                                            <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                     {/* ---- VALIDATION: bedrooms error message ---- */}
                                     {errors.bedrooms && (
                                         <p className="text-red-500 text-[12px]">{errors.bedrooms}</p>
@@ -568,16 +603,23 @@ export const AddPropertyContent: React.FC = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="font-bold text-[15px] max-[321px]:text-[13px] text-[#444545]">Bathroom</label>
-                                    <select
-                                        value={form.propertyDetails.bathroom}
-                                        onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))}
-                                        className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] bg-[#F9FAFB] outline-none ${errors.bathroom ? "border-red-500" : "border-[#E5E7EB]"}`}
-                                    >
-                                        <option value="0">Select</option>
-                                        {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
-                                            <option key={num} value={num}>{num}</option>
-                                        ))}
-                                    </select>
+                                    <div className="relative w-full">
+                                        <select
+                                            value={form.propertyDetails.bathroom}
+                                            onChange={(e) => nestedHandleChange("propertyDetails", "bathroom", Number(e.target.value))}
+                                            className={`border-[1px] w-full h-[48px] rounded-[8px] px-[10px] pr-[40px] bg-[#F9FAFB] outline-none appearance-none cursor-pointer ${errors.bathroom ? "border-red-500" : "border-[#E5E7EB]"}`}
+                                        >
+                                            <option value="0">Select</option>
+                                            {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
+                                                <option key={num} value={num}>{num}</option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                                            <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                     {/* ---- VALIDATION: bathroom error message ---- */}
                                     {errors.bathroom && (
                                         <p className="text-red-500 text-[12px]">{errors.bathroom}</p>

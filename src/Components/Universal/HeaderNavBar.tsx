@@ -44,7 +44,7 @@ const HeaderNavBar: FC = () => {
 
   const handlePropertyClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    isLoggedIn ? navigate('/property') : setShowModal(true);
+    isLoggedIn ? navigate('/properties') : setShowModal(true);
     setIsMenu(false);
   };
 
@@ -62,7 +62,6 @@ const HeaderNavBar: FC = () => {
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigate('/');
     const footer = document.getElementById("footer-section");
   if (footer) {
     footer.scrollIntoView({ 
@@ -102,7 +101,7 @@ const HeaderNavBar: FC = () => {
           <Link to="/contact" onClick={handleContactClick} className={navLinkClass('/contact')}>
             Contact
           </Link>
-          <Link to="/property" onClick={handlePropertyClick} className={navLinkClass('/property')}>
+          <Link to="/properties" onClick={handlePropertyClick} className={navLinkClass('/properties')}>
             Properties
           </Link>
         </nav>
@@ -158,7 +157,7 @@ const HeaderNavBar: FC = () => {
             <Link to="/" onClick={handleHomeClick} className={isActive('/') ? "text-[#F4A261] font-bold" : ""}>Home</Link>
             <Link to="/about" className={isActive('/about') ? "text-[#F4A261] font-bold" : ""}>About</Link>
             <Link to="/contact" onClick={handleContactClick} className={isActive('/contact') ? "text-[#F4A261] font-bold" : ""}>Contact</Link>
-            <Link to="/property" onClick={handlePropertyClick} className={isActive('/property') ? "text-[#F4A261] font-bold" : ""}>Property</Link>
+            <Link to="/properties" onClick={handlePropertyClick} className={isActive('/properties') ? "text-[#F4A261] font-bold" : ""}>Property</Link>
           </nav>
 
           <div className="flex flex-col gap-4 w-full px-10">

@@ -20,9 +20,7 @@ const Dashboard: React.FC = () => {
 
   // these counts come from your local properties data as before ----
   const totalProperties = validProperties.length;
-  const activeListings = validProperties.filter(
-  property => property.isDraft === false
-).length;
+  const activeListings = validProperties.filter(property => property.isDraft === false).length;
   const pendingProperties = validProperties.filter(property => property.isDraft===true).length;
 
   // ---- BACKEND ADDED: fetch real users count from backend ----

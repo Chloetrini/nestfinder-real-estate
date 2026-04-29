@@ -127,7 +127,7 @@ const Enquiries: React.FC = () => {
                     <tr className="bg-[#B1FFED] h-[56px]">
                       <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Name</th>
                       <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Email</th>
-                      <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Property</th>
+                      <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Property Name</th>
                       <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Message</th>
                       <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Date</th>
                       <th className="text-[15px] font-medium text-[#023337] px-4 text-left">Status</th>
@@ -141,9 +141,9 @@ const Enquiries: React.FC = () => {
                         <td className="px-4 py-4 text-[#403F3F] text-[14px]">
                           <a href={`mailto:${enquiry.email}`} className="text-[#1A3C34] hover:underline">{enquiry.email}</a>
                         </td>
-                        <td className="px-4 py-4 text-[#403F3F] text-[14px]">{enquiry.propertyName}</td>
+                        <td className="px-4 py-4 text-[#403F3F] text-[14px] ">{enquiry.propertyName}</td>
                         <td className="px-4 py-4 text-[#403F3F] text-[14px] max-w-[200px]">
-                          <p className="truncate">{enquiry.message}</p>
+                          <p className="truncate hover:whitespace-normal hover:overflow-visible">{enquiry.message}</p>
                         </td>
                         <td className="px-4 py-4 text-[#403F3F] text-[14px]">{formatDate(enquiry.createdAt)}</td>
                         <td className="px-4 py-4">

@@ -204,17 +204,24 @@ const PropertyPage: FC = () => {
                 Location
               </label>
               {/* ---- BACKEND UPDATED: now shows all 36 Nigeria states ---- */}
-              <select
-                name='location'
-                id='location'
-                value={filter.location.fullAddress}
-                onChange={handleChange}
-                className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
-                <option value=''>All States</option>
-                {allStates.map((state) => (
-                  <option key={state} value={state}>{state}</option>
-                ))}
-              </select>
+              <div className="relative w-full">
+                <select
+                  name='location'
+                  id='location'
+                  value={filter.location.fullAddress}
+                  onChange={handleChange}
+                  className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white cursor-pointer'>
+                  <option value=''>All States</option>
+                  {allStates.map((state) => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                  <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div className='flex gap-[13px] max-[321px]:w-[310px] w-full items-center lg:max-w-[366px] px-3 lg:px-0 justify-center lg:contents selectdiv'>
@@ -223,19 +230,26 @@ const PropertyPage: FC = () => {
                   <img src={home} alt='' />
                   Property Type
                 </label>
-                <select
-                  name='propertyType'
-                  value={filter.propertyType}
-                  onChange={handleChange}
-                  id='propertyType'
-                  className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
-                  <option value=''>Property type</option>
-                  <option value='House'>House</option>
-                  <option value='Villa'>Villa</option>
-                  <option value='Duplex'>Duplex</option>
-                  <option value='Residential'>Residential</option>
-                  <option value='Apartment'>Apartment</option>
-                </select>
+                <div className="relative w-full">
+                  <select
+                    name='propertyType'
+                    value={filter.propertyType}
+                    onChange={handleChange}
+                    id='propertyType'
+                    className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white cursor-pointer select'>
+                    <option value=''>Property type</option>
+                    <option value='House'>House</option>
+                    <option value='Villa'>Villa</option>
+                    <option value='Duplex'>Duplex</option>
+                    <option value='Residential'>Residential</option>
+                    <option value='Apartment'>Apartment</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                    <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
               </div>
               <div className='w-full lg:w-[170px] xl:w-[200px] h-[69px] select'>
                 <label htmlFor='bedrooms' className='flex items-center gap-1 mb-1'>
@@ -243,16 +257,23 @@ const PropertyPage: FC = () => {
                   No of Bedrooms
                 </label>
                 {/* ---- BACKEND UPDATED: now shows 1-50 bedroom options ---- */}
-                <select
-                  name='bedrooms'
-                  value={filter.details.bedrooms}
-                  onChange={handleChange}
-                  className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
-                  <option value=''>Bedrooms</option>
-                  {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
-                    <option key={num} value={String(num)}>{num}</option>
-                  ))}
-                </select>
+                <div className="relative w-full">
+                  <select
+                    name='bedrooms'
+                    value={filter.details.bedrooms}
+                    onChange={handleChange}
+                    className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white cursor-pointer select'>
+                    <option value=''>Bedrooms</option>
+                    {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
+                      <option key={num} value={String(num)}>{num}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                    <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -261,15 +282,22 @@ const PropertyPage: FC = () => {
                 <img src={listing} alt='' />
                 Status list
               </label>
-              <select
-                name='listing'
-                onChange={handleChange}
-                value={filter.listing}
-                className='w-full h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] select'>
-                <option value=''>Status</option>
-                <option value='For Rent'>For Rent</option>
-                <option value='For Sale'>For Sale</option>
-              </select>
+              <div className="relative w-full">
+                <select
+                  name='listing'
+                  onChange={handleChange}
+                  value={filter.listing}
+                  className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white cursor-pointer select'>
+                  <option value=''>Status</option>
+                  <option value='For Rent'>For Rent</option>
+                  <option value='For Sale'>For Sale</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-[10px] flex items-center">
+                  <svg className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div className='max-w-[366px] max-[321px]:w-[310px] lg:w-[190px] xl:w-[230px] h-[69px] px-3 lg:px-0 items-center'>

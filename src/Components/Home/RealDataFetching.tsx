@@ -146,7 +146,7 @@ const RealDataFetching: FC = () => {
             <div className="flex items-center justify-center my-[50px] md:my-[70px]">
                 <button 
                     type="button" 
-                    onClick={() => isLoggedIn ? navigate("/Property") : setShowModal(true)}
+                    onClick={() => isLoggedIn ? navigate("/properties") : setShowModal(true)}
                     className="bg-[#1A3C34] py-[12px] px-[32px] rounded-[10px] font-Manrope font-[500] text-[#FFFFFF] text-[18px] hover:bg-[#264d43]  shadow-lg hover:bg-[#264d43] transition-all transform hover:scale-105"
                 >
                     View All Properties

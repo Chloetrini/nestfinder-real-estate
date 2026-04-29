@@ -62,7 +62,7 @@ export const nigeriaStates: { state: string; cities: string[] }[] = [
     cities: ["Enugu", "Nsukka", "Oji River", "Agwu", "Awgu", "Enugu East", "Enugu North", "Enugu South", "Ezeagu", "Igbo Etiti", "Igbo Eze North", "Igbo Eze South", "Isi Uzo", "Nkanu East", "Nkanu West", "Udenu", "Udi", "Uzo Uwani"]
   },
   {
-    state: "FCT Abuja",
+    state: "Abuja",
     cities: ["Abuja Central", "Garki", "Wuse", "Maitama", "Asokoro", "Gwarinpa", "Jabi", "Kubwa", "Lugbe", "Gwagwalada", "Kuje", "Bwari", "Abaji", "Kwali", "Dutse", "Nyanya", "Karu", "Zuba", "Karmo", "Dawaki", "Galadimawa", "Lokogoma", "Apo", "Lifecamp", "Katampe"]
   },
   {

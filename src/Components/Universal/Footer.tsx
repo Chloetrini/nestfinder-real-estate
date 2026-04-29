@@ -11,7 +11,7 @@ const Footer: FC = () => {
     const navigate = useNavigate();
      const handlePropertyClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    isLoggedIn ? navigate('/property') : setShowModal(true);
+    isLoggedIn ? navigate('/properties') : setShowModal(true);
    
   };
 
@@ -93,7 +93,7 @@ const Footer: FC = () => {
                                 <Link to="/contact" onClick={handleContactClick} className="hover:text-[#1A3C34]">
                                     Contact
                                 </Link>
-                                <Link to="/property" onClick={handlePropertyClick} className="hover:text-[#1A3C34]">
+                                <Link to="/properties" onClick={handlePropertyClick} className="hover:text-[#1A3C34]">
                                     Properties
                                 </Link>
                             </nav>

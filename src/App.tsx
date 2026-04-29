@@ -51,7 +51,7 @@ const { isCheckingAuth } = useAuth();
          
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/property" element={<PropertyPage />} />
+          <Route path="/properties" element={<PropertyPage />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
         </Route>
 

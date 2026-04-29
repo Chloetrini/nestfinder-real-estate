@@ -11,7 +11,7 @@ const AboutPage: FC = () => {
    const {isLoggedIn, setShowModal,showModal} = useAuth()
    const handlePropertyClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    isLoggedIn ? navigate('/property') : setShowModal(true);
+    isLoggedIn ? navigate('/properties') : setShowModal(true);
     
   };
   return (
