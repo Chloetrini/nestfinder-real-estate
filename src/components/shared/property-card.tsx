@@ -6,6 +6,7 @@ import bed from '@/assets/icons/bed.png'
 import bath from '@/assets/icons/bath.png'
 import { useState } from 'react'
 import { optimizeImage, imageSrcSet } from '@/lib/image'
+import { useAuth } from '@/context/auth-context'
 import type { Property } from '@/types/property'
 
 interface PropertyCardProps {
@@ -27,6 +28,9 @@ const discountColor = (discount: string) => {
 // The single property card used on the home page, the listing page and "Explore more"
 const PropertyCard = ({ property, onView, index = 0 }: PropertyCardProps) => {
   const [loaded, setLoaded] = useState(false)
+  const { isLoggedIn, setShowModal } = useAuth()
+  // Viewing a property needs an account: visitors who are signed out get the sign-in prompt instead
+  const open = () => (isLoggedIn ? onView() : setShowModal(true))
   // The first row is on screen straight away, so load it at once; the rest wait until you scroll near them
   const aboveTheFold = index < 3
   return (
@@ -34,11 +38,11 @@ const PropertyCard = ({ property, onView, index = 0 }: PropertyCardProps) => {
     role="link"
     tabIndex={0}
     aria-label={`View ${property.propertyName}`}
-    onClick={onView}
+    onClick={open}
     onKeyDown={(e) => {
       if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault()
-        onView()
+        open()
       }
     }}
     style={{ animationDelay: `${Math.min(index, 6) * 70}ms` }}

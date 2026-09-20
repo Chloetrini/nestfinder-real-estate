@@ -1,8 +1,10 @@
+import { useAuth } from '@/context/auth-context'
 import { useFavorites } from '@/hooks/use-favorites'
 
 // Round heart in the corner of a property card: saves / unsaves the property on this device
 const HeartButton = ({ propertyId, className = '' }: { propertyId: string; className?: string }) => {
   const { isSaved, toggle } = useFavorites()
+  const { isLoggedIn, setShowModal } = useAuth()
   const saved = isSaved(propertyId)
 
   return (
@@ -12,6 +14,8 @@ const HeartButton = ({ propertyId, className = '' }: { propertyId: string; class
       aria-pressed={saved}
       onClick={e => {
         e.stopPropagation()
+        // Saving a property needs an account
+        if (!isLoggedIn) return setShowModal(true)
         toggle(propertyId)
       }}
       className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/90 dark:bg-gray-900/80 shadow-md backdrop-blur transition-transform hover:scale-110 active:scale-90 ${className}`}

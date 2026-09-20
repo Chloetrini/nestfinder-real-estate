@@ -26,16 +26,21 @@ const routes: RouteObject[] = [
       { path: 'home', element: <Navigate to="/" replace /> },
       { path: 'about', ...page(() => import('@/routes/about')) },
       { path: 'contact', ...page(() => import('@/routes/contact')) },
-      { path: 'saved', ...page(() => import('@/routes/saved')) },
       { path: 'login', ...page(() => import('@/routes/auth/login')) },
       { path: 'signup', ...page(() => import('@/routes/auth/signup')) },
       { path: 'forgotpassword', ...page(() => import('@/routes/auth/forgot-password')) },
       { path: 'resetpassword', ...page(() => import('@/routes/auth/reset-password')) },
       { path: 'verify-email', ...page(() => import('@/routes/auth/verify-email')) },
 
-      // ---- properties are open to everyone (only the admin area needs a login) ----
-      { path: 'properties', ...page(() => import('@/routes/properties')) },
-      { path: 'property/:id', ...page(() => import('@/routes/properties/detail')) },
+      // ---- signed-in visitors only: browsing properties, property details and saved properties ----
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: 'properties', ...page(() => import('@/routes/properties')) },
+          { path: 'property/:id', ...page(() => import('@/routes/properties/detail')) },
+          { path: 'saved', ...page(() => import('@/routes/saved')) },
+        ],
+      },
 
       // ---- admins only ----
       {
