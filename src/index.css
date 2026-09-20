@@ -51,6 +51,16 @@
 	--animate-twinkle: twinkle 3.2s ease-in-out infinite;
 	--animate-window: window-glow 4s ease-in-out infinite;
 	--animate-drift: drift 70s linear infinite;
+	--animate-loader-bar: loader-bar 1.2s ease-in-out infinite;
+
+	@keyframes loader-bar {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(300%);
+		}
+	}
 
 	@keyframes shimmer {
 		100% {
