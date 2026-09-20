@@ -2,7 +2,7 @@ import desktop from "@/assets/images/auth-desktop.webp"
 import { useSeo } from '@/hooks/use-seo'
 import mobile from "@/assets/images/auth-mobile.webp"
 import nestpro from "@/assets/brand/logo.png"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useState, type FC } from "react";
 import { useAuth } from "@/context/auth-context";
 
@@ -32,6 +32,9 @@ const LogIn: FC = () => {
 
   const { setIsLoggedIn, setUser, setIsAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  // Set when a signed-out visitor was sent here from a page that needs a login
+  const cameFrom = (location.state as { from?: string } | null)?.from;
   
   const [form, setForm] = useState<Form>({ email: "", password: "", terms: false });
   const [error, setError] = useState<ErrorType>({ email: false, password: false });
@@ -102,7 +105,7 @@ const LogIn: FC = () => {
           navigate("/adminPage");
         } else {
           setIsAdmin(false);
-          navigate("/");
+          navigate(cameFrom && cameFrom.startsWith("/") ? cameFrom : "/", { replace: true });
         }
       } else {
         setModal({

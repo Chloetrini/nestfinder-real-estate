@@ -1,5 +1,4 @@
 import { useState, type FC } from 'react';
-import { Heart } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 import UserMenu from '@/components/layout/user-menu';
 // Added useLocation to track which page is currently active
@@ -104,12 +103,6 @@ const HeaderNavBar: FC = () => {
 
         <div className="hidden md:flex items-center justify-end gap-[12px] md:min-w-[200px] font-[Manrope]">
           <ThemeToggle className="text-[#1A3C34] dark:text-[#8fd3c0]" />
-          {!isLoggedIn && savedCount > 0 && (
-            <Link to="/saved" aria-label={`Saved properties (${savedCount})`} className="relative flex h-10 w-10 items-center justify-center rounded-full text-[#1A3C34] transition-transform hover:scale-110 dark:text-[#8fd3c0]">
-              <Heart size={20} />
-              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#F4A261] px-1.5 text-[11px] font-bold leading-4 text-[#1A3C34]">{savedCount}</span>
-            </Link>
-          )}
           {isLoggedIn ? (
             <UserMenu onLogout={handleLoggedOut} />
           ) : (
@@ -151,7 +144,7 @@ const HeaderNavBar: FC = () => {
             <Link to="/about" className={isActive('/about') ? "text-[#F4A261] font-bold" : ""}>About</Link>
             <Link to="/contact" onClick={handleContactClick} className={isActive('/contact') ? "text-[#F4A261] font-bold" : ""}>Contact</Link>
             <Link to="/properties" onClick={handlePropertyClick} className={isActive('/properties') ? "text-[#F4A261] font-bold" : ""}>Property</Link>
-            <Link to="/saved" onClick={() => setIsMenu(false)} className={isActive('/saved') ? "text-[#F4A261] font-bold" : ""}>Saved{savedCount > 0 ? ` (${savedCount})` : ''}</Link>
+            {isLoggedIn && <Link to="/saved" onClick={() => setIsMenu(false)} className={isActive('/saved') ? "text-[#F4A261] font-bold" : ""}>Saved{savedCount > 0 ? ` (${savedCount})` : ''}</Link>}
           </nav>
 
           <div className="flex flex-col gap-4 w-full px-10">
