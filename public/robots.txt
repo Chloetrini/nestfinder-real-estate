@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /adminPage
+Disallow: /login
+Disallow: /signup
+Disallow: /forgotpassword
+Disallow: /resetpassword
+Disallow: /verify-email
