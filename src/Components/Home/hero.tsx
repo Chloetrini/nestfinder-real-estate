@@ -56,8 +56,8 @@ const HeaderContentSec: FC = () => {
     return p ? { src: optimizeImage(p.images[0], i === 0 ? 900 : 600), alt: p.propertyName, open: () => openProperty(p._id) } : { src: fallback, alt: fallbackAlt, open: browse }
   }
 
-  // The floating card shows a real listing: a featured one if there is one, otherwise the newest
-  const main = useMemo(() => properties.find((p) => p.isFeatured) ?? properties[0], [properties])
+  // The floating card names the property in the big photo, so text and picture always match
+  const main = featuredPhotos[0] ?? properties[0]
 
   const openProperty = (id: string) => navigate(`/property/${id}`)
   const browse = () => navigate("/properties")

@@ -11,6 +11,7 @@ const FeatureButton = ({ property, variant = 'icon' }: { property: Property; var
   const label = property.isDraft ? 'Publish this property before featuring it' : on ? 'Remove from featured' : 'Feature on the home page'
 
   const toggle = () => setFeatured.mutate({ id: property._id, isFeatured: !on })
+  const failed = setFeatured.isError ? 'Could not update, please try again' : null
 
   if (variant === 'full') {
     return (
@@ -27,6 +28,7 @@ const FeatureButton = ({ property, variant = 'icon' }: { property: Property; var
       >
         <Star size={18} className={on ? 'fill-[#F4A261] text-[#F4A261]' : ''} aria-hidden="true" />
         {setFeatured.isPending ? 'Saving...' : on ? 'Featured' : 'Make featured'}
+        {failed && <span className="text-[12px] font-normal text-red-500">{failed}</span>}
       </button>
     )
   }
@@ -36,12 +38,12 @@ const FeatureButton = ({ property, variant = 'icon' }: { property: Property; var
       type="button"
       onClick={toggle}
       disabled={disabled}
-      title={label}
+      title={failed ?? label}
       aria-label={label}
       aria-pressed={on}
       className="rounded-full p-1.5 transition-transform hover:scale-125 disabled:cursor-not-allowed disabled:opacity-40"
     >
-      <Star size={20} className={on ? 'fill-[#F4A261] text-[#F4A261]' : 'text-gray-400 dark:text-gray-500'} aria-hidden="true" />
+      <Star size={20} className={failed ? 'text-red-500' : on ? 'fill-[#F4A261] text-[#F4A261]' : 'text-gray-400 dark:text-gray-500'} aria-hidden="true" />
     </button>
   )
 }

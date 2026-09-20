@@ -724,6 +724,20 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({ property: editingPro
                         </div>
                     </div>
 
+                    {/* Featured: shows this property in the home page's Featured section and photo collage */}
+                    <label className="flex cursor-pointer items-start gap-3 rounded-[10px] border border-[#E5E7EB] dark:border-gray-700 bg-[#F9FAFB] dark:bg-gray-800 p-4 max-w-[563px]">
+                        <input
+                            type="checkbox"
+                            checked={form.isFeatured}
+                            onChange={(e) => setForm((prev) => ({ ...prev, isFeatured: e.target.checked }))}
+                            className="mt-1 h-5 w-5 accent-[#1A3C34]"
+                        />
+                        <span className="flex flex-col">
+                            <span className="font-bold text-[15px] text-[#023337] dark:text-gray-100">Feature this property on the home page</span>
+                            <span className="text-[13px] text-gray-500 dark:text-gray-400">It will appear in "Featured Properties" and in the photo collage at the top of the home page.</span>
+                        </span>
+                    </label>
+
                     {/* Amenities */}
                     <div className="flex flex-col gap-5">
                         <h2 className="font-bold text-[16px] text-[#023337] dark:text-gray-100">Amenities</h2>
