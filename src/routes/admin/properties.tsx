@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 // ---- BACKEND: imported updateProperty to publish drafts ----
 import { updateProperty as updatePropertyAPI } from "@/api/properties";
 import Modal from "@/components/ui/modal"
+import FeatureButton from "@/components/admin/feature-button"
 type Filter = "All Properties" | "For Sale" | "For Rent" | "Featured" | "Draft"
 
 const ManageProperties: React.FC = () => {
@@ -186,6 +187,7 @@ const ManageProperties: React.FC = () => {
                         <span className="font-bold text-[#0A1916] dark:text-gray-100 text-[14px] md:text-[15px]">
                           {property.propertyName}
                         </span>
+                        <FeatureButton property={property} />
                         {/* ---- BACKEND ADDED: show Draft badge on draft properties ---- */}
                             {property.isDraft && (
                               <span className="text-[11px] text-orange-500 font-medium">Draft</span>

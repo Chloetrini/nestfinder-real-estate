@@ -4,6 +4,7 @@ import { useProperties } from '@/context/property-context'
 import { useEnquiries } from '@/hooks/admin/use-admin'
 import { useSeo } from '@/hooks/use-seo'
 import { optimizeImage } from '@/lib/image'
+import FeatureButton from '@/components/admin/feature-button'
 
 const Badge = ({ children, tone }: { children: string; tone: 'green' | 'orange' | 'gray' | 'blue' }) => {
   const tones = {
@@ -77,6 +78,7 @@ const AdminPropertyDetail = () => {
               View live page
             </button>
           )}
+          <FeatureButton property={property} variant="full" />
           <button onClick={() => navigate(`/adminPage/edit-property/${property._id}`)} className="rounded-[10px] bg-[#1A3C34] dark:bg-[#24574a] px-5 py-3 font-bold text-white transition-transform hover:scale-105">
             Edit
           </button>

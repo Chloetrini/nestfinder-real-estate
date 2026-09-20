@@ -1,6 +1,8 @@
-import { useMemo, useState, type FC, type FormEvent } from "react"
+import { useMemo, useState, type FC } from "react"
 import { useNavigate } from "react-router-dom"
-import { Home, MapPin, Search } from "lucide-react"
+import { Home } from "lucide-react"
+import SearchBox from "@/components/search/search-box"
+import { optimizeImage } from "@/lib/image"
 import { useProperties } from "@/hooks/properties/use-properties"
 import heroHouse from "@/assets/images/hero-house.webp"
 import heroVilla from "@/assets/images/hero-villa.webp"
@@ -43,20 +45,30 @@ const HeaderContentSec: FC = () => {
   const [query, setQuery] = useState("")
   const { data: properties = [] } = useProperties()
 
+  // The collage shows photos of REAL properties: the featured ones first (the admin picks them with the star),
+  // then the newest listings to fill any gap. The bundled photos are only a fallback while loading or when there are no listings.
+  const featuredPhotos = useMemo(() => {
+    const withPhoto = properties.filter((p) => p.images?.[0])
+    return [...withPhoto.filter((p) => p.isFeatured), ...withPhoto.filter((p) => !p.isFeatured)].slice(0, 3)
+  }, [properties])
+  const slot = (i: number, fallback: string, fallbackAlt: string) => {
+    const p = featuredPhotos[i]
+    return p ? { src: optimizeImage(p.images[0], i === 0 ? 900 : 600), alt: p.propertyName, open: () => openProperty(p._id) } : { src: fallback, alt: fallbackAlt, open: browse }
+  }
+
   // The floating card shows a real listing: a featured one if there is one, otherwise the newest
   const main = useMemo(() => properties.find((p) => p.isFeatured) ?? properties[0], [properties])
 
   const openProperty = (id: string) => navigate(`/property/${id}`)
   const browse = () => navigate("/properties")
-  const handleSearch = (e: FormEvent) => {
-    e.preventDefault()
-    navigate(`/properties${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""}`)
-  }
+  const photo0 = slot(0, heroHouse, "A modern family home")
+  const photo1 = slot(1, heroVilla, "A modern villa at dusk")
+  const photo2 = slot(2, heroInterior, "A bright living room")
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#F3FBF8] dark:bg-gray-950">
+    <section className="relative isolate z-20 bg-[#F3FBF8] dark:bg-gray-950">
       {/* Background: soft colour glows and a faint dotted grid */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -right-32 -top-32 h-[520px] w-[520px] rounded-full bg-[#8fd3c0]/40 blur-3xl dark:bg-[#1A3C34]/60" />
         <div className="absolute -bottom-40 -left-24 h-[420px] w-[420px] rounded-full bg-[#F4A261]/25 blur-3xl dark:bg-[#F4A261]/10" />
         <div className="absolute inset-0 opacity-[0.35] [background-image:radial-gradient(#1A3C34_1px,transparent_1px)] [background-size:26px_26px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)] dark:opacity-[0.25] dark:[background-image:radial-gradient(#8fd3c0_1px,transparent_1px)]" />
@@ -87,20 +99,20 @@ const HeaderContentSec: FC = () => {
             Compare homes, see real prices and talk to agents. Everything you need to rent or buy with confidence, in one place.
           </p>
 
-          <form onSubmit={handleSearch} role="search" className="animate-fade-up flex w-full max-w-[600px] items-center gap-2 rounded-[16px] border border-gray-200 bg-white p-2 shadow-[0_20px_50px_-20px_rgba(26,60,52,0.45)] dark:border-gray-800 dark:bg-gray-900" style={{ animationDelay: "240ms" }}>
-            <MapPin size={20} className="ml-3 shrink-0 text-[#4F887B]" aria-hidden="true" />
-            <input
+          <div className="animate-fade-up relative z-30 w-full max-w-[600px]" style={{ animationDelay: "240ms" }}>
+            <SearchBox
+              variant="hero"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={setQuery}
+              onSubmit={(v) => navigate(`/properties${v ? `?q=${encodeURIComponent(v)}` : ""}`)}
+              onSelect={(s) => {
+                if (s.kind === "property") openProperty(s.id)
+                else if (s.kind === "type") navigate(`/properties?type=${encodeURIComponent(s.label)}`)
+                else navigate(`/properties?q=${encodeURIComponent(s.label.split(",")[0])}`)
+              }}
               placeholder="Search by area, city or name, e.g. Lekki"
-              aria-label="Search properties"
-              className="h-[48px] min-w-0 flex-1 bg-transparent px-2 text-[15px] text-[#0A1916] outline-none placeholder:text-gray-400 dark:text-gray-100"
             />
-            <button type="submit" className="flex h-[48px] shrink-0 items-center gap-2 rounded-[12px] bg-[#1A3C34] px-5 font-[Manrope] font-semibold text-white transition-all hover:bg-[#264d43] active:scale-95 dark:bg-[#24574a] dark:hover:bg-[#2d6a5a] md:px-7">
-              <Search size={18} aria-hidden="true" />
-              <span className="hidden sm:inline">Search</span>
-            </button>
-          </form>
+          </div>
 
           <div className="animate-fade-up flex flex-wrap gap-2" style={{ animationDelay: "320ms" }}>
             {QUICK_LINKS.map((link) => (
@@ -121,9 +133,9 @@ const HeaderContentSec: FC = () => {
             <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 9" strokeLinecap="round" />
           </svg>
 
-          <Photo src={heroHouse} alt="A modern family home" priority onOpen={browse} className="absolute right-0 top-0 h-[470px] w-[62%] rounded-t-[999px] rounded-b-[36px] shadow-2xl" />
-          <Photo src={heroVilla} alt="A modern villa at dusk" onOpen={browse} className="absolute bottom-0 left-0 h-[230px] w-[46%] rounded-[30px] border-[6px] border-[#F3FBF8] shadow-xl dark:border-gray-950" />
-          <Photo src={heroInterior} alt="A bright living room" onOpen={browse} className="absolute bottom-[34px] right-[4%] h-[128px] w-[128px] rounded-full border-[6px] border-[#F3FBF8] shadow-xl dark:border-gray-950" />
+          <Photo key={photo0.src} src={photo0.src} alt={photo0.alt} priority onOpen={photo0.open} className="absolute right-0 top-0 h-[470px] w-[62%] rounded-t-[999px] rounded-b-[36px] shadow-2xl" />
+          <Photo key={photo1.src} src={photo1.src} alt={photo1.alt} onOpen={photo1.open} className="absolute bottom-0 left-0 h-[230px] w-[46%] rounded-[30px] border-[6px] border-[#F3FBF8] shadow-xl dark:border-gray-950" />
+          <Photo key={photo2.src} src={photo2.src} alt={photo2.alt} onOpen={photo2.open} className="absolute bottom-[34px] right-[4%] h-[128px] w-[128px] rounded-full border-[6px] border-[#F3FBF8] shadow-xl dark:border-gray-950" />
 
           {main && (
             <button type="button" onClick={() => openProperty(main._id)} className="absolute left-0 top-[24%] flex animate-float items-center gap-3 text-left rounded-2xl border border-white/60 bg-white/90 p-3 pr-5 shadow-xl backdrop-blur dark:border-white/10 dark:bg-gray-900/90 [animation-duration:5s]">
@@ -149,7 +161,7 @@ const HeaderContentSec: FC = () => {
 
         {/* On phones: one photo under the search, the collage is too wide */}
         <div className="lg:hidden -mt-4">
-          <Photo src={heroHouse} alt="A modern family home" priority onOpen={browse} className="block aspect-[4/3] w-full rounded-[28px] shadow-xl" />
+          <Photo key={photo0.src} src={photo0.src} alt={photo0.alt} priority onOpen={photo0.open} className="block aspect-[4/3] w-full rounded-[28px] shadow-xl" />
         </div>
       </div>
     </section>

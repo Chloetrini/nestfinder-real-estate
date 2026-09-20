@@ -51,6 +51,7 @@ const routes: RouteObject[] = [
               { path: 'add-property', ...page(() => import('@/routes/admin/add-property')) },
               { path: 'property/:id', ...page(() => import('@/routes/admin/property-detail')) },
               { path: 'edit-property/:id', ...page(() => import('@/routes/admin/edit-property')) },
+              { path: 'subscribers', ...page(() => import('@/routes/admin/subscribers')) },
               { path: 'messages', ...page(() => import('@/routes/admin/messages')) },
               { path: 'enquiries', ...page(() => import('@/routes/admin/enquiries')) },
               { path: 'users', ...page(() => import('@/routes/admin/users')) },

@@ -41,7 +41,7 @@ const PropertyDetails = () => {
   }
 
   return (
-    <div>
+    <div className="dark:bg-[#0b1512] min-h-screen">
       <HeaderNavBar />
      
       <div className="w-full mx-auto container px-3 md:px-10 space-y-14 mt-8 md:max-w-[1280px]">

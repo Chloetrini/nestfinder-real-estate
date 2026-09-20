@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useState, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { useSeo } from '@/hooks/use-seo'
 import PropertyCard from "@/components/shared/property-card";
 import Pagination from "@/components/ui/pagination";
@@ -15,6 +15,8 @@ import HeaderNavBar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
 import error from "@/assets/icons/error.png"
 import { useProperties } from "@/hooks/properties/use-properties";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import SearchBox from "@/components/search/search-box";
 import { PropertyGridSkeleton } from "@/components/skeletons/property-card-skeleton";
 import { allStates } from "@/constants/nigeria-states";
 
@@ -48,7 +50,7 @@ const PropertyPage: FC = () => {
   const [applyFilter, setApplyFilter] = useState<Filter | null>(hasUrlFilter ? fromUrl : null);
   const [filter, setFilter] = useState<Filter>(fromUrl);
   const [query, setQuery] = useState<string>(params.get("q") ?? "");
-  const deferredQuery = useDeferredValue(query); // typing stays instant while the list catches up
+  const deferredQuery = useDebouncedValue(query, 250); // the list waits for a short pause in typing
   const [sortBy, setSortBy] = useState<string>(params.get("sort") ?? "");
   const [currentPage, setCurrentPage] = useState(Number(params.get("page")) || 1);
   const [postPerPage, _setPostPerPage] = useState(12);
@@ -178,7 +180,7 @@ const PropertyPage: FC = () => {
     : [];
 
   return (
-    <div>
+    <div className="dark:bg-[#0b1512] min-h-screen">
      
         <HeaderNavBar />
       
@@ -191,25 +193,23 @@ const PropertyPage: FC = () => {
         <div className="flex flex-col relative z-10 items-center justify-center">
 
           {/* Search as you type */}
-          <div className="w-full px-4 lg:px-0 mt-9 max-w-[1200px]">
-            <div className="relative">
-              <svg className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.5-3.5" />
-              </svg>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => { setQuery(e.target.value); setCurrentPage(1); }}
-                placeholder="Search by name, area, city or type, e.g. Lekki villa"
-                aria-label="Search properties"
-                className="h-[52px] w-full rounded-[12px] border border-gray-200 bg-white pl-12 pr-4 text-[15px] text-[#0A1916] shadow-md outline-none transition-shadow focus:ring-2 focus:ring-[#1A3C34]/40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-[#8fd3c0]/40"
-              />
-            </div>
+          <div className="relative z-30 w-full px-4 lg:px-0 mt-9 max-w-[1200px]">
+            <SearchBox
+              value={query}
+              onChange={(v) => { setQuery(v); setCurrentPage(1); }}
+              onSubmit={(v) => { setQuery(v); setCurrentPage(1); }}
+              onSelect={(s) => {
+                if (s.kind === "property") navigate(`/property/${s.id}`);
+                else if (s.kind === "type") {
+                  const next = { ...filter, propertyType: s.label };
+                  setFilter(next); setApplyFilter(next); setQuery(""); setCurrentPage(1);
+                } else { setQuery(s.label.split(",")[0]); setCurrentPage(1); }
+              }}
+            />
           </div>
 
           {/* Filter Bar */}
-          <div className='flex flex-col lg:flex-row shadow-xl bg-white dark:bg-gray-900 max-[321px]:w-[310px] lg:h-[123px] lg:max-w-[1200px] lg:py-[27px] lg:px-[30px] lg:justify-between lg:w-full mb-9 mt-9 items-center lg:items-end rounded-[10px] h-auto py-[12px] md:px-[8px] gap-[21px] lg:gap-4 text-[#656565] dark:text-gray-300 selectdiv mx-4 lg:mx-0 max-w-[398px] text-[13px] md:text-[16px] font-[Manrope]'>
+          <div className='flex flex-col lg:flex-row shadow-xl bg-white dark:bg-[#12201c] dark:ring-1 dark:ring-white/10 max-[321px]:w-[310px] lg:h-[123px] lg:max-w-[1200px] lg:py-[27px] lg:px-[30px] lg:justify-between lg:w-full mb-9 mt-9 items-center lg:items-end rounded-[10px] h-auto py-[12px] md:px-[8px] gap-[21px] lg:gap-4 text-[#656565] dark:text-gray-300 selectdiv mx-4 lg:mx-0 max-w-[398px] text-[13px] md:text-[16px] font-[Manrope]'>
 
             <div className='w-full max-[321px]:w-[310px] lg:w-[180px] xl:w-[220px] h-[69px] select px-3 lg:px-0'>
               <label htmlFor='location' className='flex items-center gap-1 mb-1'>
@@ -223,7 +223,7 @@ const PropertyPage: FC = () => {
                   id='location'
                   value={filter.location.fullAddress}
                   onChange={handleChange}
-                  className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-gray-900 cursor-pointer'>
+                  className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-[#0b1512] dark:border-gray-600 dark:text-gray-100 cursor-pointer'>
                   <option value=''>All States</option>
                   {allStates.map((state) => (
                     <option key={state} value={state}>{state}</option>
@@ -249,7 +249,7 @@ const PropertyPage: FC = () => {
                     value={filter.propertyType}
                     onChange={handleChange}
                     id='propertyType'
-                    className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-gray-900 cursor-pointer select'>
+                    className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-[#0b1512] dark:border-gray-600 dark:text-gray-100 cursor-pointer select'>
                     <option value=''>Property type</option>
                     <option value='House'>House</option>
                     <option value='Villa'>Villa</option>
@@ -275,7 +275,7 @@ const PropertyPage: FC = () => {
                     name='bedrooms'
                     value={filter.details.bedrooms}
                     onChange={handleChange}
-                    className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-gray-900 cursor-pointer select'>
+                    className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-[#0b1512] dark:border-gray-600 dark:text-gray-100 cursor-pointer select'>
                     <option value=''>Bedrooms</option>
                     {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => (
                       <option key={num} value={String(num)}>{num}</option>
@@ -300,7 +300,7 @@ const PropertyPage: FC = () => {
                   name='listing'
                   onChange={handleChange}
                   value={filter.listing}
-                  className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-gray-900 cursor-pointer select'>
+                  className='w-full h-[39px] border-[1px] px-[10px] pr-[32px] rounded-[10px] text-[14px] appearance-none bg-white dark:bg-[#0b1512] dark:border-gray-600 dark:text-gray-100 cursor-pointer select'>
                   <option value=''>Status</option>
                   <option value='For Rent'>For Rent</option>
                   <option value='For Sale'>For Sale</option>
@@ -324,7 +324,7 @@ const PropertyPage: FC = () => {
                   placeholder='min'
                   min={0}
                   step={1000000}
-                  className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] min-w-0'
+                  className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] min-w-0 bg-white dark:bg-[#0b1512] dark:border-gray-600 dark:text-gray-100 dark:placeholder:text-gray-500'
                   name='minPrice'
                   onChange={handleChange}
                   value={filter.minPrice}
@@ -332,7 +332,7 @@ const PropertyPage: FC = () => {
                 <input
                   type='number'
                   placeholder='max'
-                  className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] min-w-0'
+                  className='w-full lg:w-[96px] h-[39px] border-[1px] p-[10px] rounded-[10px] text-[14px] min-w-0 bg-white dark:bg-[#0b1512] dark:border-gray-600 dark:text-gray-100 dark:placeholder:text-gray-500'
                   name='maxPrice'
                   min={0}
                   step={1000000}

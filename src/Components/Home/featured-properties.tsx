@@ -1,23 +1,28 @@
 import { useNavigate } from 'react-router-dom';
 import PropertyCard from '@/components/shared/property-card';
 import { PropertyGridSkeleton } from '@/components/skeletons/property-card-skeleton';
+import Reveal from '@/components/ui/reveal';
 import { useProperties } from '@/hooks/properties/use-properties';
 
 const FeaturedProperties = () => {
     const navigate = useNavigate();
     const { data: results = [], isLoading, isError } = useProperties();
 
+    // Properties the admin starred come first; until one is starred we show the newest so the section is never empty
+    const featured = results.filter((p) => p.isFeatured);
+    const shown = (featured.length ? featured : results).slice(0, 6);
+
     return (
-        <div className="bg-[#E4F0ED] dark:bg-[#10231f] px-4 md:px-8 flex flex-col justify-center items-center overflow-hidden">
+        <div className="bg-[#E4F0ED] dark:bg-[#0c1a17] px-4 md:px-8 flex flex-col justify-center items-center overflow-hidden">
             
-            <div className="flex flex-col justify-center items-center gap-[18px] py-[40px] md:py-[73px]">
+            <Reveal className="flex flex-col justify-center items-center gap-[18px] py-[40px] md:py-[73px]">
                 <h1 className="font-Manrope font-[700] text-[24px] md:text-[42px] text-center text-[#131817] dark:text-gray-100 leading-tight">
                     Discover Our Featured Properties
                 </h1>
                 <p className="font-Inter font-[400] text-[14px] md:text-[18px] leading-[24px] md:leading-[30px] text-center text-[#535353] dark:text-gray-300 w-full max-w-[23rem] md:max-w-[40rem]">
                     Dive into our exquisite collection of our featured properties at Nest Finder Pro. Every corner whispers comfort and every detail is crafted with perfection
                 </p>
-            </div>
+            </Reveal>
 
             {/* UPDATED GRID LOGIC: 2 columns at lg (1024px) and 3 columns only at xl (1280px) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-y-[30px] md:gap-y-[47px] lg:gap-y-[55px] gap-x-[20px] w-full max-w-[1240px] justify-items-center inbetween">
@@ -26,7 +31,7 @@ const FeaturedProperties = () => {
                 ) : isError ? (
                     <p className="text-red-500 font-bold col-span-full py-10">We couldn't load properties right now.</p>
                 ) : (
-                    results.slice(0, 6).map((result, i) => (
+                    shown.map((result, i) => (
                         <PropertyCard
                             index={i}
                             key={result._id}

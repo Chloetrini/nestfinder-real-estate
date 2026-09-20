@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { unwrap } from '@/api/client'
 import { deleteContactMessage, getContactMessages, updateContactStatus } from '@/api/contact'
 import { deleteEnquiry, getEnquiries, updateEnquiryStatus } from '@/api/enquiries'
-import { deleteProperty, getAdminProperties, getDashboardStats } from '@/api/properties'
+import { deleteSubscriber, getSubscribers } from '@/api/newsletter'
+import { deleteProperty, getAdminProperties, getDashboardStats, setPropertyFeatured } from '@/api/properties'
 import { deleteUser, getAllUsers, getUsersCount } from '@/api/users'
 import { propertyKeys } from '@/hooks/properties/use-properties'
 
@@ -12,6 +13,7 @@ const adminKeys = {
   users: ['admin', 'users'] as const,
   enquiries: ['admin', 'enquiries'] as const,
   messages: ['admin', 'messages'] as const,
+  subscribers: ['admin', 'subscribers'] as const,
 }
 
 // ---- properties (including drafts) ----
@@ -106,5 +108,26 @@ export const useDeleteContactMessage = () => {
   return useMutation({
     mutationFn: async (id: string) => unwrap(await deleteContactMessage(id)),
     onSuccess: () => void queryClient.invalidateQueries({ queryKey: adminKeys.messages }),
+  })
+}
+
+// ---- feature / unfeature a property (shows it in the home page's Featured section) ----
+export const useSetFeatured = () => {
+  const invalidate = useInvalidateProperties()
+  return useMutation({
+    mutationFn: async ({ id, isFeatured }: { id: string; isFeatured: boolean }) => unwrap(await setPropertyFeatured(id, isFeatured)),
+    onSuccess: invalidate,
+  })
+}
+
+// ---- newsletter subscribers ----
+export const useSubscribers = () =>
+  useQuery({ queryKey: adminKeys.subscribers, queryFn: async () => unwrap(await getSubscribers()) })
+
+export const useDeleteSubscriber = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => unwrap(await deleteSubscriber(id)),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: adminKeys.subscribers }),
   })
 }

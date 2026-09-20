@@ -1,4 +1,5 @@
 import { useState, type FC } from 'react';
+import { Heart } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 import UserMenu from '@/components/layout/user-menu';
 // Added useLocation to track which page is currently active
@@ -76,13 +77,14 @@ const HeaderNavBar: FC = () => {
     <div className="md:bg-white/95 dark:md:bg-gray-900/95 md:backdrop-blur bg-[#1A3C34] dark:bg-[#24574a] w-full sticky top-0 nav z-40 border-b border-transparent md:border-gray-100 dark:md:border-gray-800 ">
       <div className="lg:mx-auto lg:container lg:max-w-[1200px] w-full px-6  md:px-3 lg:px-0 flex flex-row justify-between items-center py-[15px] md:py-[10px] navv">
 
-        <div className="flex flex-row items-center gap-[8px]">
-          <img className="hidden md:block" src={logo} alt="Logo" />
-          <img className="block md:hidden w-[25px]" src={logoo} alt="Logo Mobile" />
+        {/* Logo + name: one link, always back to the home page */}
+        <Link to="/" onClick={() => setIsMenu(false)} aria-label="NestFinder Pro home" className="flex flex-row items-center gap-[8px] transition-transform hover:scale-[1.03]">
+          <img className="hidden md:block" src={logo} alt="" />
+          <img className="block md:hidden w-[25px]" src={logoo} alt="" />
           <p className="font-[Manrope] font-[700] text-[18px]  text-[#FFFFFF] md:text-[#1A3C34] dark:md:text-[#8fd3c0]">
             NestFinder Pro
           </p>
-        </div>
+        </Link>
 
         {/* DESKTOP NAVIGATION with Active States */}
         <nav className="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-[32px] font-[Manrope] font-[400] text-[18px]">
@@ -98,16 +100,16 @@ const HeaderNavBar: FC = () => {
           <Link to="/properties" onClick={handlePropertyClick} className={navLinkClass('/properties')}>
             Properties
           </Link>
-          <Link to="/saved" className={`${navLinkClass('/saved')} flex items-center gap-1`}>
-            Saved
-            {savedCount > 0 && (
-              <span className="rounded-full bg-[#F4A261] px-1.5 text-[12px] font-bold leading-5 text-[#1A3C34]">{savedCount}</span>
-            )}
-          </Link>
         </nav>
 
         <div className="hidden md:flex items-center justify-end gap-[12px] md:min-w-[200px] font-[Manrope]">
           <ThemeToggle className="text-[#1A3C34] dark:text-[#8fd3c0]" />
+          {!isLoggedIn && savedCount > 0 && (
+            <Link to="/saved" aria-label={`Saved properties (${savedCount})`} className="relative flex h-10 w-10 items-center justify-center rounded-full text-[#1A3C34] transition-transform hover:scale-110 dark:text-[#8fd3c0]">
+              <Heart size={20} />
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#F4A261] px-1.5 text-[11px] font-bold leading-4 text-[#1A3C34]">{savedCount}</span>
+            </Link>
+          )}
           {isLoggedIn ? (
             <UserMenu onLogout={handleLoggedOut} />
           ) : (

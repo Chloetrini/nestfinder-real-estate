@@ -5,14 +5,14 @@ import users from "@/assets/icons/users.png"
 import enquiries from "@/assets/icons/clipboard.png"
 import circle from "@/assets/icons/addd.png"
 
-import { useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 import { removeToken } from "@/api/client";
 import { useAuth } from "@/context/auth-context";
 import { queryClient } from "@/lib/query-client";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { useContactMessages } from "@/hooks/admin/use-admin";
-import { Mail } from "lucide-react";
+import { Mail, MailPlus } from "lucide-react";
 
 const Sidebar = () => {
     const navigate = useNavigate()
@@ -27,12 +27,14 @@ const Sidebar = () => {
     const isAddPropertyActive = path.startsWith("/adminPage/add-property") || path.startsWith("/adminPage/edit-property")
     const isManageActive = path.startsWith("/adminPage/manage-property")
     const isEnquiriesActive = path.startsWith("/adminPage/enquiries")
+    const isSubscribersActive = path.startsWith("/adminPage/subscribers")
     const isMessagesActive = path.startsWith("/adminPage/messages")
 
     const handleDashboardClick = () => navigate("/adminPage/dashboard")
     const handleAddPropertyClick = () => navigate("/adminPage/add-property")
     const handleManageClick = () => navigate("/adminPage/manage-property")
     const handleEnquiriesClick = () => navigate("/adminPage/enquiries")
+    const handleSubscribersClick = () => navigate("/adminPage/subscribers")
     const handleMessagesClick = () => navigate("/adminPage/messages")
 
     const handleLogout = () => {
@@ -51,12 +53,12 @@ const Sidebar = () => {
 
                 {/* Logo — desktop only */}
                 <div className="hidden lg:flex items-center gap-[4px] p-[20px] h-[76px] w-[260px]">
-                    <div className="flex items-center gap-[10.22px] w-[162.22px] h-[46px]">
-                        <img className="cursor-pointer hover:transition-all hover:transform hover:scale-135" src={Logo} onClick={() => navigate("/")} alt="Arrow Logo" />
-                        <h1 className="font-Manrope font-bold text-[17.89px] leading-none text-[#1A3C34] dark:text-[#8fd3c0]">
+                    <Link to="/" aria-label="NestFinder Pro home" className="flex items-center gap-[10.22px] w-[162.22px] h-[46px] transition-transform hover:scale-[1.03]">
+                        <img src={Logo} alt="" />
+                        <span className="font-Manrope font-bold text-[17.89px] leading-none text-[#1A3C34] dark:text-[#8fd3c0]">
                             NestFinder Pro
-                        </h1>
-                    </div>
+                        </span>
+                    </Link>
                 </div>
 
                 {/* MENU SECTION */}
@@ -134,6 +136,16 @@ const Sidebar = () => {
                             {newMessages > 0 && (
                                 <span className="absolute right-3 top-0 lg:static lg:ml-auto rounded-full bg-[#F4A261] px-1.5 text-[10px] lg:text-[12px] font-bold leading-4 lg:leading-5 text-[#1A3C34]">{newMessages}</span>
                             )}
+                        </div>
+
+                        {/* Newsletter sign-ups from the footer */}
+                        <div 
+                            onClick={handleSubscribersClick} 
+                            className={`flex flex-col lg:flex-row items-center w-full lg:w-[260px] py-1 lg:py-[9px] px-1 lg:px-4 gap-0.5 lg:gap-2 cursor-pointer transition-colors
+                            ${isSubscribersActive ? "lg:bg-[#1A3C34] dark:lg:bg-[#24574a] text-[#1A3C34] dark:text-[#8fd3c0] lg:text-white" : "text-[#4F887B] lg:bg-transparent"}`}
+                        >
+                            <MailPlus className={`w-4 h-4 lg:w-6 lg:h-6 ${isSubscribersActive ? "" : "opacity-70"}`} />
+                            <span className="font-lato text-[9px] lg:text-[16px]">Subscribers</span>
                         </div>
 
                         {/* Theme — mobile only */}

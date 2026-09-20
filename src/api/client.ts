@@ -11,7 +11,7 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY)
 export const removeToken = () => localStorage.removeItem(TOKEN_KEY)
 
 interface RequestOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
   /** JSON object, or FormData for file uploads */
   body?: unknown
   /** Send the JWT in the Authorization header */

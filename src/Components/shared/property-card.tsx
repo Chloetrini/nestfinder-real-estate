@@ -10,7 +10,7 @@ import type { Property } from '@/types/property'
 
 interface PropertyCardProps {
   property: Property
-  /** Called when the "View" button is pressed */
+  /** Called when the card (or its View button) is pressed */
   onView: () => void
   /** Position in the grid: staggers the fade-in so cards arrive one after another */
   index?: number
@@ -30,11 +30,24 @@ const PropertyCard = ({ property, onView, index = 0 }: PropertyCardProps) => {
   // The first row is on screen straight away, so load it at once; the rest wait until you scroll near them
   const aboveTheFold = index < 3
   return (
-  <div style={{ animationDelay: `${Math.min(index, 6) * 70}ms` }} className="animate-fade-up w-full max-w-[387px] shadow-2xl text-start flex flex-col rounded-[20px] relative bg-white dark:bg-gray-900 transition-transform hover:scale-[1.02] duration-300 okay">
+  <div
+    role="link"
+    tabIndex={0}
+    aria-label={`View ${property.propertyName}`}
+    onClick={onView}
+    onKeyDown={(e) => {
+      if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault()
+        onView()
+      }
+    }}
+    style={{ animationDelay: `${Math.min(index, 6) * 70}ms` }}
+    className="animate-fade-up w-full max-w-[387px] cursor-pointer shadow-2xl dark:shadow-black/40 dark:ring-1 dark:ring-white/10 text-start flex flex-col rounded-[20px] relative bg-white dark:bg-gray-900 transition-all hover:scale-[1.02] hover:-translate-y-1 duration-300 focus-visible:outline-2 focus-visible:outline-[#1A3C34] dark:focus-visible:outline-[#8fd3c0] okay"
+  >
     <div className="relative h-[280px] md:h-[322px] w-full overflow-hidden rounded-tl-[10px] rounded-tr-[10px] bg-gray-200 dark:bg-gray-800">
       {/* Soft shimmer until the photo is ready, then the photo fades in */}
       {!loaded && <span className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent dark:via-white/10" />}
-      <HeartButton propertyId={property._id} className="absolute right-3 top-3 z-10" />
+      <HeartButton propertyId={property._id} className="absolute left-3 top-3 z-10" />
       <img
         className={`h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         loading={aboveTheFold ? 'eager' : 'lazy'}
@@ -75,7 +88,7 @@ const PropertyCard = ({ property, onView, index = 0 }: PropertyCardProps) => {
       </div>
 
       <div className="flex items-center justify-between pt-2">
-        <Button onClick={onView} />
+        <Button />
         <p className="md:text-[26px] lg:text-[30px] max-[321px]:text-[21px] max-[426px]:text-[25px] max-[768px]:text-[29px] font-bold text-[#1A3C34] dark:text-[#8fd3c0] font-[Gentium_Plus]">
           <span className="max-[321px]:text-[22px] lg:text-[30px] md:text-[28px] mr-0.5 max-[376px]:text-[28px]">₦</span>
           {property.price.toLocaleString()}

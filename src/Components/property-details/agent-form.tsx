@@ -123,15 +123,15 @@ const AgentForm = ({ propertyId }: AgentFormProps) => {
 
   return (
     <>
-      <div className='font-Manrope lg:w-[387px] w-full h-auto border-1 border-[#918F8F] dark:border-gray-600 rounded-[10px] p-[20px]  font-[Manrope]'>
-        <form onSubmit={handleSubmit} className='flex flex-col bg-white dark:bg-gray-900 gap-[10px]'>
+      <div className='font-Manrope lg:w-[387px] w-full h-auto border border-[#918F8F] dark:border-gray-700 bg-white dark:bg-[#12201c] rounded-[10px] p-[20px] font-[Manrope]'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-[10px]'>
           <h1 className="font-bold text-[18px] text-[#023337] dark:text-gray-100">Contact Agent</h1>
           
           <label htmlFor="name" className='text-[#676565] dark:text-gray-300 font-bold'>Name</label>
           <input 
             type="text"
             placeholder='Enter your name'
-            className={`border-1 border-[#918F8F] dark:border-gray-600 rounded-[10px] p-[10px] outline-none ${error.name ? "border-red-500" : "border-gray-300 dark:border-gray-600" }`}
+            className={`border border-[#918F8F] dark:border-gray-600 bg-white dark:bg-[#0b1512] text-[#0A1916] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-[#1A3C34] dark:focus:border-[#3b8a76] rounded-[10px] p-[10px] outline-none ${error.name ? "border-red-500" : "border-gray-300 dark:border-gray-600" }`}
             id="name" 
             name="name"
             value={user.name} 
@@ -143,7 +143,7 @@ const AgentForm = ({ propertyId }: AgentFormProps) => {
           <input 
             type="email"
             placeholder='Enter your email'
-            className={`border-1 border-[#918F8F] dark:border-gray-600 rounded-[10px] p-[10px] outline-none ${error.email ? "border-red-500" : "border-gray-300 dark:border-gray-600" }`}
+            className={`border border-[#918F8F] dark:border-gray-600 bg-white dark:bg-[#0b1512] text-[#0A1916] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-[#1A3C34] dark:focus:border-[#3b8a76] rounded-[10px] p-[10px] outline-none ${error.email ? "border-red-500" : "border-gray-300 dark:border-gray-600" }`}
             id="email"
             name="email"
             value={user.email}
@@ -157,7 +157,7 @@ const AgentForm = ({ propertyId }: AgentFormProps) => {
             id="message" 
             placeholder='Enter your message'
             rows={4}
-            className={`border-1 border-[#918F8F] dark:border-gray-600 rounded-[10px] p-[10px] outline-none resize-none ${error.message ? "border-red-500" : "border-gray-300 dark:border-gray-600" }`}
+            className={`border border-[#918F8F] dark:border-gray-600 bg-white dark:bg-[#0b1512] text-[#0A1916] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-[#1A3C34] dark:focus:border-[#3b8a76] rounded-[10px] p-[10px] outline-none resize-none ${error.message ? "border-red-500" : "border-gray-300 dark:border-gray-600" }`}
             value={user.message}
             onChange={handleChange}
           />

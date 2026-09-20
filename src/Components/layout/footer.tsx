@@ -2,12 +2,32 @@ import Vector from "@/assets/brand/log.png"
 import location from "@/assets/icons/map.png"
 import Phone from "@/assets/icons/call.png"
 import message from "@/assets/icons/info.png"
-import { type FC } from "react"
+import { useState, type FC, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { SITE } from "@/constants/site"
+import { subscribeToNewsletter } from "@/api/newsletter"
 
 const Footer: FC = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [news, setNews] = useState<{ state: "idle" | "loading" } | { state: "success" | "error"; message: string }>({ state: "idle" });
+
+    const handleSubscribe = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!/^\S+@\S+\.\S+$/.test(email.trim())) return setNews({ state: "error", message: "Please enter a valid email address." });
+        setNews({ state: "loading" });
+        try {
+            const res = await subscribeToNewsletter(email.trim());
+            if (res.success) {
+                setEmail("");
+                setNews({ state: "success", message: res.message || "Thank you for subscribing!" });
+            } else {
+                setNews({ state: "error", message: res.message || "Could not subscribe. Please try again." });
+            }
+        } catch {
+            setNews({ state: "error", message: "Could not reach the server. Please try again." });
+        }
+    };
      const handlePropertyClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate('/properties');
@@ -40,30 +60,38 @@ const Footer: FC = () => {
                     
                     <div className="flex flex-col gap-8 w-full lg:max-w-[380px] xl:max-w-[450px]">
                         <div className="flex flex-col gap-4">
-                            <div className="flex gap-[13px] items-center">
-                                <img className="w-[20px] h-[20px]" src={Vector} alt="logo" />
-                                <h1 className="text-white font-[Manrope] font-[700] text-[23.5px]">NestFinder Pro</h1>
-                            </div>
+                            <Link to="/" aria-label="NestFinder Pro home" className="flex gap-[13px] items-center w-fit transition-transform hover:scale-[1.03]">
+                                <img className="w-[20px] h-[20px]" src={Vector} alt="" />
+                                <span className="text-white font-[Manrope] font-[700] text-[23.5px]">NestFinder Pro</span>
+                            </Link>
                             <p className="text-white text-[16px] md:text-[18px] font-[400] font-[Manrope] leading-relaxed">
                                 Your trusted partner in finding premium properties across Nigeria. We connect buyers, sellers and renters with verified listings
                             </p>
                         </div>
 
-                        <form className="flex flex-col sm:flex-row gap-3 w-full">
-                            <input 
-                                className="border border-[#696464] dark:border-gray-600 rounded-[10px] w-full lg:flex-1 h-[49px] bg-transparent text-white px-[15px] focus:outline-none focus:border-[#1A3C34] dark:focus:border-[#3b8a76] font-[Inter] font-400" 
-                                type="email" 
-                                placeholder="Enter your email address" 
-                            />
-                            <button 
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    navigate('/')
-                                }} 
-                                className="bg-[#1A3C34] dark:bg-[#24574a] text-white font-[400] font-[Manrope] rounded-[10px] px-6 h-[49px] whitespace-nowrap transition-colors hover:bg-[#132c26]"
-                            >
-                                Subscribe
-                            </button>
+                        <form onSubmit={handleSubscribe} className="flex flex-col gap-2 w-full" noValidate>
+                            <div className="flex flex-col sm:flex-row gap-3 w-full">
+                                <input
+                                    className="border border-[#696464] dark:border-gray-600 rounded-[10px] w-full lg:flex-1 h-[49px] bg-transparent text-white px-[15px] focus:outline-none focus:border-[#3b8a76] font-[Inter] font-400 placeholder:text-gray-400"
+                                    type="email"
+                                    name="email"
+                                    aria-label="Email address for the newsletter"
+                                    autoComplete="email"
+                                    placeholder="Enter your email address"
+                                    value={email}
+                                    onChange={(e) => { setEmail(e.target.value); if (news.state !== 'idle') setNews({ state: 'idle' }) }}
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={news.state === 'loading'}
+                                    className="bg-[#1A3C34] dark:bg-[#24574a] text-white font-[400] font-[Manrope] rounded-[10px] px-6 h-[49px] whitespace-nowrap transition-colors hover:bg-[#132c26] disabled:opacity-60"
+                                >
+                                    {news.state === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                                </button>
+                            </div>
+                            <p role="status" aria-live="polite" className={`min-h-5 text-[14px] font-[Inter] ${news.state === 'error' ? 'text-red-400' : 'text-[#8fd3c0]'}`}>
+                                {news.state === 'success' || news.state === 'error' ? news.message : ''}
+                            </p>
                         </form>
                     </div>
 

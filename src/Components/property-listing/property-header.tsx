@@ -4,7 +4,7 @@ import mobile  from "@/assets/images/listing-banner-mobile.webp"
 const PropertyHeader = () => {
   return (
    
-    <main className='bg-[#0A1210] lg:py-15 w-full px-4 h-[250px] lg:h-[369px] relative z-0 overflow-hidden'>
+    <main className='bg-[#0A1210] dark:bg-linear-to-br dark:from-[#153a32] dark:via-[#0f2621] dark:to-[#0b1512] lg:py-15 w-full px-4 h-[250px] lg:h-[369px] relative z-0 overflow-hidden'>
       <div className="flex flex-col md:max-w-[1200px] w-full mx-auto container h-full relative">
         
        

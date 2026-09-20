@@ -26,10 +26,10 @@ const HomePage: FC = () => {
 			<div >
 				 <HeaderNavBar />
                 <HeaderContentSec />
-                <Reveal><Testimonials /></Reveal>
+                <Testimonials />
 				<FeaturedProperties />
 				<Reveal><WhyChooseUs/></Reveal>
-				<Reveal><Testimonials2 /></Reveal>
+				<Testimonials2 />
 				<Reveal><Display  /></Reveal>
 				<Footer/>
 			</div>

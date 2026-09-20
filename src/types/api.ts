@@ -36,6 +36,12 @@ export interface ContactMessage {
   createdAt: string
 }
 
+export interface Subscriber {
+  _id: string
+  email: string
+  createdAt: string
+}
+
 export interface AdminUser {
   _id: string
   name: string
