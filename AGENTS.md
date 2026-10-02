@@ -59,6 +59,10 @@ src/constants/   nigeria-states.ts, site.ts (company contact details: edit once 
 2. Page in `src/routes/<area>/` with a default export.
 3. Register it in `src/app/router.tsx`.
 
+## Commits
+
+Author every commit as `Claude with Trini <noreply@anthropic.com>`, never plain "Claude". Set it before committing: `git config user.name "Claude with Trini" && git config user.email noreply@anthropic.com`.
+
 ## Gotchas
 
 - The JWT is kept in `localStorage` (key `nestfinder_token`) and sent in the `Authorization` header. There is no cookie session on this app.
